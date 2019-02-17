@@ -9,10 +9,15 @@ class ProjectRepository private constructor(
     private val projectDao: ProjectDao
 ){
 
-    suspend fun createProject(name: String, colorId: Long) : Long{
+    suspend fun insertProject(project: Project) : Long {
         return withContext(IO) {
-            val project = Project(name = name, colorId = colorId)
             projectDao.insertProject(project)
+        }
+    }
+
+    suspend fun bulkInsertProjects(projects: List<Project>) : List<Long> {
+        return withContext(IO) {
+            projectDao.bulkInsertProjects(projects)
         }
     }
 
@@ -22,9 +27,27 @@ class ProjectRepository private constructor(
         }
     }
 
-    suspend fun deleteProject(project: Project) : Int{
+    suspend fun bulkUpdateProjects(projects: List<Project>) : Int {
+        return withContext(IO) {
+            projectDao.bulkUpdateProjects(projects)
+        }
+    }
+
+    suspend fun deleteProject(project: Project) : Int {
         return withContext(IO) {
             projectDao.deleteProject(project)
+        }
+    }
+
+    suspend fun bulkDeleteProjects(projects: List<Project>) : Int {
+        return withContext(IO) {
+            projectDao.bulkDeleteProjects(projects)
+        }
+    }
+
+    suspend fun deleteAllProjects() : Int {
+        return withContext(IO) {
+            projectDao.deleteAllProjects()
         }
     }
 

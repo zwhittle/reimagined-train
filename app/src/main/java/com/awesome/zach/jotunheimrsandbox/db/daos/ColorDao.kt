@@ -27,7 +27,7 @@ interface ColorDao {
 
     // returns a list of inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertColors(colors: List<Color>) : List<Long>
+    fun bulkInsertColors(colors: List<Color>) : List<Long>
 
     // returns the count of updated rows
     @Update

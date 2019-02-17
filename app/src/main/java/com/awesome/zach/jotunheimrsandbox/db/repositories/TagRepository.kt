@@ -9,10 +9,15 @@ class TagRepository private constructor(
     private val tagDao: TagDao
 ){
 
-    suspend fun createTag(name: String, colorId: Long) : Long{
+    suspend fun insertTag(tag: Tag) : Long {
         return withContext(IO) {
-            val tag = Tag(name = name, colorId = colorId)
              tagDao.insertTag(tag)
+        }
+    }
+
+    suspend fun bulkInsertTags(tags: List<Tag>) : List<Long> {
+        return withContext(IO) {
+            tagDao.bulkInsertTags(tags)
         }
     }
 
@@ -22,9 +27,27 @@ class TagRepository private constructor(
         }
     }
 
+    suspend fun bulkUpdateTags(tags: List<Tag>) : Int {
+        return withContext(IO) {
+            tagDao.bulkUpdateTags(tags)
+        }
+    }
+
     suspend fun deleteTag(tag: Tag) : Int {
         return withContext(IO) {
             tagDao.deleteTag(tag)
+        }
+    }
+
+    suspend fun bulkDeleteTags(tags: List<Tag>) : Int {
+        return withContext(IO) {
+            tagDao.bulkDeleteTags(tags)
+        }
+    }
+
+    suspend fun deleteAllTags() : Int {
+        return withContext(IO) {
+            tagDao.deleteAllTags()
         }
     }
 

@@ -14,7 +14,7 @@ interface TaskTagJoinDao {
 
     // returns a list of the inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : List<Long>
+    fun bulkInsertTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : List<Long>
 
     // returns a count of updated rows
     @Update

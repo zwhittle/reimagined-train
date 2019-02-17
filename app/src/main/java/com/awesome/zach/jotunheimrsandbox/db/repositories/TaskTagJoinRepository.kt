@@ -2,29 +2,52 @@ package com.awesome.zach.jotunheimrsandbox.db.repositories
 
 import com.awesome.zach.jotunheimrsandbox.db.daos.TaskTagJoinDao
 import com.awesome.zach.jotunheimrsandbox.db.entities.TaskTagJoin
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
 class TaskTagJoinRepository private constructor(
     private val taskTagJoinDao: TaskTagJoinDao
 ){
 
-    suspend fun createTaskTagJoin(taskId: Long, tagId: Long) : Long{
-        return withContext(Dispatchers.IO) {
-            val taskTagJoin = TaskTagJoin(taskId = taskId, tagId = tagId)
+    suspend fun insertTaskTagJoin(taskTagJoin: TaskTagJoin) : Long {
+        return withContext(IO) {
             taskTagJoinDao.insertTaskTagJoin(taskTagJoin)
         }
     }
 
+    suspend fun bulkInsertTaskTagJoin(taskTagJoins: List<TaskTagJoin>) : List<Long> {
+        return withContext(IO) {
+            taskTagJoinDao.bulkInsertTaskTagJoins(taskTagJoins)
+        }
+    }
+
     suspend fun updateTaskTagJoin(taskTagJoin: TaskTagJoin) : Int {
-        return withContext(Dispatchers.IO) {
+        return withContext(IO) {
             taskTagJoinDao.updateTaskTagJoin(taskTagJoin)
         }
     }
 
+    suspend fun bulkUpdateTaskTagJoin(taskTagJoins: List<TaskTagJoin>) : Int {
+        return withContext(IO) {
+            taskTagJoinDao.bulkUpdateTaskTagJoins(taskTagJoins)
+        }
+    }
+
     suspend fun deleteTaskTagJoin(taskTagJoin: TaskTagJoin) : Int {
-        return withContext(Dispatchers.IO) {
+        return withContext(IO) {
             taskTagJoinDao.deleteTaskTagJoin(taskTagJoin)
+        }
+    }
+
+    suspend fun bulkDeleteTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : Int {
+        return withContext(IO) {
+            taskTagJoinDao.bulkDeleteTaskTagJoins(taskTagJoins)
+        }
+    }
+
+    suspend fun deleteAllTaskTagJoins() : Int {
+        return withContext(IO) {
+            taskTagJoinDao.deleteAllTaskTagJoins()
         }
     }
 

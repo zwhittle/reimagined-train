@@ -27,7 +27,7 @@ interface TagDao {
 
     // returns a list of inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTags(tags: List<Tag>) : List<Long>
+    fun bulkInsertTags(tags: List<Tag>) : List<Long>
 
     // returns the count of updated rows
     @Update

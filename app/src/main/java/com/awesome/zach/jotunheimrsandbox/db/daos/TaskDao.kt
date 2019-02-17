@@ -30,7 +30,7 @@ interface TaskDao {
 
     // returns a list of inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTasks(tasks: List<Task>) : List<Long>
+    fun bulkInsertTasks(tasks: List<Task>) : List<Long>
 
     // returns a count of the updated rows
     @Update

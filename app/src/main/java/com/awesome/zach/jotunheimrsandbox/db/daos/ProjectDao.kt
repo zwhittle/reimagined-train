@@ -27,7 +27,7 @@ interface ProjectDao {
 
     // returns a list of inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProjects(projects: List<Project>) : List<Long>
+    fun bulkInsertProjects(projects: List<Project>) : List<Long>
 
     // returns a count of updated rows
     @Update

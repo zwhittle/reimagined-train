@@ -146,7 +146,7 @@ class DaoTests {
     private fun bulkWriteColors(): Map<String, Int> {
         dbSeeder.populateColorsList()
         val colorsToInsert = dbSeeder.colors
-        val returnedIds = colorDao.insertColors(colorsToInsert)
+        val returnedIds = colorDao.bulkInsertColors(colorsToInsert)
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = colorsToInsert.size
@@ -257,7 +257,7 @@ class DaoTests {
         dbSeeder.populateTagsList()
 
         val tagsToInsert = dbSeeder.tags
-        val returnedIds = tagDao.insertTags(tagsToInsert)
+        val returnedIds = tagDao.bulkInsertTags(tagsToInsert)
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = tagsToInsert.size
@@ -367,7 +367,7 @@ class DaoTests {
         dbSeeder.populateProjectsList()
 
         val projectsToInsert = dbSeeder.projects
-        val returnedIds = projectDao.insertProjects(projectsToInsert)
+        val returnedIds = projectDao.bulkInsertProjects(projectsToInsert)
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = projectsToInsert.size
@@ -496,7 +496,7 @@ class DaoTests {
         dbSeeder.populateTasksList(withDates)
 
         val tasksToInsert = dbSeeder.tasks
-        val returnedIds = taskDao.insertTasks(tasksToInsert)
+        val returnedIds = taskDao.bulkInsertTasks(tasksToInsert)
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = tasksToInsert.size
@@ -609,7 +609,7 @@ class DaoTests {
         dbSeeder.populateTaskTagJoinList()
 
         val taskTagJoinsToInsert = dbSeeder.taskTagJoins
-        val returnedIds = taskTagJoinDao.insertTaskTagJoins(taskTagJoinsToInsert)
+        val returnedIds = taskTagJoinDao.bulkInsertTaskTagJoins(taskTagJoinsToInsert)
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = taskTagJoinsToInsert.size

@@ -2,7 +2,7 @@ package com.awesome.zach.jotunheimrsandbox.db.repositories
 
 import com.awesome.zach.jotunheimrsandbox.db.daos.TaskDao
 import com.awesome.zach.jotunheimrsandbox.db.entities.Task
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -10,22 +10,45 @@ class TaskRepository private constructor(
     private val taskDao: TaskDao
 ){
 
-    suspend fun createTask(name: String, startDate: Date, endDate: Date, projectId: Long) : Long{
-        return withContext(Dispatchers.IO) {
-            val task = Task(name = name, date_start = startDate, date_end = endDate, projectId = projectId)
+    suspend fun insertTask(task: Task) : Long {
+        return withContext(IO) {
             taskDao.insertTask(task)
         }
     }
 
-    suspend fun updatedTask(task: Task) : Int{
-        return withContext(Dispatchers.IO) {
+    suspend fun bulkInsertTasks(tasks: List<Task>) : List<Long> {
+        return withContext(IO) {
+            taskDao.bulkInsertTasks(tasks)
+        }
+    }
+
+    suspend fun updateTask(task: Task) : Int {
+        return withContext(IO) {
             taskDao.updateTask(task)
         }
     }
 
+    suspend fun bulkUpdateTasks(tasks: List<Task>) : Int {
+        return withContext(IO) {
+            taskDao.bulkUpdateTasks(tasks)
+        }
+    }
+
     suspend fun deleteTask(task: Task) : Int {
-        return withContext(Dispatchers.IO) {
+        return withContext(IO) {
             taskDao.deleteTask(task)
+        }
+    }
+
+    suspend fun bulkDeleteTasks(tasks: List<Task>) : Int {
+        return withContext(IO) {
+            taskDao.bulkDeleteTasks(tasks)
+        }
+    }
+
+    suspend fun deleteAllTasks() : Int {
+        return withContext(IO) {
+            taskDao.deleteAllTasks()
         }
     }
 

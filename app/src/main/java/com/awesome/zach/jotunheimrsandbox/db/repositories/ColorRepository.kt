@@ -9,15 +9,15 @@ class ColorRepository private constructor(
     private val colorDao: ColorDao
 ){
 
-    suspend fun createColor(color: Color) : Long {
+    suspend fun insertColor(color: Color) : Long {
         return withContext(IO) {
             colorDao.insertColor(color)
         }
     }
 
-    suspend fun bulkCreateColors(colors: List<Color>) : List<Long> {
+    suspend fun bulkInsertColors(colors: List<Color>) : List<Long> {
         return withContext(IO) {
-            colorDao.insertColors(colors)
+            colorDao.bulkInsertColors(colors)
         }
     }
 
@@ -27,9 +27,27 @@ class ColorRepository private constructor(
         }
     }
 
-    suspend fun deleteColor(color: Color) {
-        withContext(IO) {
+    suspend fun bulkUpdateColors(colors: List<Color>) : Int {
+        return withContext(IO) {
+            colorDao.bulkDeleteColors(colors)
+        }
+    }
+
+    suspend fun deleteColor(color: Color) : Int {
+        return withContext(IO) {
             colorDao.deleteColor(color)
+        }
+    }
+
+    suspend fun bulkDeleteColors(colors: List<Color>) : Int {
+        return withContext(IO) {
+            colorDao.bulkDeleteColors(colors)
+        }
+    }
+
+    suspend fun deleteAllColors() : Int {
+        return withContext(IO) {
+            colorDao.deleteAllColors()
         }
     }
 
