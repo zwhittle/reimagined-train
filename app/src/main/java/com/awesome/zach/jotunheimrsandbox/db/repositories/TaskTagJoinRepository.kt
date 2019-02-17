@@ -9,21 +9,21 @@ class TaskTagJoinRepository private constructor(
     private val taskTagJoinDao: TaskTagJoinDao
 ){
 
-    suspend fun createTaskTagJoin(taskId: Long, tagId: Long) {
-        withContext(Dispatchers.IO) {
+    suspend fun createTaskTagJoin(taskId: Long, tagId: Long) : Long{
+        return withContext(Dispatchers.IO) {
             val taskTagJoin = TaskTagJoin(taskId = taskId, tagId = tagId)
-            val id = taskTagJoinDao.insertTaskTagJoin(taskTagJoin)
+            taskTagJoinDao.insertTaskTagJoin(taskTagJoin)
         }
     }
 
-    suspend fun updateTaskTagJoin(taskTagJoin: TaskTagJoin) {
-        withContext(Dispatchers.IO) {
-            val count = taskTagJoinDao.updateTaskTagJoin(taskTagJoin)
+    suspend fun updateTaskTagJoin(taskTagJoin: TaskTagJoin) : Int {
+        return withContext(Dispatchers.IO) {
+            taskTagJoinDao.updateTaskTagJoin(taskTagJoin)
         }
     }
 
-    suspend fun deleteTaskTagJoin(taskTagJoin: TaskTagJoin) {
-        withContext(Dispatchers.IO) {
+    suspend fun deleteTaskTagJoin(taskTagJoin: TaskTagJoin) : Int {
+        return withContext(Dispatchers.IO) {
             taskTagJoinDao.deleteTaskTagJoin(taskTagJoin)
         }
     }

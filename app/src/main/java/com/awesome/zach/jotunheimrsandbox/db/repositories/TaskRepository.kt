@@ -10,21 +10,21 @@ class TaskRepository private constructor(
     private val taskDao: TaskDao
 ){
 
-    suspend fun createTask(name: String, startDate: Date, endDate: Date, projectId: Long) {
-        withContext(Dispatchers.IO) {
+    suspend fun createTask(name: String, startDate: Date, endDate: Date, projectId: Long) : Long{
+        return withContext(Dispatchers.IO) {
             val task = Task(name = name, date_start = startDate, date_end = endDate, projectId = projectId)
-            val id = taskDao.insertTask(task)
+            taskDao.insertTask(task)
         }
     }
 
-    suspend fun updatedTask(task: Task) {
-        withContext(Dispatchers.IO) {
+    suspend fun updatedTask(task: Task) : Int{
+        return withContext(Dispatchers.IO) {
             taskDao.updateTask(task)
         }
     }
 
-    suspend fun deleteTask(task: Task) {
-        withContext(Dispatchers.IO) {
+    suspend fun deleteTask(task: Task) : Int {
+        return withContext(Dispatchers.IO) {
             taskDao.deleteTask(task)
         }
     }

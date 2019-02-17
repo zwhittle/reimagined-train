@@ -9,21 +9,21 @@ class TagRepository private constructor(
     private val tagDao: TagDao
 ){
 
-    suspend fun createTag(name: String, colorId: Long) {
-        withContext(IO) {
+    suspend fun createTag(name: String, colorId: Long) : Long{
+        return withContext(IO) {
             val tag = Tag(name = name, colorId = colorId)
-            val id = tagDao.insertTag(tag)
+             tagDao.insertTag(tag)
         }
     }
 
-    suspend fun updateTag(tag: Tag) {
-        withContext(IO) {
-            val count = tagDao.updateTag(tag)
+    suspend fun updateTag(tag: Tag) : Int {
+        return withContext(IO) {
+            tagDao.updateTag(tag)
         }
     }
 
-    suspend fun deleteTag(tag: Tag) {
-        withContext(IO) {
+    suspend fun deleteTag(tag: Tag) : Int {
+        return withContext(IO) {
             tagDao.deleteTag(tag)
         }
     }

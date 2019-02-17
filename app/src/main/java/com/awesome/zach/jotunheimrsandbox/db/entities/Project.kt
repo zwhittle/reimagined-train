@@ -28,9 +28,9 @@ import android.support.annotation.NonNull
 )
 data class Project(
     @PrimaryKey(autoGenerate = true)
-    val projectId: Long? = null,
+    val projectId: Long = 0,
     @NonNull
-    val name: String,
+    var name: String,
     @NonNull
-    val colorId: Long
+    var colorId: Long
 )

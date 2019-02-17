@@ -9,16 +9,21 @@ class ColorRepository private constructor(
     private val colorDao: ColorDao
 ){
 
-    suspend fun createColor(name: String, hex: String) {
-        withContext(IO) {
-            val color = Color(name = name, hex = hex)
-            val id = colorDao.insertColor(color)
+    suspend fun createColor(color: Color) : Long {
+        return withContext(IO) {
+            colorDao.insertColor(color)
         }
     }
 
-    suspend fun updateColor(color: Color) {
-        withContext(IO) {
-            val count = colorDao.updateColor(color)
+    suspend fun bulkCreateColors(colors: List<Color>) : List<Long> {
+        return withContext(IO) {
+            colorDao.insertColors(colors)
+        }
+    }
+
+    suspend fun updateColor(color: Color) : Int {
+        return withContext(IO) {
+            colorDao.updateColor(color)
         }
     }
 

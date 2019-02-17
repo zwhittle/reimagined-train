@@ -21,24 +21,43 @@ import com.awesome.zach.jotunheimrsandbox.db.entities.Color
 @Dao
 interface ColorDao {
 
+    // returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertColor(color: Color)
+    fun insertColor(color: Color) : Long
 
+    // returns a list of inserted row ids
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertColors(colors: List<Color>) : List<Long>
+
+    // returns the count of updated rows
     @Update
-    fun updateColor(color: Color)
+    fun updateColor(color: Color) : Int
 
+    // returns the count of updated rows
+    @Update
+    fun bulkUpdateColors(colors: List<Color>) : Int
+
+    // returns the count of deleted rows
     @Delete
-    fun deleteColor(color: Color)
+    fun deleteColor(color: Color) : Int
 
-    @Query("SELECT * FROM color_table")
+    // returns the count of deleted rows
+    @Delete
+    fun bulkDeleteColors(colors: List<Color>) : Int
+
+    // returns the count of deleted rows
+    @Query("DELETE FROM color_table")
+    fun deleteAllColors() : Int
+
+    @Query("SELECT * FROM color_table ORDER BY colorId ASC")
     fun getAllColors() : List<Color>
 
-    @Query("SELECT * FROM color_table WHERE colorId == :colorId")
-    fun getColorById(colorId: Long): Color
+    @Query("SELECT * FROM color_table WHERE colorId == :colorId ORDER BY colorId ASC")
+    fun getColorById(colorId: Long) : Color
 
-    @Query("SELECT * FROM color_table WHERE name == :name")
-    fun getColorByName(name: String): Color
+    @Query("SELECT * FROM color_table WHERE name == :name ORDER BY colorId ASC")
+    fun getColorByName(name: String) : Color
 
-    @Query("SELECT * FROM color_table WHERE hex == :hex")
-    fun getColorByHex(hex: String): Color
+    @Query("SELECT * FROM color_table WHERE hex == :hex ORDER BY colorId ASC")
+    fun getColorByHex(hex: String) : Color
 }

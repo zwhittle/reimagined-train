@@ -9,18 +9,38 @@ import com.awesome.zach.jotunheimrsandbox.db.entities.TaskTagJoin
 interface TaskTagJoinDao {
 
     // returns the id of the inserted row
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTaskTagJoin(taskTagJoin: TaskTagJoin) : Long
+
+    // returns a list of the inserted row ids
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : List<Long>
 
     // returns a count of updated rows
     @Update
     fun updateTaskTagJoin(taskTagJoin: TaskTagJoin) : Int
 
+    // returns a count of updated rows
+    @Update
+    fun bulkUpdateTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : Int
+
+    // returns the count of deleted rows
     @Delete
-    fun deleteTaskTagJoin(taskTagJoin: TaskTagJoin)
+    fun deleteTaskTagJoin(taskTagJoin: TaskTagJoin) : Int
+
+    // returns the count of deleted rows
+    @Delete
+    fun bulkDeleteTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : Int
+
+    // returns the count of deleted rows
+    @Query("DELETE FROM task_tag_join_table")
+    fun deleteAllTaskTagJoins() : Int
 
     @Query("SELECT * FROM task_tag_join_table")
     fun getAllTaskTagJoins() : List<TaskTagJoin>
+
+    @Query("SELECT * FROM task_tag_join_table WHERE taskTagJoinId = :taskTagJoinId")
+    fun getTaskTagJoinById(taskTagJoinId: Long) : TaskTagJoin
 
     @Query("SELECT * FROM task_table INNER JOIN task_tag_join_table ON task_table.taskId = task_tag_join_table.taskId WHERE task_tag_join_table.tagId = :tagId")
     fun getTasksWithTag(tagId: Long): List<Task>

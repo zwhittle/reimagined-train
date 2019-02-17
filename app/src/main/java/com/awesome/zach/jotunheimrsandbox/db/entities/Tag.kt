@@ -28,9 +28,9 @@ import android.support.annotation.NonNull
 )
 data class Tag(
     @PrimaryKey(autoGenerate = true)
-    val tagId: Long? = null,
+    val tagId: Long = 0,
     @NonNull
-    val name: String,
+    var name: String,
     @NonNull
-    val colorId: Long
+    var colorId: Long
 )

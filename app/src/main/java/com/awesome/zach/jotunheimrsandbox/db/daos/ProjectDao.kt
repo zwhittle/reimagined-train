@@ -25,12 +25,29 @@ interface ProjectDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertProject(project: Project) : Long
 
-    // returns a count of the number of updated rows
+    // returns a list of inserted row ids
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertProjects(projects: List<Project>) : List<Long>
+
+    // returns a count of updated rows
     @Update
     fun updateProject(project: Project) : Int
 
+    // returns a count of updated rows
+    @Update
+    fun bulkUpdateProjects(projects: List<Project>) : Int
+
+    // returns a count of deleted rows
     @Delete
-    fun deleteProject(project: Project)
+    fun deleteProject(project: Project) : Int
+
+    // returns a count of deleted rows
+    @Delete
+    fun bulkDeleteProjects(projects: List<Project>) : Int
+
+    // returns a count of deleted rows
+    @Query("DELETE FROM project_table")
+    fun deleteAllProjects() : Int
 
     @Query("SELECT * FROM project_table")
     fun getAllProjects() : List<Project>

@@ -21,16 +21,33 @@ import com.awesome.zach.jotunheimrsandbox.db.entities.Tag
 @Dao
 interface TagDao {
 
-    // Returns the ID of the inserted row
+    // Returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTag(tag: Tag) : Long
 
-    // Returns the number of updated rows
+    // returns a list of inserted row ids
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTags(tags: List<Tag>) : List<Long>
+
+    // returns the count of updated rows
     @Update
     fun updateTag(tag: Tag) : Int
 
+    // returns the count of updated rows
+    @Update
+    fun bulkUpdateTags(tags: List<Tag>) : Int
+
+    // returns the count of deleted rows
     @Delete
-    fun deleteTag(tag: Tag)
+    fun deleteTag(tag: Tag) : Int
+
+    // returns the count of deleted rows
+    @Delete
+    fun bulkDeleteTags(tags: List<Tag>) : Int
+
+    // returns the count of deleted rows
+    @Query("DELETE FROM tag_table")
+    fun deleteAllTags() : Int
 
     @Query("SELECT * FROM tag_table")
     fun getAllTags() : List<Tag>

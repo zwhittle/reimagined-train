@@ -27,12 +27,12 @@ import java.util.*
     )]
 )
 data class Task(
-    @PrimaryKey
-    val taskId: Long? = null,
+    @PrimaryKey(autoGenerate = true)
+    val taskId: Long = 0,
     @NonNull
-    val name: String,
-    val date_start: Date? = null,
-    val date_end: Date? = null,
+    var name: String,
+    var date_start: Date? = null,
+    var date_end: Date? = null,
     @NonNull
-    val projectId: Long
+    var projectId: Long
 )

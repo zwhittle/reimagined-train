@@ -19,8 +19,8 @@ import android.support.annotation.NonNull
     indices = [Index("colorId"), Index("hex")])
 data class Color(
     @PrimaryKey(autoGenerate = true)
-    val colorId: Long? = null,
-    val name: String? = null,
+    val colorId: Long = 0,
+    var name: String? = null,
     @NonNull
-    val hex: String
+    var hex: String
 )

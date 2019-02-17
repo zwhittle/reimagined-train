@@ -9,21 +9,21 @@ class ProjectRepository private constructor(
     private val projectDao: ProjectDao
 ){
 
-    suspend fun createProject(name: String, colorId: Long) {
-        withContext(IO) {
+    suspend fun createProject(name: String, colorId: Long) : Long{
+        return withContext(IO) {
             val project = Project(name = name, colorId = colorId)
-            val id = projectDao.insertProject(project)
+            projectDao.insertProject(project)
         }
     }
 
-    suspend fun updateProject(project: Project) {
-        withContext(IO) {
-            val count = projectDao.updateProject(project)
+    suspend fun updateProject(project: Project) : Int {
+        return withContext(IO) {
+            projectDao.updateProject(project)
         }
     }
 
-    suspend fun deleteProject(project: Project) {
-        withContext(IO) {
+    suspend fun deleteProject(project: Project) : Int{
+        return withContext(IO) {
             projectDao.deleteProject(project)
         }
     }

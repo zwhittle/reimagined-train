@@ -24,16 +24,33 @@ import java.util.*
 @Dao
 interface TaskDao {
 
-    // returns the id of the inserted row
+    // returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTask(task: Task) : Long
+
+    // returns a list of inserted row ids
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTasks(tasks: List<Task>) : List<Long>
 
     // returns a count of the updated rows
     @Update
     fun updateTask(task: Task) : Int
 
+    // returns a count of the updated rows
+    @Update
+    fun bulkUpdateTasks(tasks: List<Task>) : Int
+
+    // returns the count of deleted rows
     @Delete
-    fun deleteTask(task: Task)
+    fun deleteTask(task: Task) : Int
+
+    // returns the count of deleted rows
+    @Delete
+    fun bulkDeleteTasks(tasks: List<Task>) : Int
+
+    // returns the count of deleted rows
+    @Query("DELETE FROM task_table")
+    fun deleteAllTasks() : Int
 
     @Query("SELECT * FROM task_table")
     fun getAllTasks(): List<Task>
