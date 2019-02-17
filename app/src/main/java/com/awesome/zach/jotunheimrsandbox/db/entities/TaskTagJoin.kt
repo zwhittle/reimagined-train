@@ -21,7 +21,7 @@ import android.support.annotation.NonNull
 )
 data class TaskTagJoin(
     @PrimaryKey(autoGenerate = true)
-    val taskTagJoinId: Long = 0,
+    var taskTagJoinId: Long = 0,
     @NonNull
     var taskId: Long,
     @NonNull

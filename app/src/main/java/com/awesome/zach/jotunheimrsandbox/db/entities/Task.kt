@@ -5,7 +5,7 @@ import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.Index
 import android.arch.persistence.room.PrimaryKey
 import android.support.annotation.NonNull
-import java.util.*
+import java.time.LocalDate
 
 /**
  * Task @Entity
@@ -28,11 +28,11 @@ import java.util.*
 )
 data class Task(
     @PrimaryKey(autoGenerate = true)
-    val taskId: Long = 0,
+    var taskId: Long = 0,
     @NonNull
     var name: String,
-    var date_start: Date? = null,
-    var date_end: Date? = null,
+    var date_start: LocalDate? = null,
+    var date_end: LocalDate? = null,
     @NonNull
     var projectId: Long
 )

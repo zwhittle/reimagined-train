@@ -1,25 +1,24 @@
 package com.awesome.zach.jotunheimrsandbox.db.converters
 
 import android.arch.persistence.room.TypeConverter
-import com.awesome.zach.jotunheimrsandbox.utils.Constants.Companion.dateFormatter
-import java.util.*
+import java.time.LocalDate
 
 class DateTypeConverter {
     @TypeConverter
-    fun dateFromString(dateString: String?): Date? {
+    fun dateFromString(dateString: String?): LocalDate? {
         if (dateString == null) {
             return null
         }
 
-        return dateFormatter.parse(dateString)
+        return LocalDate.parse(dateString)
     }
 
     @TypeConverter
-    fun dateToString(date: Date?): String? {
+    fun dateToString(date: LocalDate?): String? {
         if (date == null) {
             return null
         }
 
-        return dateFormatter.format(date)
+        return date.toString()
     }
 }

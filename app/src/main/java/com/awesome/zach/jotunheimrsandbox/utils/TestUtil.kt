@@ -1,7 +1,7 @@
 package com.awesome.zach.jotunheimrsandbox.utils
 
 import com.awesome.zach.jotunheimrsandbox.db.entities.*
-import java.util.*
+import java.time.LocalDate
 
 object TestUtil {
 
@@ -17,7 +17,7 @@ object TestUtil {
         name = name,
         colorId = colorId)
 
-    fun createTask(name: String, startDate: Date?, endDate: Date?, projectId: Long) = Task(
+    fun createTask(name: String, startDate: LocalDate?, endDate: LocalDate?, projectId: Long) = Task(
         name = name,
         date_start = startDate,
         date_end = endDate,

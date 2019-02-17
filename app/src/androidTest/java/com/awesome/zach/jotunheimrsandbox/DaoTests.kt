@@ -3,15 +3,18 @@ package com.awesome.zach.jotunheimrsandbox
 import android.arch.persistence.room.Room
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.awesome.zach.jotunheimrsandbox.db.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.db.DBSeeder
 import com.awesome.zach.jotunheimrsandbox.db.daos.*
 import com.awesome.zach.jotunheimrsandbox.db.entities.*
+import com.awesome.zach.jotunheimrsandbox.utils.Utils
+import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
-import java.util.*
+import java.time.LocalDate
 
 class DaoTests {
     private lateinit var colorDao: ColorDao
@@ -55,7 +58,7 @@ class DaoTests {
     @Throws(Exception::class)
     fun writeColorDaoTest() {
         val compareValues = writeColor()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     // inserts a list of colors into the DB and compares the count of before to the count after
@@ -63,7 +66,7 @@ class DaoTests {
     @Throws(Exception::class)
     fun bulkWriteColorsDaoTest() {
         val compareValues = bulkWriteColors()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
@@ -74,7 +77,7 @@ class DaoTests {
             color.name = "Lol Pink Or Whatever"
             color.hex = "#696969"
             val updatedCount = colorDao.updateColor(color)
-            assert(updatedCount == 1)
+            assertThat(updatedCount, equalTo(1))
         } else {
             throw Exception("color is null")
         }
@@ -91,7 +94,7 @@ class DaoTests {
         }
 
         val updatedCount = colorDao.bulkUpdateColors(colors)
-        assert(updatedCount == colors.size)
+        assertThat(updatedCount, equalTo(colors.size))
     }
 
     @Test
@@ -100,7 +103,7 @@ class DaoTests {
         val color = writeColor()[KEY_RETURNED]
         if (color != null) {
             val deletedCount = colorDao.deleteColor(color)
-            assert(deletedCount == 1)
+            assertThat(deletedCount, equalTo(1))
         } else {
             throw Exception("color is null")
         }
@@ -113,7 +116,7 @@ class DaoTests {
         val colors = colorDao.getAllColors()
         val deletedCount = colorDao.bulkDeleteColors(colors)
 
-        assert(colors.size == deletedCount)
+        assertThat(colors.size, equalTo(deletedCount))
     }
 
     @Test
@@ -126,7 +129,7 @@ class DaoTests {
         val countsMatch = deletedCount == colors.size
         val noMoreColors = colorDao.getAllColors().isEmpty()
 
-        assert(countsMatch && noMoreColors)
+        assertThat(noMoreColors, equalTo(true))
     }
 
     // helper function that can be called to add a color to the db without calling the full test
@@ -135,6 +138,7 @@ class DaoTests {
         val colorToInsert: Color = dbSeeder.colors[0]
         val returnedId = colorDao.insertColor(colorToInsert)
         val returnedColor = colorDao.getColorById(returnedId)
+        colorToInsert.colorId = returnedId
 
         val compareValues = mutableMapOf<String, Color>()
         compareValues[KEY_INSERTED] = colorToInsert
@@ -147,6 +151,7 @@ class DaoTests {
         dbSeeder.populateColorsList()
         val colorsToInsert = dbSeeder.colors
         val returnedIds = colorDao.bulkInsertColors(colorsToInsert)
+        dbSeeder.colors = ArrayList(colorDao.getAllColors())
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = colorsToInsert.size
@@ -162,14 +167,14 @@ class DaoTests {
     @Throws(Exception::class)
     fun writeTagDaoTest() {
         val compareValues = writeTag()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
     @Throws(Exception::class)
     fun bulkWriteTagsDaoTest() {
         val compareValues = bulkWriteTags()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
@@ -181,7 +186,7 @@ class DaoTests {
             tag.name = "Nice"
             tag.colorId = colorDao.getColorByHex("#696969").colorId
             val updatedCount = tagDao.updateTag(tag)
-            assert(updatedCount == 1)
+            assertThat(updatedCount, equalTo(1))
         } else {
             throw Exception("startTag is null")
         }
@@ -198,7 +203,7 @@ class DaoTests {
         }
 
         val updatedCount = tagDao.bulkUpdateTags(tags)
-        assert(updatedCount == tags.size)
+        assertThat(updatedCount, equalTo(tags.size))
     }
 
     @Test
@@ -207,7 +212,7 @@ class DaoTests {
         val tag = writeTag()[KEY_RETURNED]
         if (tag != null) {
             val deletedCount = tagDao.deleteTag(tag)
-            assert(deletedCount == 1)
+            assertThat(deletedCount, equalTo(1))
         } else {
             throw Exception("tag is null")
         }
@@ -220,7 +225,7 @@ class DaoTests {
         val tags = tagDao.getAllTags()
         val deletedCount = tagDao.bulkDeleteTags(tags)
 
-        assert(tags.size == deletedCount)
+        assertThat(tags.size, equalTo(deletedCount))
     }
 
     @Test
@@ -233,7 +238,7 @@ class DaoTests {
         val countsMatch = deletedCount == tags.size
         val noMoreTags = tagDao.getAllTags().isEmpty()
 
-        assert(countsMatch && noMoreTags)
+        assertThat(noMoreTags, equalTo(true))
     }
 
     // helper function that can be called to add a tag to the db without calling the full test
@@ -244,6 +249,7 @@ class DaoTests {
         val tagToInsert = dbSeeder.tags[0]
         val returnedId = tagDao.insertTag(tagToInsert)
         val returnedTag = tagDao.getTagById(returnedId)
+        tagToInsert.tagId = returnedId
 
         val compareValues = mutableMapOf<String, Tag>()
         compareValues[KEY_INSERTED] = tagToInsert
@@ -258,6 +264,7 @@ class DaoTests {
 
         val tagsToInsert = dbSeeder.tags
         val returnedIds = tagDao.bulkInsertTags(tagsToInsert)
+        dbSeeder.tags = ArrayList(tagDao.getAllTags())
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = tagsToInsert.size
@@ -272,14 +279,14 @@ class DaoTests {
     @Throws(Exception::class)
     fun writeProjectDaoTest() {
         val compareValues = writeProject()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
     @Throws(Exception::class)
     fun bulkWriteProjectsDaoTest() {
         val compareValues = bulkWriteProjects()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
@@ -291,7 +298,7 @@ class DaoTests {
             project.name = "Nice"
             project.colorId = colorDao.getColorByHex("#696969").colorId
             val updatedCount = projectDao.updateProject(project)
-            assert(updatedCount == 1)
+            assertThat(updatedCount, equalTo(1))
         } else {
             throw Exception("project is null")
         }
@@ -308,7 +315,7 @@ class DaoTests {
         }
 
         val updatedCount = projectDao.bulkUpdateProjects(projects)
-        assert(updatedCount == projects.size)
+        assertThat(updatedCount, equalTo(projects.size))
     }
 
     @Test
@@ -317,7 +324,7 @@ class DaoTests {
         val project = writeProject()[KEY_RETURNED]
         if (project != null) {
             val deletedCount = projectDao.deleteProject(project)
-            assert(deletedCount == 1)
+            assertThat(deletedCount, equalTo(1))
         } else {
             throw Exception("project is null")
         }
@@ -330,7 +337,7 @@ class DaoTests {
         val projects = projectDao.getAllProjects()
         val deletedCount = projectDao.bulkDeleteProjects(projects)
 
-        assert(projects.size == deletedCount)
+        assertThat(projects.size, equalTo(deletedCount))
     }
 
     @Test
@@ -343,7 +350,7 @@ class DaoTests {
         val countsMatch = deletedCount == projects.size
         val noMoreProjects = projectDao.getAllProjects().isEmpty()
 
-        assert(countsMatch && noMoreProjects)
+        assertThat(noMoreProjects, equalTo(true))
     }
 
     // helper function that can be called to add a project to the db without calling the full test
@@ -354,6 +361,7 @@ class DaoTests {
         val projectToInsert = dbSeeder.projects[0]
         val returnedId = projectDao.insertProject(projectToInsert)
         val returnedProject = projectDao.getProjectById(returnedId)
+        projectToInsert.projectId = returnedId
 
         val compareValues = mutableMapOf<String, Project>()
         compareValues[KEY_INSERTED] = projectToInsert
@@ -368,6 +376,7 @@ class DaoTests {
 
         val projectsToInsert = dbSeeder.projects
         val returnedIds = projectDao.bulkInsertProjects(projectsToInsert)
+        dbSeeder.projects = ArrayList(projectDao.getAllProjects())
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = projectsToInsert.size
@@ -382,14 +391,14 @@ class DaoTests {
     @Throws(Exception::class)
     fun writeTaskWithoutDatesDaoTest() {
         val compareValues = writeTask(false)
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
     @Throws(java.lang.Exception::class)
     fun writeTaskWithDatesDaoTest() {
         val compareValues = writeTask(true)
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
 
@@ -397,14 +406,14 @@ class DaoTests {
     @Throws(Exception::class)
     fun bulkWriteTasksWithoutDatesDaoTest() {
         val compareValues = bulkWriteTasks(false)
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
     @Throws(Exception::class)
     fun bulkWriteTasksWithDatesDaoTest() {
         val compareValues = bulkWriteTasks(true)
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
@@ -414,11 +423,11 @@ class DaoTests {
 
         if (task != null) {
             task.name = "Nice"
-            task.date_start = Date()
-            task.date_end = Date()
+            task.date_start = LocalDate.now()
+            task.date_end = LocalDate.now()
             task.projectId = projectDao.getProjectsByName("Project 1")[0].projectId
             val updatedCount = taskDao.updateTask(task)
-            assert(updatedCount == 1)
+            assertThat(updatedCount, equalTo(1))
         } else {
             throw Exception("task is null")
         }
@@ -428,16 +437,16 @@ class DaoTests {
     @Throws(Exception::class)
     fun bulkUpdateTaskDaoTest() {
         bulkWriteTasks(false)
-        val startingTasks = taskDao.getAllTasks()
-        startingTasks.forEach { task ->
+        val tasks = taskDao.getAllTasks()
+        tasks.forEach { task ->
             task.name = "Nice"
-            task.date_start = Date()
-            task.date_end = Date()
+            task.date_start = LocalDate.now()
+            task.date_end = LocalDate.now()
             task.projectId = projectDao.getProjectsByName("Project 1")[0].projectId
         }
 
-        val updatedCount = taskDao.bulkUpdateTasks(startingTasks)
-        assert(updatedCount == startingTasks.size)
+        val updatedCount = taskDao.bulkUpdateTasks(tasks)
+        assertThat(updatedCount, equalTo(tasks.size))
     }
 
     @Test
@@ -446,7 +455,7 @@ class DaoTests {
         val task = writeTask(false)[KEY_RETURNED]
         if (task != null) {
             val deletedCount = taskDao.deleteTask(task)
-            assert(deletedCount == 1)
+            assertThat(deletedCount, equalTo(1))
         } else {
             throw Exception("task is null")
         }
@@ -459,7 +468,7 @@ class DaoTests {
         val tasks = taskDao.getAllTasks()
         val deletedCount = taskDao.bulkDeleteTasks(tasks)
 
-        assert(tasks.size == deletedCount)
+        assertThat(tasks.size, equalTo(deletedCount))
     }
 
     @Test
@@ -472,7 +481,17 @@ class DaoTests {
         val countsMatch = deletedCount == tasks.size
         val noMoreTasks = taskDao.getAllTasks().isEmpty()
 
-        assert(countsMatch && noMoreTasks)
+        assertThat(noMoreTasks, equalTo(true))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getTasksInRangeDaoTest() {
+        bulkWriteTasks(true)
+        val first = Utils.firstDayOfThisWeek()
+        val last = Utils.lastDayOfThisWeek()
+        val tasks = taskDao.getTasksDueInRange(first,last)
+        assertThat(tasks.size, equalTo(4))
     }
 
     // helper function that can be called to add a task to the db without calling the full test
@@ -483,6 +502,7 @@ class DaoTests {
         val taskToInsert = dbSeeder.tasks[0]
         val returnedId = taskDao.insertTask(taskToInsert)
         val returnedTask = taskDao.getTaskById(returnedId)
+        taskToInsert.taskId = returnedId
 
         val compareValues = mutableMapOf<String, Task>()
         compareValues[KEY_INSERTED] = taskToInsert
@@ -495,8 +515,11 @@ class DaoTests {
         bulkWriteProjects()
         dbSeeder.populateTasksList(withDates)
 
-        val tasksToInsert = dbSeeder.tasks
+        var tasksToInsert = dbSeeder.tasks
         val returnedIds = taskDao.bulkInsertTasks(tasksToInsert)
+        dbSeeder.tasks = ArrayList(taskDao.getAllTasks())
+
+        tasksToInsert = dbSeeder.tasks
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = tasksToInsert.size
@@ -511,14 +534,14 @@ class DaoTests {
     @Throws(Exception::class)
     fun writeTaskTagJoinDaoTest() {
         val compareValues = writeTaskTagJoin()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
     @Throws(Exception::class)
     fun bulkWriteTaskTagJoinDaoTest() {
         val compareValues = bulkWriteTaskTagJoins()
-        assert(compareValues[KEY_INSERTED] == compareValues[KEY_RETURNED])
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
@@ -530,7 +553,7 @@ class DaoTests {
             taskTagJoin.taskId = taskDao.getAllTasks()[1].taskId
             taskTagJoin.tagId = tagDao.getAllTags()[3].tagId
             val updatedCount = taskTagJoinDao.updateTaskTagJoin(taskTagJoin)
-            assert(updatedCount == 1)
+            assertThat(updatedCount, equalTo(1))
         } else {
             throw Exception("taskTagJoin is null")
         }
@@ -541,14 +564,14 @@ class DaoTests {
     fun bulkUpdateTaskTagJoinDaoTest() {
         bulkWriteTaskTagJoins()
 
-        val startingTaskTagJoins = taskTagJoinDao.getAllTaskTagJoins()
-        startingTaskTagJoins.forEach { taskTagJoin ->
+        val taskTagJoins = taskTagJoinDao.getAllTaskTagJoins()
+        taskTagJoins.forEach { taskTagJoin ->
             taskTagJoin.taskId = taskDao.getAllTasks()[1].taskId
             taskTagJoin.tagId = tagDao.getAllTags()[3].tagId
         }
 
-        val updatedCount = taskTagJoinDao.bulkUpdateTaskTagJoins(startingTaskTagJoins)
-        assert(updatedCount == startingTaskTagJoins.size)
+        val updatedCount = taskTagJoinDao.bulkUpdateTaskTagJoins(taskTagJoins)
+        assertThat(updatedCount, equalTo(taskTagJoins.size))
     }
 
     @Test
@@ -557,7 +580,7 @@ class DaoTests {
         val taskTagJoin = writeTaskTagJoin()[KEY_RETURNED]
         if (taskTagJoin != null) {
             val deletedCount = taskTagJoinDao.deleteTaskTagJoin(taskTagJoin)
-            assert(deletedCount == 1)
+            assertThat(deletedCount, equalTo(1))
         } else {
             throw Exception("taskTagJoin is null")
         }
@@ -570,7 +593,7 @@ class DaoTests {
         val taskTagJoins = taskTagJoinDao.getAllTaskTagJoins()
         val deletedCount = taskTagJoinDao.bulkDeleteTaskTagJoins(taskTagJoins)
 
-        assert(taskTagJoins.size == deletedCount)
+        assertThat(taskTagJoins.size, equalTo(deletedCount))
     }
 
     @Test
@@ -595,6 +618,7 @@ class DaoTests {
         val taskTagJoinToInsert = dbSeeder.taskTagJoins[0]
         val returnedId = taskTagJoinDao.insertTaskTagJoin(taskTagJoinToInsert)
         val returnedTaskTagJoin = taskTagJoinDao.getTaskTagJoinById(returnedId)
+        taskTagJoinToInsert.taskTagJoinId = returnedId
 
         val compareValues = mutableMapOf<String, TaskTagJoin>()
         compareValues[KEY_INSERTED] = taskTagJoinToInsert
@@ -610,6 +634,7 @@ class DaoTests {
 
         val taskTagJoinsToInsert = dbSeeder.taskTagJoins
         val returnedIds = taskTagJoinDao.bulkInsertTaskTagJoins(taskTagJoinsToInsert)
+        dbSeeder.taskTagJoins = ArrayList(taskTagJoinDao.getAllTaskTagJoins())
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = taskTagJoinsToInsert.size

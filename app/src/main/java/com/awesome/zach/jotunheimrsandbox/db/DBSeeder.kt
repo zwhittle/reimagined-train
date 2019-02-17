@@ -2,16 +2,15 @@ package com.awesome.zach.jotunheimrsandbox.db
 
 import android.util.Log
 import com.awesome.zach.jotunheimrsandbox.db.entities.*
-import java.util.*
-import kotlin.collections.ArrayList
+import java.time.LocalDate
 
 class DBSeeder(val db: AppDatabase) {
 
-    val colors  = ArrayList<Color>()
-    val tags = ArrayList<Tag>()
-    val projects = ArrayList<Project>()
-    val tasks = ArrayList<Task>()
-    val taskTagJoins = ArrayList<TaskTagJoin>()
+    var colors = ArrayList<Color>()
+    var tags = ArrayList<Tag>()
+    var projects = ArrayList<Project>()
+    var tasks = ArrayList<Task>()
+    var taskTagJoins = ArrayList<TaskTagJoin>()
 
     companion object {
         const val LOG_TAG = "DBSeeder"
@@ -39,8 +38,8 @@ class DBSeeder(val db: AppDatabase) {
         tags.add(Tag(name = "Low Energy", colorId = colorsFromDao[2].colorId))
         tags.add(Tag(name = "Med Energy", colorId = colorsFromDao[3].colorId))
         tags.add(Tag(name = "High Energy", colorId = colorsFromDao[4].colorId))
-        
-        tags.forEach { 
+
+        tags.forEach {
             System.out.println("Added $it to tags list")
         }
     }
@@ -62,13 +61,37 @@ class DBSeeder(val db: AppDatabase) {
         tasks.clear()
 
         if (withDates) {
+//            var epochDate = LocalDate.now().minusDays(2)
+            var epochDate = LocalDate.parse("2019-02-15")
             projectsFromDao.forEachIndexed { index, project ->
-                val task = Task(name = "Task $index", date_start = Date(), date_end = Date(), projectId = project.projectId)
+                val endDate = epochDate.plusDays(index.toLong())
+                val startDate = epochDate.minusDays(7)
+                val task = Task(name = "Task $index", date_start = startDate, date_end = endDate, projectId = project.projectId)
                 tasks.add(task)
                 Log.d(LOG_TAG, "Added $task to tasks list")
                 System.out.println("Added $task to tasks list")
             }
-        } else{
+
+//            val endDate = LocalDate.parse("2019-02-17")
+//            val startDate = endDate.minusDays(7)
+//
+//            projectsFromDao.forEachIndexed { index, project ->
+//                val task = Task(
+//                    name = "Task $index",
+//                    date_start = startDate,
+//                    date_end = LocalDate.parse("2019-02-17"),
+//                    projectId = project.projectId)
+//                tasks.add(task)
+//                Log.d(LOG_TAG, "Added $task to tasks list")
+//                System.out.println("Added $task to tasks list")
+//            }
+//            Task(name = "Task 2", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
+//            Task(name = "Task 3", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
+//            Task(name = "Task 4", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
+//            Task(name = "Task 5", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
+//            Task(name = "Task 6", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
+
+        } else {
             projectsFromDao.forEachIndexed { index, project ->
                 val task = Task(name = "Task $index", projectId = project.projectId)
                 tasks.add(task)
@@ -84,7 +107,7 @@ class DBSeeder(val db: AppDatabase) {
 
         taskTagJoins.clear()
 
-        tasksFromDao.forEachIndexed{ index, task ->
+        tasksFromDao.forEachIndexed { index, task ->
             // home vs office
 //            val taskTagJoin1 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[(0..1).random()].tagId)
             val taskTagJoin1 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[0].tagId)

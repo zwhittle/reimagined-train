@@ -4,7 +4,7 @@ import com.awesome.zach.jotunheimrsandbox.db.daos.TaskDao
 import com.awesome.zach.jotunheimrsandbox.db.entities.Task
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import java.util.*
+import java.time.LocalDate
 
 class TaskRepository private constructor(
     private val taskDao: TaskDao
@@ -60,9 +60,15 @@ class TaskRepository private constructor(
 
     fun getTasksByName(name: String) = taskDao.getTasksByName(name)
 
-    fun getTasksByStartDate(startDate: Date) = taskDao.getTasksByStartDate(startDate)
+    fun getTasksByStartDate(startDate: LocalDate) = taskDao.getTasksByStartDate(startDate)
 
-    fun getTasksByEndDate(endDate: Date) = taskDao.getTasksByEndDate(endDate)
+    fun getTasksByEndDate(endDate: LocalDate) = taskDao.getTasksByEndDate(endDate)
+
+//    fun getTasksDueThisWeek(locale: Locale = Locale.US) =
+//        taskDao.getTasksInRange("date_end", Utils.firstDayOfThisWeek(locale), Utils.lastDayOfThisWeek(locale))
+//
+//    fun getTasksStartingThisWeek(locale: Locale = Locale.US) =
+//        taskDao.getTasksInRange("date_start", Utils.firstDayOfThisWeek(locale), Utils.lastDayOfThisWeek(locale))
 
     companion object {
 

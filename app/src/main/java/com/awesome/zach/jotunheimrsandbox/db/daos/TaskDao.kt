@@ -2,7 +2,7 @@ package com.awesome.zach.jotunheimrsandbox.db.daos
 
 import android.arch.persistence.room.*
 import com.awesome.zach.jotunheimrsandbox.db.entities.Task
-import java.util.*
+import java.time.LocalDate
 
 /**
  * Task @Dao
@@ -52,21 +52,27 @@ interface TaskDao {
     @Query("DELETE FROM task_table")
     fun deleteAllTasks() : Int
 
-    @Query("SELECT * FROM task_table")
+    @Query("SELECT * FROM task_table ORDER BY name ASC")
     fun getAllTasks(): List<Task>
 
-    @Query("SELECT * FROM task_table WHERE taskId == :taskId")
+    @Query("SELECT * FROM task_table WHERE taskId == :taskId ORDER BY name ASC")
     fun getTaskById(taskId: Long): Task
 
-    @Query("SELECT * FROM task_table WHERE name == :name")
+    @Query("SELECT * FROM task_table WHERE name == :name ORDER BY name ASC")
     fun getTasksByName(name: String): List<Task>
 
-    @Query("SELECT * FROM task_table WHERE date_start == :startDate")
-    fun getTasksByStartDate(startDate: Date): List<Task>
+    @Query("SELECT * FROM task_table WHERE date_start == :startDate ORDER BY name ASC")
+    fun getTasksByStartDate(startDate: LocalDate): List<Task>
 
-    @Query("SELECT * FROM task_table WHERE date_end == :endDate")
-    fun getTasksByEndDate(endDate: Date): List<Task>
+    @Query("SELECT * FROM task_table WHERE date_end == :endDate ORDER BY name ASC")
+    fun getTasksByEndDate(endDate: LocalDate): List<Task>
 
-    @Query("SELECT * FROM task_table WHERE projectId == :projectId")
+    @Query("SELECT * FROM task_table WHERE projectId == :projectId ORDER BY name ASC")
     fun getTasksByProject(projectId: Long): List<Task>
+
+    @Query("SELECT * FROM task_table WHERE date_end BETWEEN :rangeStart AND :rangeEnd ORDER BY name ASC")
+    fun getTasksDueInRange(rangeStart: LocalDate, rangeEnd: LocalDate) : List<Task>
+
+    @Query("SELECT * FROM task_table WHERE date_start BETWEEN :rangeStart AND :rangeEnd ORDER BY name ASC")
+    fun getTasksStartingInRange(rangeStart: LocalDate, rangeEnd: LocalDate) : List<Task>
 }
