@@ -17,15 +17,11 @@ import java.time.LocalDate
  * ForeignKeys: projectId (Project: projectId)
  */
 
-@Entity(
-    tableName = "task_table",
-    indices = [Index("taskId")],
-    foreignKeys = [ForeignKey(
-        entity = Project::class,
-        parentColumns = ["projectId"],
-        childColumns = ["projectId"]
-    )]
-)
+@Entity(tableName = "task_table",
+        indices = [Index("taskId")],
+        foreignKeys = [ForeignKey(entity = Project::class,
+                                  parentColumns = ["projectId"],
+                                  childColumns = ["projectId"])])
 data class Task(
     @PrimaryKey(autoGenerate = true)
     var taskId: Long = 0,
@@ -38,5 +34,4 @@ data class Task(
     @NonNull
     var priority: Int = 1,
     @NonNull
-    var projectId: Long
-)
+    var projectId: Long)

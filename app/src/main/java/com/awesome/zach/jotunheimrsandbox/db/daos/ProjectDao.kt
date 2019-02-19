@@ -60,5 +60,4 @@ interface ProjectDao {
 
     @Query("SELECT * FROM project_table WHERE colorId == :colorId")
     fun getProjectsByColor(colorId: Long): List<Project>
-    
 }

@@ -17,20 +17,15 @@ import android.support.annotation.NonNull
  *
  */
 
-@Entity(
-    tableName = "tag_table",
-    indices = [Index("tagId")],
-    foreignKeys = [ForeignKey(
-        entity = Color::class,
-        parentColumns = ["colorId"],
-        childColumns = ["colorId"]
-    )]
-)
+@Entity(tableName = "tag_table",
+        indices = [Index("tagId")],
+        foreignKeys = [ForeignKey(entity = Color::class,
+                                  parentColumns = ["colorId"],
+                                  childColumns = ["colorId"])])
 data class Tag(
     @PrimaryKey(autoGenerate = true)
     var tagId: Long = 0,
     @NonNull
     var name: String,
     @NonNull
-    var colorId: Long
-)
+    var colorId: Long)

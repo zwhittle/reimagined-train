@@ -2,53 +2,62 @@ package com.awesome.zach.jotunheimrsandbox.db.repositories
 
 import com.awesome.zach.jotunheimrsandbox.db.daos.TaskDao
 import com.awesome.zach.jotunheimrsandbox.db.entities.Task
+import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.*
 
 class TaskRepository private constructor(
     private val taskDao: TaskDao
-){
+                                        ) {
 
-    suspend fun insertTask(task: Task) : Long {
+    suspend fun insertTask(task: Task): Long {
         return withContext(IO) {
-            taskDao.insertTask(task)
+            taskDao
+                .insertTask(task)
         }
     }
 
-    suspend fun bulkInsertTasks(tasks: List<Task>) : List<Long> {
+    suspend fun bulkInsertTasks(tasks: List<Task>): List<Long> {
         return withContext(IO) {
-            taskDao.bulkInsertTasks(tasks)
+            taskDao
+                .bulkInsertTasks(tasks)
         }
     }
 
-    suspend fun updateTask(task: Task) : Int {
+    suspend fun updateTask(task: Task): Int {
         return withContext(IO) {
-            taskDao.updateTask(task)
+            taskDao
+                .updateTask(task)
         }
     }
 
-    suspend fun bulkUpdateTasks(tasks: List<Task>) : Int {
+    suspend fun bulkUpdateTasks(tasks: List<Task>): Int {
         return withContext(IO) {
-            taskDao.bulkUpdateTasks(tasks)
+            taskDao
+                .bulkUpdateTasks(tasks)
         }
     }
 
-    suspend fun deleteTask(task: Task) : Int {
+    suspend fun deleteTask(task: Task): Int {
         return withContext(IO) {
-            taskDao.deleteTask(task)
+            taskDao
+                .deleteTask(task)
         }
     }
 
-    suspend fun bulkDeleteTasks(tasks: List<Task>) : Int {
+    suspend fun bulkDeleteTasks(tasks: List<Task>): Int {
         return withContext(IO) {
-            taskDao.bulkDeleteTasks(tasks)
+            taskDao
+                .bulkDeleteTasks(tasks)
         }
     }
 
-    suspend fun deleteAllTasks() : Int {
+    suspend fun deleteAllTasks(): Int {
         return withContext(IO) {
-            taskDao.deleteAllTasks()
+            taskDao
+                .deleteAllTasks()
         }
     }
 
@@ -56,21 +65,29 @@ class TaskRepository private constructor(
 
     fun getTaskById(taskId: Long) = taskDao.getTaskById(taskId)
 
-    fun getTaskByProject(projectId: Long) = taskDao.getTasksByProject(projectId)
+    fun getTasksForProject(projectId: Long) = taskDao.getTasksForProject(projectId)
 
-    fun getTasksByName(name: String) = taskDao.getTasksByName(name)
+    fun getTasksWithName(name: String) = taskDao.getTasksWithName(name)
 
-    fun getTasksByStartDate(startDate: LocalDate) = taskDao.getTasksByStartDate(startDate)
+    fun getTasksWithStartDate(startDate: LocalDate) = taskDao.getTasksWithStartDate(startDate)
 
-    fun getTasksByEndDate(endDate: LocalDate) = taskDao.getTasksByEndDate(endDate)
+    fun getTasksWithEndDate(endDate: LocalDate) = taskDao.getTasksWithEndDate(endDate)
 
     fun getOverdueTasks() = taskDao.getOverdueTasks()
 
-//    fun getTasksDueThisWeek(locale: Locale = Locale.US) =
-//        taskDao.getTasksInRange("date_end", Utils.firstDayOfThisWeek(locale), Utils.lastDayOfThisWeek(locale))
-//
-//    fun getTasksStartingThisWeek(locale: Locale = Locale.US) =
-//        taskDao.getTasksInRange("date_start", Utils.firstDayOfThisWeek(locale), Utils.lastDayOfThisWeek(locale))
+    fun getInProgressTasks() = taskDao.getInProgressTasks()
+
+    fun getTasksDueToday() = taskDao.getTasksDueToday()
+
+    fun getTasksStartingToday() = taskDao.getTasksStartingToday()
+
+    fun getTasksDueThisWeek(locale: Locale = Locale.US) =
+        taskDao.getTasksDueInRange(Utils.firstDayOfThisWeek(locale),
+                                   Utils.lastDayOfThisWeek(locale))
+
+    fun getTasksStartingThisWeek(locale: Locale = Locale.US) =
+        taskDao.getTasksStartingInRange(Utils.firstDayOfThisWeek(locale),
+                                        Utils.lastDayOfThisWeek(locale))
 
     companion object {
 

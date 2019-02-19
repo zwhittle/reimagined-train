@@ -16,11 +16,9 @@ import android.support.annotation.NonNull
  */
 
 @Entity(tableName = "color_table",
-    indices = [Index("colorId"), Index("hex")])
+        indices = [Index("colorId"), Index("hex")])
 data class Color(
     @PrimaryKey(autoGenerate = true)
-    var colorId: Long = 0,
-    var name: String? = null,
+    var colorId: Long = 0, var name: String? = null,
     @NonNull
-    var hex: String
-)
+    var hex: String)

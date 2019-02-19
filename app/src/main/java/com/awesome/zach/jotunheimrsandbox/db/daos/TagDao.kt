@@ -23,34 +23,34 @@ interface TagDao {
 
     // Returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTag(tag: Tag) : Long
+    fun insertTag(tag: Tag): Long
 
     // returns a list of inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkInsertTags(tags: List<Tag>) : List<Long>
+    fun bulkInsertTags(tags: List<Tag>): List<Long>
 
     // returns the count of updated rows
     @Update
-    fun updateTag(tag: Tag) : Int
+    fun updateTag(tag: Tag): Int
 
     // returns the count of updated rows
     @Update
-    fun bulkUpdateTags(tags: List<Tag>) : Int
+    fun bulkUpdateTags(tags: List<Tag>): Int
 
     // returns the count of deleted rows
     @Delete
-    fun deleteTag(tag: Tag) : Int
+    fun deleteTag(tag: Tag): Int
 
     // returns the count of deleted rows
     @Delete
-    fun bulkDeleteTags(tags: List<Tag>) : Int
+    fun bulkDeleteTags(tags: List<Tag>): Int
 
     // returns the count of deleted rows
     @Query("DELETE FROM tag_table")
-    fun deleteAllTags() : Int
+    fun deleteAllTags(): Int
 
     @Query("SELECT * FROM tag_table")
-    fun getAllTags() : List<Tag>
+    fun getAllTags(): List<Tag>
 
     @Query("SELECT * FROM tag_table WHERE tagId == :tagId")
     fun getTagById(tagId: Long): Tag
