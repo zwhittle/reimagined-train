@@ -1,14 +1,20 @@
 package com.awesome.zach.jotunheimrsandbox
 
+import android.util.Log
+import androidx.room.Database
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.awesome.zach.jotunheimrsandbox.db.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.db.DBSeeder
 import com.awesome.zach.jotunheimrsandbox.db.daos.*
 import com.awesome.zach.jotunheimrsandbox.db.entities.*
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
+import com.awesome.zach.jotunheimrsandbox.workers.SeedDatabaseWorker
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -34,6 +40,8 @@ class DaoTests {
     fun createDb() {
         val context = InstrumentationRegistry.getTargetContext()
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
+//        db = AppDatabase.getDatabase(context)
+
         colorDao = db.colorDao()
         tagDao = db.tagDao()
         projectDao = db.projectDao()
@@ -52,6 +60,7 @@ class DaoTests {
     /**
      * ColorDao tests and helpers
      */
+
     // Writes one color to the DB
     @Test
     @Throws(Exception::class)
@@ -81,7 +90,7 @@ class DaoTests {
             throw Exception("color is null")
         }
     }
-    
+
     @Test
     @Throws(Exception::class)
     fun bulkUpdateColorDaoTest() {
@@ -489,7 +498,7 @@ class DaoTests {
         bulkWriteTasks(true)
         val first = Utils.firstDayOfThisWeek()
         val last = Utils.lastDayOfThisWeek()
-        val tasks = taskDao.getTasksDueInRange(first,last)
+        val tasks = taskDao.getTasksDueInRange(first, last)
         assertThat(tasks.size, equalTo(4))
     }
 

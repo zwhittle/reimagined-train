@@ -1,5 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox.db
 
+import android.content.Context
 import android.util.Log
 import com.awesome.zach.jotunheimrsandbox.db.entities.*
 import java.time.LocalDate
@@ -14,6 +15,14 @@ class DBSeeder(val db: AppDatabase) {
 
     companion object {
         const val LOG_TAG = "DBSeeder"
+
+//        var INSTANCE: DBSeeder? = null
+//
+//        fun getInstance(context: Context): DBSeeder {
+//            return INSTANCE ?: synchronized(this) {
+//                INSTANCE ?: DBSeeder(AppDatabase.getDatabase(context))
+//            }
+//        }
     }
 
     fun populateColorsList() : ArrayList<Color> {
