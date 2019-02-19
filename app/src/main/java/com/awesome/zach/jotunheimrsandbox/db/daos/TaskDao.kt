@@ -24,6 +24,10 @@ import java.time.LocalDate
 @Dao
 interface TaskDao {
 
+    /**
+     * TODO: How should I handle grabbing complete vs incomplete tasks?
+     */
+
     // returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTask(task: Task) : Long
@@ -75,4 +79,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM task_table WHERE date_start BETWEEN :rangeStart AND :rangeEnd ORDER BY name ASC")
     fun getTasksStartingInRange(rangeStart: LocalDate, rangeEnd: LocalDate) : List<Task>
+
+    @Query("SELECT * FROM task_table WHERE completed == 1 AND date_end < :today ORDER BY name ASC")
+    fun getOverdueTasks(today: String = LocalDate.now().toString()) : List<Task>
 }

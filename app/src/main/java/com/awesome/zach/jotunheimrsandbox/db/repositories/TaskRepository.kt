@@ -64,6 +64,8 @@ class TaskRepository private constructor(
 
     fun getTasksByEndDate(endDate: LocalDate) = taskDao.getTasksByEndDate(endDate)
 
+    fun getOverdueTasks() = taskDao.getOverdueTasks()
+
 //    fun getTasksDueThisWeek(locale: Locale = Locale.US) =
 //        taskDao.getTasksInRange("date_end", Utils.firstDayOfThisWeek(locale), Utils.lastDayOfThisWeek(locale))
 //

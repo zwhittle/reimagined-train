@@ -34,5 +34,9 @@ data class Task(
     var date_start: LocalDate? = null,
     var date_end: LocalDate? = null,
     @NonNull
+    var completed: Boolean = false,
+    @NonNull
+    var priority: Int = 1,
+    @NonNull
     var projectId: Long
 )

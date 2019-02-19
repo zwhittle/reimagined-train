@@ -107,7 +107,7 @@ class DBSeeder(val db: AppDatabase) {
 
         taskTagJoins.clear()
 
-        tasksFromDao.forEachIndexed { index, task ->
+        tasksFromDao.forEach { task ->
             // home vs office
 //            val taskTagJoin1 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[(0..1).random()].tagId)
             val taskTagJoin1 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[0].tagId)
