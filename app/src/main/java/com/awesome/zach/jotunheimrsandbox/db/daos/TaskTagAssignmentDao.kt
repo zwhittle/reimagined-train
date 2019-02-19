@@ -1,46 +1,46 @@
 package com.awesome.zach.jotunheimrsandbox.db.daos
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.awesome.zach.jotunheimrsandbox.db.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.db.entities.Task
-import com.awesome.zach.jotunheimrsandbox.db.entities.TaskTagJoin
+import com.awesome.zach.jotunheimrsandbox.db.entities.TaskTagAssignment
 
 @Dao
-interface TaskTagJoinDao {
+interface TaskTagAssignmentDao {
 
     // returns the id of the inserted row
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTaskTagJoin(taskTagJoin: TaskTagJoin) : Long
+    fun insertTaskTagAssignment(taskTagAssignment: TaskTagAssignment) : Long
 
     // returns a list of the inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkInsertTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : List<Long>
+    fun bulkInsertTaskTagAssignments(taskTagAssignments: List<TaskTagAssignment>) : List<Long>
 
     // returns a count of updated rows
     @Update
-    fun updateTaskTagJoin(taskTagJoin: TaskTagJoin) : Int
+    fun updateTaskTagAssignment(taskTagAssignment: TaskTagAssignment) : Int
 
     // returns a count of updated rows
     @Update
-    fun bulkUpdateTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : Int
+    fun bulkUpdateTaskTagAssignments(taskTagAssignments: List<TaskTagAssignment>) : Int
 
     // returns the count of deleted rows
     @Delete
-    fun deleteTaskTagJoin(taskTagJoin: TaskTagJoin) : Int
+    fun deleteTaskTagAssignment(taskTagAssignment: TaskTagAssignment) : Int
 
     // returns the count of deleted rows
     @Delete
-    fun bulkDeleteTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : Int
+    fun bulkDeleteTaskTagAssignments(taskTagAssignments: List<TaskTagAssignment>) : Int
 
     // returns the count of deleted rows
     @Query("DELETE FROM task_tag_join_table")
-    fun deleteAllTaskTagJoins() : Int
+    fun deleteAllTaskTagAssignments() : Int
 
     @Query("SELECT * FROM task_tag_join_table")
-    fun getAllTaskTagJoins() : List<TaskTagJoin>
+    fun getAllTaskTagAssignments() : List<TaskTagAssignment>
 
-    @Query("SELECT * FROM task_tag_join_table WHERE taskTagJoinId = :taskTagJoinId")
-    fun getTaskTagJoinById(taskTagJoinId: Long) : TaskTagJoin
+    @Query("SELECT * FROM task_tag_join_table WHERE taskTagAssignmentId = :taskTagAssignmentId")
+    fun getTaskTagAssignmentById(taskTagAssignmentId: Long) : TaskTagAssignment
 
     @Query("SELECT * FROM task_table INNER JOIN task_tag_join_table ON task_table.taskId = task_tag_join_table.taskId WHERE task_tag_join_table.tagId = :tagId")
     fun getTasksWithTag(tagId: Long): List<Task>

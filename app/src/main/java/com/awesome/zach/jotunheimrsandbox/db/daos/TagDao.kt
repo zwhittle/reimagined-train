@@ -1,6 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox.db.daos
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.awesome.zach.jotunheimrsandbox.db.entities.Tag
 
 /**

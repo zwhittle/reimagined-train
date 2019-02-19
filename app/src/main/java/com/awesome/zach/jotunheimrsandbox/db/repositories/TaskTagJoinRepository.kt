@@ -1,71 +1,71 @@
 package com.awesome.zach.jotunheimrsandbox.db.repositories
 
-import com.awesome.zach.jotunheimrsandbox.db.daos.TaskTagJoinDao
-import com.awesome.zach.jotunheimrsandbox.db.entities.TaskTagJoin
+import com.awesome.zach.jotunheimrsandbox.db.daos.TaskTagAssignmentDao
+import com.awesome.zach.jotunheimrsandbox.db.entities.TaskTagAssignment
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
-class TaskTagJoinRepository private constructor(
-    private val taskTagJoinDao: TaskTagJoinDao
+class TaskTagAssignmentRepository private constructor(
+    private val taskTagAssignmentDao: TaskTagAssignmentDao
 ){
 
-    suspend fun insertTaskTagJoin(taskTagJoin: TaskTagJoin) : Long {
+    suspend fun insertTaskTagAssignment(taskTagAssignment: TaskTagAssignment) : Long {
         return withContext(IO) {
-            taskTagJoinDao.insertTaskTagJoin(taskTagJoin)
+            taskTagAssignmentDao.insertTaskTagAssignment(taskTagAssignment)
         }
     }
 
-    suspend fun bulkInsertTaskTagJoin(taskTagJoins: List<TaskTagJoin>) : List<Long> {
+    suspend fun bulkInsertTaskTagAssignment(taskTagAssignments: List<TaskTagAssignment>) : List<Long> {
         return withContext(IO) {
-            taskTagJoinDao.bulkInsertTaskTagJoins(taskTagJoins)
+            taskTagAssignmentDao.bulkInsertTaskTagAssignments(taskTagAssignments)
         }
     }
 
-    suspend fun updateTaskTagJoin(taskTagJoin: TaskTagJoin) : Int {
+    suspend fun updateTaskTagAssignment(taskTagAssignment: TaskTagAssignment) : Int {
         return withContext(IO) {
-            taskTagJoinDao.updateTaskTagJoin(taskTagJoin)
+            taskTagAssignmentDao.updateTaskTagAssignment(taskTagAssignment)
         }
     }
 
-    suspend fun bulkUpdateTaskTagJoin(taskTagJoins: List<TaskTagJoin>) : Int {
+    suspend fun bulkUpdateTaskTagAssignment(taskTagAssignments: List<TaskTagAssignment>) : Int {
         return withContext(IO) {
-            taskTagJoinDao.bulkUpdateTaskTagJoins(taskTagJoins)
+            taskTagAssignmentDao.bulkUpdateTaskTagAssignments(taskTagAssignments)
         }
     }
 
-    suspend fun deleteTaskTagJoin(taskTagJoin: TaskTagJoin) : Int {
+    suspend fun deleteTaskTagAssignment(taskTagAssignment: TaskTagAssignment) : Int {
         return withContext(IO) {
-            taskTagJoinDao.deleteTaskTagJoin(taskTagJoin)
+            taskTagAssignmentDao.deleteTaskTagAssignment(taskTagAssignment)
         }
     }
 
-    suspend fun bulkDeleteTaskTagJoins(taskTagJoins: List<TaskTagJoin>) : Int {
+    suspend fun bulkDeleteTaskTagAssignments(taskTagAssignments: List<TaskTagAssignment>) : Int {
         return withContext(IO) {
-            taskTagJoinDao.bulkDeleteTaskTagJoins(taskTagJoins)
+            taskTagAssignmentDao.bulkDeleteTaskTagAssignments(taskTagAssignments)
         }
     }
 
-    suspend fun deleteAllTaskTagJoins() : Int {
+    suspend fun deleteAllTaskTagAssignments() : Int {
         return withContext(IO) {
-            taskTagJoinDao.deleteAllTaskTagJoins()
+            taskTagAssignmentDao.deleteAllTaskTagAssignments()
         }
     }
 
-    fun getAllTaskTagJoins() = taskTagJoinDao.getAllTaskTagJoins()
+    fun getAllTaskTagAssignments() = taskTagAssignmentDao.getAllTaskTagAssignments()
 
-    fun getTasksWithTag(tagId: Long) = taskTagJoinDao.getTasksWithTag(tagId)
+    fun getTasksWithTag(tagId: Long) = taskTagAssignmentDao.getTasksWithTag(tagId)
 
-    fun getTagsForTask(taskId: Long) = taskTagJoinDao.getTagsForTask(taskId)
+    fun getTagsForTask(taskId: Long) = taskTagAssignmentDao.getTagsForTask(taskId)
 
     companion object {
 
         // for singleton instantiation
         @Volatile
-        private var instance: TaskTagJoinRepository? = null
+        private var instance: TaskTagAssignmentRepository? = null
 
-        fun getInstance(taskTagJoinDao: TaskTagJoinDao) =
+        fun getInstance(taskTagAssignmentDao: TaskTagAssignmentDao) =
             instance ?: synchronized(this) {
-                instance ?: TaskTagJoinRepository(taskTagJoinDao).also { instance = it }
+                instance ?: TaskTagAssignmentRepository(taskTagAssignmentDao).also { instance = it }
             }
     }
 }

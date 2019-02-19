@@ -1,9 +1,9 @@
 package com.awesome.zach.jotunheimrsandbox.db.entities
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.ForeignKey
-import android.arch.persistence.room.PrimaryKey
-import android.support.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
+import androidx.annotation.NonNull
 
 @Entity(tableName = "task_tag_join_table",
         foreignKeys = [ForeignKey(entity = Task::class,
@@ -11,9 +11,9 @@ import android.support.annotation.NonNull
                                   childColumns = ["taskId"]), ForeignKey(entity = Tag::class,
                                                                          parentColumns = ["tagId"],
                                                                          childColumns = ["tagId"])])
-data class TaskTagJoin(
+data class TaskTagAssignment(
     @PrimaryKey(autoGenerate = true)
-    var taskTagJoinId: Long = 0,
+    var taskTagAssignmentId: Long = 0,
     @NonNull
     var taskId: Long,
     @NonNull

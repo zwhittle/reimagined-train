@@ -63,6 +63,8 @@ class TaskRepository private constructor(
 
     fun getAllTasks() = taskDao.getAllTasks()
 
+    fun getActiveTasks() = taskDao.getActiveTasks()
+
     fun getTaskById(taskId: Long) = taskDao.getTaskById(taskId)
 
     fun getTasksForProject(projectId: Long) = taskDao.getTasksForProject(projectId)

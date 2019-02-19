@@ -1,8 +1,7 @@
 package com.awesome.zach.jotunheimrsandbox
 
-import android.arch.persistence.room.Room
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
+import androidx.room.Room
+import androidx.test.InstrumentationRegistry
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import com.awesome.zach.jotunheimrsandbox.db.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.db.DBSeeder
@@ -21,7 +20,7 @@ class DaoTests {
     private lateinit var tagDao: TagDao
     private lateinit var projectDao: ProjectDao
     private lateinit var taskDao: TaskDao
-    private lateinit var taskTagJoinDao: TaskTagJoinDao
+    private lateinit var taskTagAssignmentDao: TaskTagAssignmentDao
     private lateinit var db: AppDatabase
 
     private lateinit var dbSeeder: DBSeeder
@@ -33,13 +32,13 @@ class DaoTests {
 
     @Before
     fun createDb() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        val context = InstrumentationRegistry.getTargetContext()
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         colorDao = db.colorDao()
         tagDao = db.tagDao()
         projectDao = db.projectDao()
         taskDao = db.taskDao()
-        taskTagJoinDao = db.taskTagJoinDao()
+        taskTagAssignmentDao = db.taskTagAssignmentDao()
 
         dbSeeder = DBSeeder(db)
     }
@@ -532,112 +531,112 @@ class DaoTests {
      */
     @Test
     @Throws(Exception::class)
-    fun writeTaskTagJoinDaoTest() {
-        val compareValues = writeTaskTagJoin()
+    fun writeTaskTagAssignmentDaoTest() {
+        val compareValues = writeTaskTagAssignment()
         assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
     @Throws(Exception::class)
-    fun bulkWriteTaskTagJoinDaoTest() {
-        val compareValues = bulkWriteTaskTagJoins()
+    fun bulkWriteTaskTagAssignmentDaoTest() {
+        val compareValues = bulkWriteTaskTagAssignments()
         assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
     }
 
     @Test
     @Throws(Exception::class)
-    fun updateTaskTagJoinDaoTest() {
-        val taskTagJoin = writeTaskTagJoin()[KEY_RETURNED]
+    fun updateTaskTagAssignmentDaoTest() {
+        val taskTagAssignment = writeTaskTagAssignment()[KEY_RETURNED]
 
-        if (taskTagJoin != null) {
-            taskTagJoin.taskId = taskDao.getAllTasks()[1].taskId
-            taskTagJoin.tagId = tagDao.getAllTags()[3].tagId
-            val updatedCount = taskTagJoinDao.updateTaskTagJoin(taskTagJoin)
+        if (taskTagAssignment != null) {
+            taskTagAssignment.taskId = taskDao.getAllTasks()[1].taskId
+            taskTagAssignment.tagId = tagDao.getAllTags()[3].tagId
+            val updatedCount = taskTagAssignmentDao.updateTaskTagAssignment(taskTagAssignment)
             assertThat(updatedCount, equalTo(1))
         } else {
-            throw Exception("taskTagJoin is null")
+            throw Exception("taskTagAssignment is null")
         }
     }
 
     @Test
     @Throws(Exception::class)
-    fun bulkUpdateTaskTagJoinDaoTest() {
-        bulkWriteTaskTagJoins()
+    fun bulkUpdateTaskTagAssignmentDaoTest() {
+        bulkWriteTaskTagAssignments()
 
-        val taskTagJoins = taskTagJoinDao.getAllTaskTagJoins()
-        taskTagJoins.forEach { taskTagJoin ->
-            taskTagJoin.taskId = taskDao.getAllTasks()[1].taskId
-            taskTagJoin.tagId = tagDao.getAllTags()[3].tagId
+        val taskTagAssignments = taskTagAssignmentDao.getAllTaskTagAssignments()
+        taskTagAssignments.forEach { taskTagAssignment ->
+            taskTagAssignment.taskId = taskDao.getAllTasks()[1].taskId
+            taskTagAssignment.tagId = tagDao.getAllTags()[3].tagId
         }
 
-        val updatedCount = taskTagJoinDao.bulkUpdateTaskTagJoins(taskTagJoins)
-        assertThat(updatedCount, equalTo(taskTagJoins.size))
+        val updatedCount = taskTagAssignmentDao.bulkUpdateTaskTagAssignments(taskTagAssignments)
+        assertThat(updatedCount, equalTo(taskTagAssignments.size))
     }
 
     @Test
     @Throws(Exception::class)
-    fun deleteTaskTagJoinDaoTest() {
-        val taskTagJoin = writeTaskTagJoin()[KEY_RETURNED]
-        if (taskTagJoin != null) {
-            val deletedCount = taskTagJoinDao.deleteTaskTagJoin(taskTagJoin)
+    fun deleteTaskTagAssignmentDaoTest() {
+        val taskTagAssignment = writeTaskTagAssignment()[KEY_RETURNED]
+        if (taskTagAssignment != null) {
+            val deletedCount = taskTagAssignmentDao.deleteTaskTagAssignment(taskTagAssignment)
             assertThat(deletedCount, equalTo(1))
         } else {
-            throw Exception("taskTagJoin is null")
+            throw Exception("taskTagAssignment is null")
         }
     }
 
     @Test
     @Throws(Exception::class)
-    fun bulkDeleteTaskTagJoinsDaoTest() {
-        bulkWriteTaskTagJoins()
-        val taskTagJoins = taskTagJoinDao.getAllTaskTagJoins()
-        val deletedCount = taskTagJoinDao.bulkDeleteTaskTagJoins(taskTagJoins)
+    fun bulkDeleteTaskTagAssignmentsDaoTest() {
+        bulkWriteTaskTagAssignments()
+        val taskTagAssignments = taskTagAssignmentDao.getAllTaskTagAssignments()
+        val deletedCount = taskTagAssignmentDao.bulkDeleteTaskTagAssignments(taskTagAssignments)
 
-        assertThat(taskTagJoins.size, equalTo(deletedCount))
+        assertThat(taskTagAssignments.size, equalTo(deletedCount))
     }
 
     @Test
     @Throws(Exception::class)
-    fun deleteAllTaskTagJoinsDaoTest() {
-        bulkWriteTaskTagJoins()
-        val taskTagJoins = taskTagJoinDao.getAllTaskTagJoins()
-        val deletedCount = taskTagJoinDao.deleteAllTaskTagJoins()
+    fun deleteAllTaskTagAssignmentsDaoTest() {
+        bulkWriteTaskTagAssignments()
+        val taskTagAssignments = taskTagAssignmentDao.getAllTaskTagAssignments()
+        val deletedCount = taskTagAssignmentDao.deleteAllTaskTagAssignments()
 
-        val countsMatch = deletedCount == taskTagJoins.size
-        val noMoreTaskTagJoins = taskTagJoinDao.getAllTaskTagJoins().isEmpty()
+        val countsMatch = deletedCount == taskTagAssignments.size
+        val noMoreTaskTagAssignments = taskTagAssignmentDao.getAllTaskTagAssignments().isEmpty()
 
-        assert(countsMatch && noMoreTaskTagJoins)
+        assert(countsMatch && noMoreTaskTagAssignments)
     }
 
-    // helper function that can be called to add a taskTagJoin to the db without calling the full test
-    private fun writeTaskTagJoin(): Map<String, TaskTagJoin> {
+    // helper function that can be called to add a taskTagAssignment to the db without calling the full test
+    private fun writeTaskTagAssignment(): Map<String, TaskTagAssignment> {
         bulkWriteTasks(false)
         bulkWriteTags()
-        dbSeeder.populateTaskTagJoinList()
+        dbSeeder.populateTaskTagAssignmentsList()
 
-        val taskTagJoinToInsert = dbSeeder.taskTagJoins[0]
-        val returnedId = taskTagJoinDao.insertTaskTagJoin(taskTagJoinToInsert)
-        val returnedTaskTagJoin = taskTagJoinDao.getTaskTagJoinById(returnedId)
-        taskTagJoinToInsert.taskTagJoinId = returnedId
+        val taskTagAssignmentToInsert = dbSeeder.taskTagAssignments[0]
+        val returnedId = taskTagAssignmentDao.insertTaskTagAssignment(taskTagAssignmentToInsert)
+        val returnedTaskTagAssignment = taskTagAssignmentDao.getTaskTagAssignmentById(returnedId)
+        taskTagAssignmentToInsert.taskTagAssignmentId = returnedId
 
-        val compareValues = mutableMapOf<String, TaskTagJoin>()
-        compareValues[KEY_INSERTED] = taskTagJoinToInsert
-        compareValues[KEY_RETURNED] = returnedTaskTagJoin
+        val compareValues = mutableMapOf<String, TaskTagAssignment>()
+        compareValues[KEY_INSERTED] = taskTagAssignmentToInsert
+        compareValues[KEY_RETURNED] = returnedTaskTagAssignment
         return compareValues
     }
 
-    // helper function that can be called to add a list of taskTagJoins to the db without calling the full test
-    private fun bulkWriteTaskTagJoins(): Map<String, Int> {
+    // helper function that can be called to add a list of taskTagAssignments to the db without calling the full test
+    private fun bulkWriteTaskTagAssignments(): Map<String, Int> {
         bulkWriteTasks(false)
         bulkWriteTags()
-        dbSeeder.populateTaskTagJoinList()
+        dbSeeder.populateTaskTagAssignmentsList()
 
-        val taskTagJoinsToInsert = dbSeeder.taskTagJoins
-        val returnedIds = taskTagJoinDao.bulkInsertTaskTagJoins(taskTagJoinsToInsert)
-        dbSeeder.taskTagJoins = ArrayList(taskTagJoinDao.getAllTaskTagJoins())
+        val taskTagAssignmentsToInsert = dbSeeder.taskTagAssignments
+        val returnedIds = taskTagAssignmentDao.bulkInsertTaskTagAssignments(taskTagAssignmentsToInsert)
+        dbSeeder.taskTagAssignments = ArrayList(taskTagAssignmentDao.getAllTaskTagAssignments())
 
         val compareValues = mutableMapOf<String, Int>()
-        compareValues[KEY_INSERTED] = taskTagJoinsToInsert.size
+        compareValues[KEY_INSERTED] = taskTagAssignmentsToInsert.size
         compareValues[KEY_RETURNED] = returnedIds.size
         return compareValues
     }

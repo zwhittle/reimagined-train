@@ -10,13 +10,13 @@ class DBSeeder(val db: AppDatabase) {
     var tags = ArrayList<Tag>()
     var projects = ArrayList<Project>()
     var tasks = ArrayList<Task>()
-    var taskTagJoins = ArrayList<TaskTagJoin>()
+    var taskTagAssignments = ArrayList<TaskTagAssignment>()
 
     companion object {
         const val LOG_TAG = "DBSeeder"
     }
 
-    fun populateColorsList() {
+    fun populateColorsList() : ArrayList<Color> {
         colors.clear()
         colors.add(Color(name = "Black", hex = "#000000"))
         colors.add(Color(name = "White", hex = "#ffffff"))
@@ -28,9 +28,11 @@ class DBSeeder(val db: AppDatabase) {
         colors.forEach {
             System.out.println("Added $it to colors list")
         }
+
+        return colors
     }
 
-    fun populateTagsList() {
+    fun populateTagsList() : ArrayList<Tag> {
         val colorsFromDao = db.colorDao().getAllColors()
         tags.clear()
         tags.add(Tag(name = "Home", colorId = colorsFromDao[0].colorId))
@@ -42,9 +44,11 @@ class DBSeeder(val db: AppDatabase) {
         tags.forEach {
             System.out.println("Added $it to tags list")
         }
+
+        return tags
     }
 
-    fun populateProjectsList() {
+    fun populateProjectsList() : ArrayList<Project> {
         val colorsFromDao = db.colorDao().getAllColors()
         projects.clear()
 
@@ -54,9 +58,11 @@ class DBSeeder(val db: AppDatabase) {
             Log.d(LOG_TAG, "Added $project to projects list")
             System.out.println("Added $project to projects list")
         }
+
+        return projects
     }
 
-    fun populateTasksList(withDates: Boolean) {
+    fun populateTasksList(withDates: Boolean) : ArrayList<Task> {
         val projectsFromDao = db.projectDao().getAllProjects()
         tasks.clear()
 
@@ -72,25 +78,6 @@ class DBSeeder(val db: AppDatabase) {
                 System.out.println("Added $task to tasks list")
             }
 
-//            val endDate = LocalDate.parse("2019-02-17")
-//            val startDate = endDate.minusDays(7)
-//
-//            projectsFromDao.forEachIndexed { index, project ->
-//                val task = Task(
-//                    name = "Task $index",
-//                    date_start = startDate,
-//                    date_end = LocalDate.parse("2019-02-17"),
-//                    projectId = project.projectId)
-//                tasks.add(task)
-//                Log.d(LOG_TAG, "Added $task to tasks list")
-//                System.out.println("Added $task to tasks list")
-//            }
-//            Task(name = "Task 2", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
-//            Task(name = "Task 3", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
-//            Task(name = "Task 4", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
-//            Task(name = "Task 5", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
-//            Task(name = "Task 6", date_start = Utils.convertLocalDateToDate(startDate), date_end = Utils.convertLocalDateToDate(endDate), projectId = projectsFromDao[0].projectId)
-
         } else {
             projectsFromDao.forEachIndexed { index, project ->
                 val task = Task(name = "Task $index", projectId = project.projectId)
@@ -99,29 +86,33 @@ class DBSeeder(val db: AppDatabase) {
                 System.out.println("Added $task to tasks list")
             }
         }
+
+        return tasks
     }
 
-    fun populateTaskTagJoinList() {
+    fun populateTaskTagAssignmentsList() : ArrayList<TaskTagAssignment> {
         val tasksFromDao = db.taskDao().getAllTasks()
         val tagsFromDao = db.tagDao().getAllTags()
 
-        taskTagJoins.clear()
+        taskTagAssignments.clear()
 
         tasksFromDao.forEach { task ->
             // home vs office
-//            val taskTagJoin1 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[(0..1).random()].tagId)
-            val taskTagJoin1 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[0].tagId)
+//            val taskTagJoin1 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[(0..1).random()].tagId)
+            val taskTagJoin1 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[0].tagId)
             // energy level
-//            val taskTagJoin1 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[(2..4).random()].tagId)
-            val taskTagJoin2 = TaskTagJoin(taskId = task.taskId, tagId = tagsFromDao[2].tagId)
+//            val taskTagJoin1 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[(2..4).random()].tagId)
+            val taskTagJoin2 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[2].tagId)
 
-            taskTagJoins.add(taskTagJoin1)
-            taskTagJoins.add(taskTagJoin2)
+            taskTagAssignments.add(taskTagJoin1)
+            taskTagAssignments.add(taskTagJoin2)
 
-            Log.d(LOG_TAG, "Added $taskTagJoin1 to tasktagjoins list")
-            System.out.println("Added $taskTagJoin1 to taskTagJoins list")
-            Log.d(LOG_TAG, "Added $taskTagJoin2 to tasktagjoins list")
-            System.out.println("Added $taskTagJoin2 to taskTagJoins list")
+            Log.d(LOG_TAG, "Added $taskTagJoin1 to taskTagAssignments list")
+            System.out.println("Added $taskTagJoin1 to taskTagAssignments list")
+            Log.d(LOG_TAG, "Added $taskTagJoin2 to taskTagAssignments list")
+            System.out.println("Added $taskTagJoin2 to taskTagAssignments list")
         }
+
+        return taskTagAssignments
     }
 }

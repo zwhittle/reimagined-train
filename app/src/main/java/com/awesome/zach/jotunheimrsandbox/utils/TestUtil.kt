@@ -23,7 +23,7 @@ object TestUtil {
         date_end = endDate,
         projectId = projectId)
 
-    fun createTaskTagJoin(taskId: Long, tagId: Long) = TaskTagJoin(
+    fun createTaskTagJoin(taskId: Long, tagId: Long) = TaskTagAssignment(
         taskId = taskId,
         tagId = tagId)
 }
