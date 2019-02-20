@@ -7,14 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
-import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentListBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.PHAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleTagAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.viewmodels.TagListViewModel
@@ -28,8 +25,6 @@ class ListFragment : Fragment() {
         const val LOG_TAG = "ListFragment"
     }
 
-    // private lateinit var mBinding: FragmentListBinding
-    // private lateinit var mSimpleTagAdapter: SimpleTagAdapter
     private lateinit var viewModel: TagListViewModel
 
     override fun onCreateView(
@@ -37,14 +32,12 @@ class ListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
-        // val binding = FragmentListBinding.inflate(inflater, container, false)
         val binding = DataBindingUtil.inflate<FragmentListBinding>(inflater, R.layout.fragment_list, container, false)
 
         val factory = InjectorUtils.provideTagListViewModelFactory(binding.root.context)
         viewModel = ViewModelProviders.of(this, factory).get(TagListViewModel::class.java)
 
         val adapter = SimpleTagAdapter()
-        // binding.rvListFragment.adapter = PHAdapter(viewModel.getPHTags())
         binding.rvListFragment.adapter = adapter
         binding.rvListFragment.layoutManager = LinearLayoutManager(binding.root.context)
         subscribeUi(adapter)
@@ -62,7 +55,5 @@ class ListFragment : Fragment() {
         viewModel.getTags().observe(viewLifecycleOwner, Observer { tags ->
             if (tags != null) adapter.setTagsList(tags)
         })
-
-        // adapter.setTagsList(viewModel.getPHTags())
     }
 }
