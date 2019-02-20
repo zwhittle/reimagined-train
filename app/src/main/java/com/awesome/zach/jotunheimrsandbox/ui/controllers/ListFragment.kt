@@ -42,10 +42,6 @@ class ListFragment : Fragment() {
         binding.rvListFragment.layoutManager = LinearLayoutManager(binding.root.context)
         subscribeUi(adapter)
 
-        viewModel.getPHTags().forEach {
-            Log.d(LOG_TAG, it.toString())
-        }
-
         return binding.root
     }
 
