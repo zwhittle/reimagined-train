@@ -1,7 +1,7 @@
-package com.awesome.zach.jotunheimrsandbox.db.repositories
+package com.awesome.zach.jotunheimrsandbox.data.repositories
 
-import com.awesome.zach.jotunheimrsandbox.db.daos.ColorDao
-import com.awesome.zach.jotunheimrsandbox.db.entities.Color
+import com.awesome.zach.jotunheimrsandbox.data.daos.ColorDao
+import com.awesome.zach.jotunheimrsandbox.data.entities.Color
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 

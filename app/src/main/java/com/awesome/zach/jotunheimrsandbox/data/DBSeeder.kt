@@ -1,8 +1,7 @@
-package com.awesome.zach.jotunheimrsandbox.db
+package com.awesome.zach.jotunheimrsandbox.data
 
-import android.content.Context
 import android.util.Log
-import com.awesome.zach.jotunheimrsandbox.db.entities.*
+import com.awesome.zach.jotunheimrsandbox.data.entities.*
 import java.time.LocalDate
 
 class DBSeeder(val db: AppDatabase) {

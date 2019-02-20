@@ -1,7 +1,8 @@
-package com.awesome.zach.jotunheimrsandbox.db.daos
+package com.awesome.zach.jotunheimrsandbox.data.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.awesome.zach.jotunheimrsandbox.db.entities.Task
+import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import java.time.LocalDate
 
 /**
@@ -58,6 +59,9 @@ interface TaskDao {
 
     @Query("SELECT * FROM task_table ORDER BY date_end ASC")
     fun getAllTasks(): List<Task>
+
+    @Query("SELECT * FROM task_table ORDER BY date_end ASC")
+    fun getAllTasksLive(): LiveData<List<Task>>
 
     @Query("SELECT * FROM task_table WHERE completed == 1 ORDER BY date_end ASC")
     fun getActiveTasks(): List<Task>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tag"
+            type="com.awesome.zach.jotunheimrsandbox.data.entities.Tag" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/listItemTopLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tvListItemId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="@{String.valueOf(tag.tagId)}"
+            tools:text="45" />
+
+        <TextView
+            android:id="@+id/tvListItemLabel"
+            android:layout_width="wrap_content"
+            android:text="@{tag.name}"
+            android:layout_height="wrap_content"
+            tools:text="Home" />
+    </LinearLayout>
+</layout>

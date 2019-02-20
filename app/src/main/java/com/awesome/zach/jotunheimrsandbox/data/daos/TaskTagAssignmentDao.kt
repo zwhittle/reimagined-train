@@ -1,9 +1,9 @@
-package com.awesome.zach.jotunheimrsandbox.db.daos
+package com.awesome.zach.jotunheimrsandbox.data.daos
 
 import androidx.room.*
-import com.awesome.zach.jotunheimrsandbox.db.entities.Tag
-import com.awesome.zach.jotunheimrsandbox.db.entities.Task
-import com.awesome.zach.jotunheimrsandbox.db.entities.TaskTagAssignment
+import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
+import com.awesome.zach.jotunheimrsandbox.data.entities.Task
+import com.awesome.zach.jotunheimrsandbox.data.entities.TaskTagAssignment
 
 @Dao
 interface TaskTagAssignmentDao {
@@ -42,9 +42,11 @@ interface TaskTagAssignmentDao {
     @Query("SELECT * FROM task_tag_join_table WHERE taskTagAssignmentId = :taskTagAssignmentId")
     fun getTaskTagAssignmentById(taskTagAssignmentId: Long) : TaskTagAssignment
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM task_table INNER JOIN task_tag_join_table ON task_table.taskId = task_tag_join_table.taskId WHERE task_tag_join_table.tagId = :tagId")
     fun getTasksWithTag(tagId: Long): List<Task>
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM tag_table INNER JOIN task_tag_join_table ON tag_table.tagId = task_tag_join_table.tagId WHERE task_tag_join_table.taskId = :taskId")
     fun getTagsForTask(taskId: Long): List<Tag>
 }

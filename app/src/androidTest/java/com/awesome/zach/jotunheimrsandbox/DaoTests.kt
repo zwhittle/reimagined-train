@@ -1,20 +1,14 @@
 package com.awesome.zach.jotunheimrsandbox
 
-import android.util.Log
-import androidx.room.Database
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import com.awesome.zach.jotunheimrsandbox.db.AppDatabase
-import com.awesome.zach.jotunheimrsandbox.db.DBSeeder
-import com.awesome.zach.jotunheimrsandbox.db.daos.*
-import com.awesome.zach.jotunheimrsandbox.db.entities.*
+import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
+import com.awesome.zach.jotunheimrsandbox.data.DBSeeder
+import com.awesome.zach.jotunheimrsandbox.data.daos.*
+import com.awesome.zach.jotunheimrsandbox.data.entities.*
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
-import com.awesome.zach.jotunheimrsandbox.workers.SeedDatabaseWorker
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

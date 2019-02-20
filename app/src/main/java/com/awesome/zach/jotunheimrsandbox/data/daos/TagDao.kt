@@ -1,7 +1,8 @@
-package com.awesome.zach.jotunheimrsandbox.db.daos
+package com.awesome.zach.jotunheimrsandbox.data.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.awesome.zach.jotunheimrsandbox.db.entities.Tag
+import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 
 /**
  * Tag @Dao
@@ -13,8 +14,8 @@ import com.awesome.zach.jotunheimrsandbox.db.entities.Tag
  *
  * Multi Result Queries:
  * getAllTags()
- * getTagsByColor()
- * getTagsByName()
+ * getTagsWithColor()
+ * getTagsWithName()
  *
  */
 
@@ -49,15 +50,18 @@ interface TagDao {
     @Query("DELETE FROM tag_table")
     fun deleteAllTags(): Int
 
-    @Query("SELECT * FROM tag_table")
+    @Query("SELECT * FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
     fun getAllTags(): List<Tag>
+
+    @Query("SELECT * FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
+    fun getAllTagsLive(): LiveData<List<Tag>>
 
     @Query("SELECT * FROM tag_table WHERE tagId == :tagId")
     fun getTagById(tagId: Long): Tag
 
-    @Query("SELECT * FROM tag_table WHERE name == :name")
-    fun getTagsByName(name: String): List<Tag>
+    @Query("SELECT * FROM tag_table WHERE name == :name ORDER BY tagId ASC")
+    fun getTagsWithName(name: String): List<Tag>
 
-    @Query("SELECT * FROM tag_table WHERE colorId == :colorId")
-    fun getTagsByColor(colorId: Long): List<Tag>
+    @Query("SELECT * FROM tag_table WHERE colorId == :colorId ORDER BY tagId ASC")
+    fun getTagsWithColor(colorId: Long): List<Tag>
 }

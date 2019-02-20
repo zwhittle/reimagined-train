@@ -26,4 +26,20 @@ class UtilsTests {
 
         assertThat(utilSays, equalTo(correctLastDayOfThisWeek))
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun inverseHexTest() {
+        val hexBlack = "#ff000000"
+        val hexWhite = "ffffff"
+
+        val invertedBlack = Utils.inverseHex(hexBlack)
+        val invertedWhite = Utils.inverseHex(hexWhite)
+
+        val correctBlack = "#ffffffff"
+        val correctWhite = "#ff000000"
+
+        assertThat("black", invertedBlack, equalTo(correctBlack))
+        assertThat("white", invertedWhite, equalTo(correctWhite))
+    }
 }

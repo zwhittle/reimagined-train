@@ -1,4 +1,4 @@
-package com.awesome.zach.jotunheimrsandbox.db.entities
+package com.awesome.zach.jotunheimrsandbox.data.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -18,7 +18,7 @@ import java.time.LocalDate
  */
 
 @Entity(tableName = "task_table",
-        indices = [Index("taskId")],
+        indices = [Index("taskId"), Index("projectId")],
         foreignKeys = [ForeignKey(entity = Project::class,
                                   parentColumns = ["projectId"],
                                   childColumns = ["projectId"])])

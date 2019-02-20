@@ -1,6 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox.utils
 
-import com.awesome.zach.jotunheimrsandbox.db.entities.*
+import com.awesome.zach.jotunheimrsandbox.data.entities.*
 import java.time.LocalDate
 
 object TestUtil {

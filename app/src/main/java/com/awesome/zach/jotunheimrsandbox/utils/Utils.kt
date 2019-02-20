@@ -1,5 +1,7 @@
 package com.awesome.zach.jotunheimrsandbox.utils
 
+import java.lang.Long.parseLong
+import java.lang.Long.toHexString
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
@@ -21,5 +23,47 @@ class Utils {
             return LocalDate.now().with(TemporalAdjusters.nextOrSame(lastDayOfWeek))
         }
 
+        fun inverseHex(hexParam: String?) : String {
+            if (hexParam == null) {
+                return ""
+            }
+
+            var alphaPassed = false
+            val c = 255
+
+            var hex = hexParam
+            var hAlpha = ""
+            var hRed: Long = 0
+            var hGreen: Long = 0
+            var hBlue: Long = 0
+
+            if (hex.startsWith("#")) {
+                hex = hex.substring(1)
+            }
+
+            if (hex.length == 8) {
+                hAlpha = hex.substring(0,2)
+                hex = hex.substring(2)
+                alphaPassed = true
+            }
+
+            hRed = parseLong(hex.substring(0,2), 16)
+            hGreen = parseLong(hex.substring(2,4), 16)
+            hBlue = parseLong(hex.substring(4), 16)
+
+            val iRed = c - hRed
+            val iGreen = c - hGreen
+            val iBlue = c - hBlue
+
+            val nhRed = toHexString(iRed).padStart(2, '0')
+            val nhGreen = toHexString(iGreen).padStart(2, '0')
+            val nhBlue = toHexString(iBlue).padStart(2, '0')
+
+            return if (alphaPassed) {
+                "#$hAlpha$nhRed$nhGreen$nhBlue"
+            } else {
+                "#ff$nhRed$nhGreen$nhBlue"
+            }
+        }
     }
 }

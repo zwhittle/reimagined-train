@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.awesome.zach.jotunheimrsandbox.db.AppDatabase
-import com.awesome.zach.jotunheimrsandbox.db.DBSeeder
+import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
+import com.awesome.zach.jotunheimrsandbox.data.DBSeeder
 
 
 class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
@@ -36,6 +36,7 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
     private fun seedColors(db: AppDatabase, seeder : DBSeeder) : Int {
         val colorsToSeed = seeder.populateColorsList()
         val insertedIds = db.colorDao().bulkInsertColors(colorsToSeed)
+        seeder.colors = ArrayList(db.colorDao().getAllColors())
         
         val seedCount = colorsToSeed.size
         val insertedCount = insertedIds.size
@@ -52,6 +53,7 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
     private fun seedTags(db: AppDatabase, seeder: DBSeeder) : Int {
         val tagsToSeed = seeder.populateTagsList()
         val insertedIds = db.tagDao().bulkInsertTags(tagsToSeed)
+        seeder.tags = ArrayList(db.tagDao().getAllTags())
         
         val seedCount = tagsToSeed.size
         val insertedCount = insertedIds.size
@@ -68,6 +70,7 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
     private fun seedProjects(db: AppDatabase, seeder: DBSeeder) : Int {
         val projectsToSeed = seeder.populateProjectsList()
         val insertedIds = db.projectDao().bulkInsertProjects(projectsToSeed)
+        seeder.projects = ArrayList(db.projectDao().getAllProjects())
 
         val seedCount = projectsToSeed.size
         val insertedCount = insertedIds.size
@@ -84,6 +87,7 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
     private fun seedTasks(db: AppDatabase, seeder: DBSeeder) : Int {
         val tasksToSeed = seeder.populateTasksList(true)
         val insertedIds = db.taskDao().bulkInsertTasks(tasksToSeed)
+        seeder.tasks = ArrayList(db.taskDao().getAllTasks())
 
         val seedCount = tasksToSeed.size
         val insertedCount = insertedIds.size
@@ -100,6 +104,7 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
     private fun seedTaskTagAssignments(db: AppDatabase, seeder: DBSeeder) : Int {
         val taskTagAssignmentsToSeed = seeder.populateTaskTagAssignmentsList()
         val insertedIds = db.taskTagAssignmentDao().bulkInsertTaskTagAssignments(taskTagAssignmentsToSeed)
+        seeder.taskTagAssignments = ArrayList(db.taskTagAssignmentDao().getAllTaskTagAssignments())
 
         val seedCount = taskTagAssignmentsToSeed.size
         val insertedCount = insertedIds.size

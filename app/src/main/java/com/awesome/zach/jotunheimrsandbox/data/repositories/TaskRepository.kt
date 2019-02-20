@@ -1,16 +1,15 @@
-package com.awesome.zach.jotunheimrsandbox.db.repositories
+package com.awesome.zach.jotunheimrsandbox.data.repositories
 
-import com.awesome.zach.jotunheimrsandbox.db.daos.TaskDao
-import com.awesome.zach.jotunheimrsandbox.db.entities.Task
+import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
+import com.awesome.zach.jotunheimrsandbox.data.daos.TaskDao
+import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.*
 
-class TaskRepository private constructor(
-    private val taskDao: TaskDao
-                                        ) {
+class TaskRepository private constructor(private val taskDao: TaskDao) {
 
     suspend fun insertTask(task: Task): Long {
         return withContext(IO) {
@@ -63,6 +62,8 @@ class TaskRepository private constructor(
 
     fun getAllTasks() = taskDao.getAllTasks()
 
+    fun getAllTasksLive() = taskDao.getAllTasksLive()
+
     fun getActiveTasks() = taskDao.getActiveTasks()
 
     fun getTaskById(taskId: Long) = taskDao.getTaskById(taskId)
@@ -84,12 +85,16 @@ class TaskRepository private constructor(
     fun getTasksStartingToday() = taskDao.getTasksStartingToday()
 
     fun getTasksDueThisWeek(locale: Locale = Locale.US) =
-        taskDao.getTasksDueInRange(Utils.firstDayOfThisWeek(locale),
-                                   Utils.lastDayOfThisWeek(locale))
+        taskDao.getTasksDueInRange(
+            Utils.firstDayOfThisWeek(locale),
+            Utils.lastDayOfThisWeek(locale)
+        )
 
     fun getTasksStartingThisWeek(locale: Locale = Locale.US) =
-        taskDao.getTasksStartingInRange(Utils.firstDayOfThisWeek(locale),
-                                        Utils.lastDayOfThisWeek(locale))
+        taskDao.getTasksStartingInRange(
+            Utils.firstDayOfThisWeek(locale),
+            Utils.lastDayOfThisWeek(locale)
+        )
 
     companion object {
 

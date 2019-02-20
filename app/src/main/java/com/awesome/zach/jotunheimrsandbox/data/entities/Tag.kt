@@ -1,10 +1,7 @@
-package com.awesome.zach.jotunheimrsandbox.db.entities
+package com.awesome.zach.jotunheimrsandbox.data.entities
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import androidx.annotation.NonNull
+import androidx.room.*
 
 /**
  * Tag @Entity
@@ -18,7 +15,7 @@ import androidx.annotation.NonNull
  */
 
 @Entity(tableName = "tag_table",
-        indices = [Index("tagId")],
+        indices = [Index("tagId"), Index("colorId")],
         foreignKeys = [ForeignKey(entity = Color::class,
                                   parentColumns = ["colorId"],
                                   childColumns = ["colorId"])])
@@ -28,4 +25,6 @@ data class Tag(
     @NonNull
     var name: String,
     @NonNull
-    var colorId: Long)
+    var colorId: Long,
+    @ColumnInfo(name = "hex")
+    var colorHex: String? = null)

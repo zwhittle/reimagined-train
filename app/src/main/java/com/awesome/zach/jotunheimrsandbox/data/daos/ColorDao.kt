@@ -1,7 +1,7 @@
-package com.awesome.zach.jotunheimrsandbox.db.daos
+package com.awesome.zach.jotunheimrsandbox.data.daos
 
 import androidx.room.*
-import com.awesome.zach.jotunheimrsandbox.db.entities.Color
+import com.awesome.zach.jotunheimrsandbox.data.entities.Color
 
 /**
  * Color @Dao

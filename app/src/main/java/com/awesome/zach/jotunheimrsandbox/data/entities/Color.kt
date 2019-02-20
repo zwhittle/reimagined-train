@@ -1,4 +1,4 @@
-package com.awesome.zach.jotunheimrsandbox.db.entities
+package com.awesome.zach.jotunheimrsandbox.data.entities
 
 import androidx.room.Entity
 import androidx.room.Index

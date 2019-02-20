@@ -1,4 +1,4 @@
-package com.awesome.zach.jotunheimrsandbox.db.converters
+package com.awesome.zach.jotunheimrsandbox.data.converters
 
 import androidx.room.TypeConverter
 import java.time.LocalDate

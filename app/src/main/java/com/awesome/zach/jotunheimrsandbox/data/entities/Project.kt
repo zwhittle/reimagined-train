@@ -1,10 +1,7 @@
-package com.awesome.zach.jotunheimrsandbox.db.entities
+package com.awesome.zach.jotunheimrsandbox.data.entities
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import androidx.annotation.NonNull
+import androidx.room.*
 
 /**
  * Project @Entity
@@ -18,7 +15,7 @@ import androidx.annotation.NonNull
  */
 
 @Entity(tableName = "project_table",
-        indices = [Index("projectId")],
+        indices = [Index("projectId"), Index("colorId"), Index("hex")],
         foreignKeys = [ForeignKey(entity = Color::class,
                                   parentColumns = ["colorId"],
                                   childColumns = ["colorId"])])
@@ -27,4 +24,6 @@ data class Project(@PrimaryKey(autoGenerate = true)
                    @NonNull
                    var name: String,
                    @NonNull
-                   var colorId: Long)
+                   var colorId: Long,
+                   @ColumnInfo(name = "hex")
+                   var colorHex: String? = null)
