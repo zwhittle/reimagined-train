@@ -1,5 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox.ui.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,6 +10,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTagBinding
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTagBinding.bind
+import com.awesome.zach.jotunheimrsandbox.utils.Utils
 
 class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHolder>() {
 
@@ -67,6 +69,9 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
         fun bind(item: Tag) {
             binding.apply {
                 tag = item
+                val textColor = Color.parseColor(Utils.inverseHex(item.colorHex))
+                binding.tvListItemId.setTextColor(textColor)
+                binding.tvListItemLabel.setTextColor(textColor)
                 executePendingBindings()
             }
         }

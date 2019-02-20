@@ -8,62 +8,72 @@ import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.*
 
-class Utils {
-    companion object {
-        private lateinit var firstDayOfWeek : DayOfWeek
-        private lateinit var lastDayOfWeek: DayOfWeek
+object Utils {
+    private lateinit var firstDayOfWeek: DayOfWeek
+    private lateinit var lastDayOfWeek: DayOfWeek
 
-        fun firstDayOfThisWeek(locale: Locale = Locale.US) : LocalDate {
-            firstDayOfWeek = WeekFields.of(locale).firstDayOfWeek
-            return LocalDate.now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek))
+    fun firstDayOfThisWeek(locale: Locale = Locale.US): LocalDate {
+        firstDayOfWeek = WeekFields.of(locale)
+            .firstDayOfWeek
+        return LocalDate.now()
+            .with(TemporalAdjusters.previousOrSame(firstDayOfWeek))
+    }
+
+    fun lastDayOfThisWeek(locale: Locale = Locale.US): LocalDate {
+        lastDayOfWeek = DayOfWeek.of(((firstDayOfWeek.value + 5) % DayOfWeek.values().size) + 1)
+        return LocalDate.now()
+            .with(TemporalAdjusters.nextOrSame(lastDayOfWeek))
+    }
+
+    fun inverseHex(hexParam: String?): String {
+        if (hexParam == null) {
+            return ""
         }
 
-        fun lastDayOfThisWeek(locale: Locale = Locale.US) : LocalDate {
-            lastDayOfWeek = DayOfWeek.of(((firstDayOfWeek.value + 5) % DayOfWeek.values().size) + 1)
-            return LocalDate.now().with(TemporalAdjusters.nextOrSame(lastDayOfWeek))
+        var alphaPassed = false
+        val c = 255
+
+        var hex = hexParam
+        var hAlpha = ""
+        val hRed: Long
+        val hGreen: Long
+        val hBlue: Long
+
+        if (hex.startsWith("#")) {
+            hex = hex.substring(1)
         }
 
-        fun inverseHex(hexParam: String?) : String {
-            if (hexParam == null) {
-                return ""
-            }
+        if (hex.length == 8) {
+            hAlpha = hex.substring(0,
+                                   2)
+            hex = hex.substring(2)
+            alphaPassed = true
+        }
 
-            var alphaPassed = false
-            val c = 255
+        hRed = parseLong(hex.substring(0,
+                                       2),
+                         16)
+        hGreen = parseLong(hex.substring(2,
+                                         4),
+                           16)
+        hBlue = parseLong(hex.substring(4),
+                          16)
 
-            var hex = hexParam
-            var hAlpha = ""
-            var hRed: Long = 0
-            var hGreen: Long = 0
-            var hBlue: Long = 0
+        val iRed = c - hRed
+        val iGreen = c - hGreen
+        val iBlue = c - hBlue
 
-            if (hex.startsWith("#")) {
-                hex = hex.substring(1)
-            }
+        val nhRed = toHexString(iRed).padStart(2,
+                                               '0')
+        val nhGreen = toHexString(iGreen).padStart(2,
+                                                   '0')
+        val nhBlue = toHexString(iBlue).padStart(2,
+                                                 '0')
 
-            if (hex.length == 8) {
-                hAlpha = hex.substring(0,2)
-                hex = hex.substring(2)
-                alphaPassed = true
-            }
-
-            hRed = parseLong(hex.substring(0,2), 16)
-            hGreen = parseLong(hex.substring(2,4), 16)
-            hBlue = parseLong(hex.substring(4), 16)
-
-            val iRed = c - hRed
-            val iGreen = c - hGreen
-            val iBlue = c - hBlue
-
-            val nhRed = toHexString(iRed).padStart(2, '0')
-            val nhGreen = toHexString(iGreen).padStart(2, '0')
-            val nhBlue = toHexString(iBlue).padStart(2, '0')
-
-            return if (alphaPassed) {
-                "#$hAlpha$nhRed$nhGreen$nhBlue"
-            } else {
-                "#ff$nhRed$nhGreen$nhBlue"
-            }
+        return if (alphaPassed) {
+            "#$hAlpha$nhRed$nhGreen$nhBlue"
+        } else {
+            "#ff$nhRed$nhGreen$nhBlue"
         }
     }
 }
