@@ -3,7 +3,9 @@ package com.awesome.zach.jotunheimrsandbox.utils
 import android.content.Context
 import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.data.repositories.*
+import com.awesome.zach.jotunheimrsandbox.viewmodels.ProjectListViewModelFactory
 import com.awesome.zach.jotunheimrsandbox.viewmodels.TagListViewModelFactory
+import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModelFactory
 
 object InjectorUtils {
 
@@ -19,6 +21,17 @@ object InjectorUtils {
         val repository = getTagRepository(context)
         return TagListViewModelFactory(repository)
     }
+
+    fun provideProjectListViewModelFactory(context: Context) : ProjectListViewModelFactory {
+        val repository = getProjectRepository(context)
+        return ProjectListViewModelFactory(repository)
+    }
+
+    fun provideTaskListViewModelFactory(context: Context) : TaskListViewModelFactory {
+        val repository = getTaskRepository(context)
+        return TaskListViewModelFactory(repository)
+    }
+
 
     private fun getProjectRepository(context: Context) : ProjectRepository {
         return ProjectRepository.getInstance(AppDatabase.getDatabase(context.applicationContext).projectDao())

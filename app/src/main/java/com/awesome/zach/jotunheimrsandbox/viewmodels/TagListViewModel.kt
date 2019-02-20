@@ -10,7 +10,7 @@ import com.awesome.zach.jotunheimrsandbox.data.repositories.TaskRepository
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
-class TagListViewModel internal constructor(private val tagRepository: TagRepository) :
+class TagListViewModel internal constructor(tagRepository: TagRepository) :
     ViewModel() {
 
     private val tagsList = MediatorLiveData<List<Tag>>()

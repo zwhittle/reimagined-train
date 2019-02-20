@@ -26,17 +26,17 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
     beginTransaction().func().commit()
 }
 
-fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction { add(frameId, fragment) }
-    Log.d(applicationContext.packageCodePath, fragment.toString() + " added to supportFragmentManager")
+fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int, tag: String) {
+    supportFragmentManager.inTransaction { add(frameId, fragment, tag) }
+    Log.d(applicationContext.packageCodePath, "$fragment added to supportFragmentManager")
 }
 
-fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction { replace(frameId, fragment) }
-    Log.d(applicationContext.packageCodePath, fragment.toString() + " added to supportFragmentManager")
+fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int, tag: String) {
+    supportFragmentManager.inTransaction { replace(frameId, fragment, tag) }
+    Log.d(applicationContext.packageCodePath, "$fragment added to supportFragmentManager")
 }
 
 fun AppCompatActivity.removeFragment(fragment: Fragment) {
     supportFragmentManager.inTransaction { remove(fragment) }
-    Log.d(applicationContext.packageCodePath, fragment.toString() + " removed from supportFragmentManager")
+    Log.d(applicationContext.packageCodePath, "$fragment removed from supportFragmentManager")
 }

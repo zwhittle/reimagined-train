@@ -18,7 +18,11 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): SimpleTagViewHolder {
-        val binding = DataBindingUtil.inflate<ListItemTagBinding>(LayoutInflater.from(parent.context), R.layout.list_item_tag, parent, false)
+        val binding =
+            DataBindingUtil.inflate<ListItemTagBinding>(LayoutInflater.from(parent.context),
+                                                        R.layout.list_item_tag,
+                                                        parent,
+                                                        false)
         return SimpleTagViewHolder(binding)
     }
 
@@ -38,7 +42,8 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
     fun setTagsList(tags: List<Tag>) {
         if (mTags == null) {
             mTags = tags
-            notifyItemRangeInserted(0, tags.size)
+            notifyItemRangeInserted(0,
+                                    tags.size)
         } else {
             val result = DiffUtil.calculateDiff(TagDiffCallback(tags))
             mTags = tags

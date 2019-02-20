@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.graphics.Color"/>
+        <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils"/>
+        <variable
+            name="project"
+            type="com.awesome.zach.jotunheimrsandbox.data.entities.Project" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/listItemTopLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@{Color.parseColor(project.colorHex)}"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tvListItemId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="@{String.valueOf(project.projectId)}"
+            tools:text="45" />
+
+        <TextView
+            android:id="@+id/tvListItemLabel"
+            android:layout_width="wrap_content"
+            android:text="@{project.name}"
+            android:layout_height="wrap_content"
+            tools:text="Home" />
+    </LinearLayout>
+</layout>
