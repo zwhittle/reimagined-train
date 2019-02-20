@@ -50,10 +50,10 @@ interface TagDao {
     @Query("DELETE FROM tag_table")
     fun deleteAllTags(): Int
 
-    @Query("SELECT * FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
+    @Query("SELECT tag_table.tagId, tag_table.name, tag_table.colorId, color_table.hex FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
     fun getAllTags(): List<Tag>
 
-    @Query("SELECT * FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
+    @Query("SELECT tag_table.tagId, tag_table.name, tag_table.colorId, color_table.hex FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
     fun getAllTagsLive(): LiveData<List<Tag>>
 
     @Query("SELECT * FROM tag_table WHERE tagId == :tagId")

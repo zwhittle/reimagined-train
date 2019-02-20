@@ -65,7 +65,7 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
         }
     }
 
-    class SimpleTagViewHolder(val binding: ListItemTagBinding) : RecyclerView.ViewHolder(binding.root) {
+    class SimpleTagViewHolder(private val binding: ListItemTagBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Tag) {
             binding.apply {
                 tag = item
