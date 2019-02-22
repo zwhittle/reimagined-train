@@ -50,16 +50,16 @@ interface ProjectDao {
     @Query("DELETE FROM project_table")
     fun deleteAllProjects(): Int
 
-    @Query("SELECT project_table.projectId, project_table.name, project_table.colorId, color_table.hex FROM project_table INNER JOIN color_table ON project_table.colorId = color_table.colorId ORDER BY project_table.projectId ASC")
+    @Query("SELECT project_table.projectId, project_table.projectName, project_table.colorId, color_table.hex FROM project_table INNER JOIN color_table ON project_table.colorId = color_table.colorId ORDER BY project_table.projectId ASC")
     fun getAllProjects(): List<Project>
 
-    @Query("SELECT project_table.projectId, project_table.name, project_table.colorId, color_table.hex FROM project_table INNER JOIN color_table ON project_table.colorId = color_table.colorId ORDER BY project_table.projectId ASC")
+    @Query("SELECT project_table.projectId, project_table.projectName, project_table.colorId, color_table.hex FROM project_table INNER JOIN color_table ON project_table.colorId = color_table.colorId ORDER BY project_table.projectId ASC")
     fun getAllProjectsLive(): LiveData<List<Project>>
 
     @Query("SELECT * FROM project_table WHERE projectId == :projectId")
     fun getProjectById(projectId: Long): Project
 
-    @Query("SELECT * FROM project_table WHERE name == :name ORDER BY projectId ASC")
+    @Query("SELECT * FROM project_table WHERE projectName == :name ORDER BY projectId ASC")
     fun getProjectsByName(name: String): List<Project>
 
     @Query("SELECT * FROM project_table WHERE colorId == :colorId ORDER BY projectId ASC")

@@ -60,7 +60,7 @@
                 android:id="@+id/tvListItemTaskProject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(task.projectId)}"
+                android:text="@{task.projectName}"
                 tools:text="25" />
         </LinearLayout>
     </LinearLayout>

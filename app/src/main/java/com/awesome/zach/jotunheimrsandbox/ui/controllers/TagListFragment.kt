@@ -19,6 +19,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTagListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleTagAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.TagListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,7 +32,8 @@ class TagListFragment : Fragment() {
         const val LOG_TAG = "TagListFragment"
     }
 
-    private lateinit var viewModel: TagListViewModel
+    // private lateinit var viewModel: TagListViewModel
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,10 +46,13 @@ class TagListFragment : Fragment() {
                                                             container,
                                                             false)
 
-        val factory = InjectorUtils.provideTagListViewModelFactory(binding.root.context)
-        viewModel = ViewModelProviders.of(this,
-                                          factory)
-            .get(TagListViewModel::class.java)
+        // val factory = InjectorUtils.provideTagListViewModelFactory(binding.root.context)
+        // viewModel = ViewModelProviders.of(this,
+        //                                   factory)
+        //     .get(TagListViewModel::class.java)
+
+        val factory = InjectorUtils.provideMainViewModelFactory(context = binding.root.context)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
 
         val adapter = SimpleTagAdapter()
         binding.rvTagList.adapter = adapter

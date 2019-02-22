@@ -15,6 +15,7 @@ import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.ProjectListViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -24,20 +25,22 @@ class ProjectListFragment : Fragment() {
         const val LOG_TAG = "ProjectListFragment"
     }
 
-    private lateinit var viewModel: ProjectListViewModel
+    // private lateinit var viewModel: ProjectListViewModel
+    private lateinit var viewModel: MainViewModel
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         val binding = DataBindingUtil.inflate<FragmentProjectListBinding>(inflater,
                                                                           R.layout.fragment_project_list,
-                                                                          container,
-                                                                          false)
+                                                                          container, false)
         val context = binding.root.context
 
-        val factory = InjectorUtils.provideProjectListViewModelFactory(context)
-        viewModel = ViewModelProviders.of(this, factory).get(ProjectListViewModel::class.java)
+        // val factory = InjectorUtils.provideProjectListViewModelFactory(context)
+        // viewModel = ViewModelProviders.of(this, factory).get(ProjectListViewModel::class.java)
+
+        val factory = InjectorUtils.provideMainViewModelFactory(context)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
 
         val adapter = SimpleProjectAdapter()
         binding.rvProjectList.adapter = adapter

@@ -1,10 +1,7 @@
 package com.awesome.zach.jotunheimrsandbox.data.entities
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
-import androidx.room.PrimaryKey
 import androidx.annotation.NonNull
+import androidx.room.*
 import java.time.LocalDate
 
 /**
@@ -34,4 +31,6 @@ data class Task(
     @NonNull
     var priority: Int = 1,
     @NonNull
-    var projectId: Long)
+    var projectId: Long,
+    @ColumnInfo(name = "projectName")
+    var projectName: String? = null)

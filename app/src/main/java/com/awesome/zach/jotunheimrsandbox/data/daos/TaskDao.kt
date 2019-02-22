@@ -61,7 +61,7 @@ interface TaskDao {
     @Query("SELECT * FROM task_table ORDER BY date_end ASC")
     fun getAllTasks(): List<Task>
 
-    @Query("SELECT * FROM task_table ORDER BY date_end ASC")
+    @Query("SELECT * FROM task_table INNER JOIN project_table ON task_table.projectId = project_table.projectId ORDER BY date_end ASC")
     fun getAllTasksLive(): LiveData<List<Task>>
 
     @Query("SELECT * FROM task_table WHERE completed == 1 ORDER BY date_end ASC")

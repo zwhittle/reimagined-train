@@ -16,6 +16,8 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleTaskAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
 import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModelFactory
 import java.lang.ClassCastException
@@ -26,8 +28,11 @@ class TaskListFragment : Fragment() {
         const val LOG_TAG = "TaskListFragment"
     }
 
-    private lateinit var factory: TaskListViewModelFactory
-    private lateinit var viewModel: TaskListViewModel
+    // private lateinit var factory: TaskListViewModelFactory
+    // private lateinit var viewModel: TaskListViewModel
+
+    private lateinit var factory: MainViewModelFactory
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -60,19 +65,23 @@ class TaskListFragment : Fragment() {
             else                                         -> setupFactoryForAll(context)
         }
 
-        viewModel = ViewModelProviders.of(this, factory).get(TaskListViewModel::class.java)
+        // viewModel = ViewModelProviders.of(this, factory).get(TaskListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
     }
 
     private fun setupFactoryForAll(context: Context) {
-        factory = InjectorUtils.provideTaskListViewModelFactory(context = context)
+        // factory = InjectorUtils.provideTaskListViewModelFactory(context = context)
+        factory = InjectorUtils.provideMainViewModelFactory(context = context)
     }
 
     private fun setupFactoryForTag(context: Context, tagId: Long) {
-        factory = InjectorUtils.provideTaskListViewModelFactory(context = context, tagId = tagId)
+        // factory = InjectorUtils.provideTaskListViewModelFactory(context = context, tagId = tagId)
+        factory = InjectorUtils.provideMainViewModelFactory(context = context, tagId = tagId)
     }
 
     private fun setupFactoryForProject(context: Context, projectId: Long) {
-        factory = InjectorUtils.provideTaskListViewModelFactory(context = context, projectId = projectId)
+        // factory = InjectorUtils.provideTaskListViewModelFactory(context = context, projectId = projectId)
+        factory = InjectorUtils.provideMainViewModelFactory(context = context, projectId = projectId)
     }
 
     private fun subscribeUi(adapter: SimpleTaskAdapter) {

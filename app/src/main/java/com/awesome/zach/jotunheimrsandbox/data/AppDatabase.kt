@@ -15,7 +15,7 @@ import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.workers.SeedDatabaseWorker
 
 @Database(entities = [Color::class, Tag::class, Project::class, Task::class, TaskTagAssignment::class],
-          version = 2)
+          version = 1)
 @TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 

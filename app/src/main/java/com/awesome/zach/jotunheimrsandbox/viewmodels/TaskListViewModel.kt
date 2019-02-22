@@ -22,32 +22,32 @@ class TaskListViewModel internal constructor(taskRepository: TaskRepository,
     }
 
     init {
-        val liveTasksList = taskRepository.getAllTasksLive()
-        tasksList.addSource(liveTasksList, tasksList::setValue)
+        // val liveTasksList = taskRepository.getAllTasksLive()
+        // tasksList.addSource(liveTasksList, tasksList::setValue)
 
-        // if (projectId == null) {
-        //     // no projectId was passed
-        //     if (tagId == null) {
-        //         // both are null, return all tasks
-        //         val liveTasksList = taskRepository.getAllTasksLive()
-        //         tasksList.addSource(liveTasksList, tasksList::setValue)
-        //     } else {
-        //         // projectId is null, but a tagId was passed, return tasks for that tagId
-        //         val liveTasksList = taskTagAssignmentRepository.getTasksWithTagLive(tagId)
-        //         tasksList.addSource(liveTasksList, tasksList::setValue)
-        //     }
-        // } else {
-        //     // projectId was passed
-        //     if (tagId == null) {
-        //         // tagId is null, return tasks for the projectId
-        //         val liveTasksList = taskRepository.getTasksForProjectLive(projectId)
-        //         tasksList.addSource(liveTasksList, tasksList::setValue)
-        //     } else {
-        //         // both were passed, return tasks for the projectID but filter for the tags first
-        //         // TODO: implement this, for now throw an exception
-        //         throw IllegalArgumentException("values found for both tagId and projectId. only pass one of them, not both")
-        //     }
-        // }
+        if (projectId == null) {
+            // no projectId was passed
+            if (tagId == null) {
+                // both are null, return all tasks
+                val liveTasksList = taskRepository.getAllTasksLive()
+                tasksList.addSource(liveTasksList, tasksList::setValue)
+            } else {
+                // projectId is null, but a tagId was passed, return tasks for that tagId
+                val liveTasksList = taskTagAssignmentRepository.getTasksWithTagLive(tagId)
+                tasksList.addSource(liveTasksList, tasksList::setValue)
+            }
+        } else {
+            // projectId was passed
+            if (tagId == null) {
+                // tagId is null, return tasks for the projectId
+                val liveTasksList = taskRepository.getTasksForProjectLive(projectId)
+                tasksList.addSource(liveTasksList, tasksList::setValue)
+            } else {
+                // both were passed, return tasks for the projectID but filter for the tags first
+                // TODO: implement this, for now throw an exception
+                throw IllegalArgumentException("values found for both tagId and projectId. only pass one of them, not both")
+            }
+        }
     }
 
     fun getTasks() = tasksList
