@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/taskListFragment"
+        android:title="@string/tasks" />
+
+    <item
+        android:id="@+id/projectListFragment"
+        android:title="@string/projects" />
+
+    <item
+        android:id="@+id/tagListFragment"
+        android:title="@string/tags" />
+</menu>

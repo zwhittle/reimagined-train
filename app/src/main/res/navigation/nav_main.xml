@@ -10,6 +10,15 @@
         <action
             android:id="@+id/action_taskListFragment_to_projectListFragment"
             app:destination="@id/projectListFragment" />
+        <action
+            android:id="@+id/action_taskListFragment_to_newTaskFragment"
+            app:destination="@id/newTaskFragment" />
+        <action
+            android:id="@+id/action_taskListFragment_to_createEditProjectFragment"
+            app:destination="@id/createEditProjectFragment" />
+        <action
+            android:id="@+id/action_taskListFragment_to_createEditTagFragment"
+            app:destination="@id/createEditTagFragment" />
     </fragment>
     <fragment
         android:id="@+id/projectListFragment"
@@ -22,9 +31,17 @@
     <fragment
         android:id="@+id/tagListFragment"
         android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.TagListFragment"
-        android:label="TagListFragment">
-        <action
-            android:id="@+id/action_tagListFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment" />
-    </fragment>
+        android:label="TagListFragment"/>
+    <fragment
+        android:id="@+id/newTaskFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.NewTaskFragment"
+        android:label="NewTaskFragment" />
+    <fragment
+        android:id="@+id/createEditProjectFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.CreateEditProjectFragment"
+        android:label="CreateEditProjectFragment" />
+    <fragment
+        android:id="@+id/createEditTagFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.CreateEditTagFragment"
+        android:label="CreateEditTagFragment" />
 </navigation>

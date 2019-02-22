@@ -6,6 +6,7 @@
     <LinearLayout
         android:id="@+id/layoutNewTaskContainer"
         android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -15,6 +16,8 @@
             android:layout_height="wrap_content"
             android:hint="@string/new_task_hint"
             android:importantForAutofill="no"
+            android:keyboardNavigationCluster="true"
+            android:focusedByDefault="true"
             android:inputType="textAutoCorrect" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

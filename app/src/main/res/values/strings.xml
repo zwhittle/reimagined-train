@@ -8,4 +8,9 @@
     <string name="name">Name</string>
     <string name="save">Save</string>
     <string name="new_task_hint">Live in the name of the ghost #project $tag</string>
+    <string name="projects">Projects</string>
+    <string name="tags">Tags</string>
+    <string name="tasks">Tasks</string>
+    <string name="smoke_weed_everyday">smoke weed everyday</string>
+    <string name="_420_blaze_it_nerds">420 blaze it, nerds!</string>
 </resources>

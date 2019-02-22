@@ -36,43 +36,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // setContentView(R.layout.activity_main)
-        val binding = setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding = setContentView<ActivityMainBinding>(this,
+                                                          R.layout.activity_main)
 
-        // addFragment(TagListFragment(), R.id.layoutContainerMain, FRAGMENT_TAG_LIST)
         activeFragment = FRAGMENT_TAG_LIST
 
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        appBarConfiguration = AppBarConfiguration(navController.graph, null)
+        navController = Navigation.findNavController(this,
+                                                     R.id.nav_host_fragment)
+        Navigation.setViewNavController(fab,
+                                        navController)
+        appBarConfiguration = AppBarConfiguration(navController.graph,
+                                                  binding.layoutDrawer)
 
         setSupportActionBar(binding.toolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController,
+                                        appBarConfiguration)
 
         binding.navigationView.setupWithNavController(navController)
 
-        fab.setOnClickListener {
-            swapFragments()
-        }
+        fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.newTaskFragment))
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    private fun swapFragments() {
-        activeFragment = when (activeFragment) {
-            FRAGMENT_TAG_LIST -> {
-                // replaceFragment(ProjectListFragment(), R.id.layoutContainerMain, FRAGMENT_PROJECT_LIST)
-                FRAGMENT_PROJECT_LIST
-            }
-            FRAGMENT_PROJECT_LIST -> {
-                // replaceFragment(TaskListFragment(), R.id.layoutContainerMain, FRAGMENT_TASK_LIST)
-                FRAGMENT_TASK_LIST
-            }
-            else -> {
-                // replaceFragment(TagListFragment(), R.id.layoutContainerMain, FRAGMENT_TAG_LIST)
-                FRAGMENT_TAG_LIST
-            }
-        }
-
     }
 }
