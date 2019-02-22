@@ -16,6 +16,7 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.viewmodels.ProjectListViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 class ProjectListFragment : Fragment() {
 
