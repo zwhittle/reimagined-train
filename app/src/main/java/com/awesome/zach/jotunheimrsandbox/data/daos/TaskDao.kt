@@ -93,7 +93,11 @@ interface TaskDao {
 
     @Query("SELECT * FROM task_table WHERE completed == :completed AND projectId == :projectId ORDER BY date_end ASC")
     fun getTasksForProject(projectId: Long,
-                           completed: Boolean = false): List<Task>
+                               completed: Boolean = false): List<Task>
+
+    @Query("SELECT * FROM task_table WHERE completed == :completed AND projectId == :projectId ORDER BY date_end ASC")
+    fun getTasksForProjectLive(projectId: Long,
+                           completed: Boolean = false): LiveData<List<Task>>
 
     @Query("SELECT * FROM task_table WHERE completed == :completed AND date_end BETWEEN :rangeStart AND :rangeEnd ORDER BY date_end ASC")
     fun getTasksDueInRange(rangeStart: LocalDate,

@@ -51,7 +51,7 @@ class TaskTagAssignmentRepository private constructor(private val taskTagAssignm
 
     fun getAllTaskTagAssignments() = taskTagAssignmentDao.getAllTaskTagAssignments()
 
-    fun getTasksWithTag(tagId: Long) = taskTagAssignmentDao.getTasksWithTag(tagId)
+    fun getTasksWithTagLive(tagId: Long) = taskTagAssignmentDao.getTasksWithTagLive(tagId)
 
     fun getTagsForTask(taskId: Long) = taskTagAssignmentDao.getTagsForTask(taskId)
 

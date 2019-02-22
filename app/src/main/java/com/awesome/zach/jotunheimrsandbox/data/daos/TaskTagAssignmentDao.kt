@@ -1,5 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox.data.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
@@ -44,7 +45,7 @@ interface TaskTagAssignmentDao {
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM task_table INNER JOIN task_tag_join_table ON task_table.taskId = task_tag_join_table.taskId WHERE task_tag_join_table.tagId = :tagId")
-    fun getTasksWithTag(tagId: Long): List<Task>
+    fun getTasksWithTagLive(tagId: Long): LiveData<List<Task>>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM tag_table INNER JOIN task_tag_join_table ON tag_table.tagId = task_tag_join_table.tagId WHERE task_tag_join_table.taskId = :taskId")

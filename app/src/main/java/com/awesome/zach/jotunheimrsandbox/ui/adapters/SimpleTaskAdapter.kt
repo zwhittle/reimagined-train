@@ -13,7 +13,7 @@ import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
 import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModel
 
-class SimpleTaskAdapter(private val viewModel: TaskListViewModel) : RecyclerView.Adapter<SimpleTaskAdapter.SimpleTaskViewHolder>() {
+class SimpleTaskAdapter : RecyclerView.Adapter<SimpleTaskAdapter.SimpleTaskViewHolder>() {
 
     private var mTasks: List<Task>? = null
 
@@ -34,7 +34,8 @@ class SimpleTaskAdapter(private val viewModel: TaskListViewModel) : RecyclerView
         val task = mTasks?.get(position)
         holder.apply {
             if (task != null) {
-                bind(Navigation.createNavigateOnClickListener(R.id.tagListFragment), task)
+                // bind(Navigation.createNavigateOnClickListener(R.id.projectListFragment), task)
+                bind(task)
                 itemView.tag = task
             }
         }
@@ -76,9 +77,16 @@ class SimpleTaskAdapter(private val viewModel: TaskListViewModel) : RecyclerView
     }
 
     class SimpleTaskViewHolder(private val binding: ListItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(listener: View.OnClickListener, item: Task) {
+        // fun bind(listener: View.OnClickListener, item: Task) {
+        //     binding.apply {
+        //         clickListener = listener
+        //         task = item
+        //         executePendingBindings()
+        //     }
+        // }
+
+        fun bind(item: Task) {
             binding.apply {
-                clickListener = listener
                 task = item
                 executePendingBindings()
             }

@@ -35,6 +35,7 @@
             <TextView
                 android:id="@+id/tvListItemTaskLabel"
                 android:layout_width="wrap_content"
+                android:textColor="@android:color/holo_purple"
                 android:layout_height="wrap_content"
                 android:text="@{task.name}"
                 tools:text="Home" />
@@ -60,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{String.valueOf(task.projectId)}"
-                tools:text="Jotunheimr" />
+                tools:text="25" />
         </LinearLayout>
     </LinearLayout>
 </layout>

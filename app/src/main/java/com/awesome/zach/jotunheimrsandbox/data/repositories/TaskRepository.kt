@@ -68,7 +68,7 @@ class TaskRepository private constructor(private val taskDao: TaskDao) {
 
     fun getTaskById(taskId: Long) = taskDao.getTaskById(taskId)
 
-    fun getTasksForProject(projectId: Long) = taskDao.getTasksForProject(projectId)
+    fun getTasksForProjectLive(projectId: Long) = taskDao.getTasksForProjectLive(projectId)
 
     fun getTasksWithName(name: String) = taskDao.getTasksWithName(name)
 

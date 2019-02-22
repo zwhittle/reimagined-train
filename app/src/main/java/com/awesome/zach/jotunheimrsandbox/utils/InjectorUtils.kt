@@ -12,7 +12,7 @@ object InjectorUtils {
     private fun getColorRepository(context: Context) : ColorRepository {
         return ColorRepository.getInstance(AppDatabase.getDatabase(context.applicationContext).colorDao())
     }
-    
+
     private fun getTagRepository(context: Context) : TagRepository {
         return TagRepository.getInstance(AppDatabase.getDatabase(context.applicationContext).tagDao())
     }
@@ -27,11 +27,11 @@ object InjectorUtils {
         return ProjectListViewModelFactory(repository)
     }
 
-    fun provideTaskListViewModelFactory(context: Context) : TaskListViewModelFactory {
-        val repository = getTaskRepository(context)
-        return TaskListViewModelFactory(repository)
+    fun provideTaskListViewModelFactory(context: Context, projectId: Long? = null, tagId: Long? = null) : TaskListViewModelFactory {
+        val taskRepository = getTaskRepository(context)
+        val taskTagAssignmentRepository = getTaskTagAssignmentRepository(context)
+        return TaskListViewModelFactory(taskRepository, taskTagAssignmentRepository, projectId, tagId)
     }
-
 
     private fun getProjectRepository(context: Context) : ProjectRepository {
         return ProjectRepository.getInstance(AppDatabase.getDatabase(context.applicationContext).projectDao())
@@ -43,5 +43,5 @@ object InjectorUtils {
     private fun getTaskTagAssignmentRepository(context: Context) : TaskTagAssignmentRepository {
         return TaskTagAssignmentRepository.getInstance(AppDatabase.getDatabase(context.applicationContext).taskTagAssignmentDao())
     }
-    
+
 }
