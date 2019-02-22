@@ -7,6 +7,10 @@
         <import type="android.graphics.Color"/>
         <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils"/>
         <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="task"
             type="com.awesome.zach.jotunheimrsandbox.data.entities.Task" />
     </data>
@@ -16,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:onClick="@{clickListener}"
         android:padding="5dp">
 
         <TextView

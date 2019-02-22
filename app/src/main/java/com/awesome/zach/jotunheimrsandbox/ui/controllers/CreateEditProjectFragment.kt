@@ -7,25 +7,24 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.awesome.zach.jotunheimrsandbox.R
+import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectCreateEditBinding
 
-class NewTagFragment : Fragment() {
+class CreateEditProjectFragment : Fragment() {
 
     companion object {
-        const val LOG_TAG = "NewTagFragment"
+        const val LOG_TAG = "CreateEditProjectFragment"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-                             ): View? {
+        savedInstanceState: Bundle?): View? {
 
-        val binding =
-            DataBindingUtil.inflate<com.awesome.zach.jotunheimrsandbox.databinding.FragmentNewTagBinding>(
-                inflater,
-                R.layout.fragment_new_tag,
-                container,
-                false)
+        val binding = DataBindingUtil.inflate<FragmentProjectCreateEditBinding>(
+            inflater,
+            R.layout.fragment_project_create_edit,
+            container,
+            false)
 
         return binding.root
     }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.R
@@ -33,7 +34,7 @@ class SimpleProjectAdapter : RecyclerView.Adapter<SimpleProjectAdapter.SimplePro
         val project = mProjects?.get(position)
         holder.apply {
             if (project != null) {
-                bind(project)
+                bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment), project)
                 itemView.tag = project
             }
         }
@@ -70,9 +71,10 @@ class SimpleProjectAdapter : RecyclerView.Adapter<SimpleProjectAdapter.SimplePro
         }
     }
 
-    class SimpleProjectViewHolder(private val binding: com.awesome.zach.jotunheimrsandbox.databinding.ListItemProjectBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Project) {
+    class SimpleProjectViewHolder(private val binding: ListItemProjectBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(listener: View.OnClickListener, item: Project) {
             binding.apply {
+                clickListener = listener
                 project = item
                 val textColor = Color.parseColor(Utils.inverseHex(item.colorHex))
                 binding.tvListItemId.setTextColor(textColor)

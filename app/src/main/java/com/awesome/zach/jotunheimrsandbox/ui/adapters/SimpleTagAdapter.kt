@@ -2,8 +2,10 @@ package com.awesome.zach.jotunheimrsandbox.ui.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.R
@@ -33,7 +35,7 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
         val tag = mTags?.get(position)
         holder.apply {
             if (tag != null) {
-                bind(tag)
+                bind(Navigation.createNavigateOnClickListener(R.id.projectListFragment), tag)
                 itemView.tag = tag
             }
         }
@@ -71,8 +73,9 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
     }
 
     class SimpleTagViewHolder(private val binding: ListItemTagBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Tag) {
+        fun bind(listener: View.OnClickListener, item: Tag) {
             binding.apply {
+                clickListener = listener
                 tag = item
                 val textColor = Color.parseColor(Utils.inverseHex(item.colorHex))
                 binding.tvListItemId.setTextColor(textColor)

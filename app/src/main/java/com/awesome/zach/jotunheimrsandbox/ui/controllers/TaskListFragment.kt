@@ -8,6 +8,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskListBinding
@@ -28,13 +30,15 @@ class TaskListFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         val binding = DataBindingUtil.inflate<FragmentTaskListBinding>(inflater,
-                                                                          R.layout.fragment_task_list,
-                                                                          container,
-                                                                          false)
+                                                                       R.layout.fragment_task_list,
+                                                                       container,
+                                                                       false)
         val context = binding.root.context
 
         val factory = InjectorUtils.provideTaskListViewModelFactory(context)
-        viewModel = ViewModelProviders.of(this, factory).get(TaskListViewModel::class.java)
+        viewModel = ViewModelProviders.of(this,
+                                          factory)
+            .get(TaskListViewModel::class.java)
 
         val adapter = SimpleTaskAdapter()
         binding.rvTaskList.adapter = adapter
@@ -46,8 +50,10 @@ class TaskListFragment : Fragment() {
 
     private fun subscribeUi(adapter: SimpleTaskAdapter) {
 
-        viewModel.getTasks().observe(viewLifecycleOwner, Observer { tasks ->
-            if (tasks != null) adapter.setTasksList(tasks)
-        })
+        viewModel.getTasks()
+            .observe(viewLifecycleOwner,
+                     Observer { tasks ->
+                         if (tasks != null) adapter.setTasksList(tasks)
+                     })
     }
 }

@@ -6,6 +6,11 @@
     <data>
         <import type="android.graphics.Color"/>
         <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils"/>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
         <variable
             name="project"
             type="com.awesome.zach.jotunheimrsandbox.data.entities.Project" />
@@ -16,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:onClick="@{clickListener}"
         android:background="@{Color.parseColor(project.colorHex)}"
         android:padding="5dp">
 
