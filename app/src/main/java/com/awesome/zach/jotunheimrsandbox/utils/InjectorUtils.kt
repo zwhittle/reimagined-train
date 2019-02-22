@@ -4,9 +4,6 @@ import android.content.Context
 import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.data.repositories.*
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
-import com.awesome.zach.jotunheimrsandbox.viewmodels.ProjectListViewModelFactory
-import com.awesome.zach.jotunheimrsandbox.viewmodels.TagListViewModelFactory
-import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModelFactory
 
 object InjectorUtils {
 
@@ -33,24 +30,6 @@ object InjectorUtils {
                                     projectId = projectId,
                                     taskId = taskId,
                                     tagId = tagId)
-    }
-
-    fun provideTagListViewModelFactory(context: Context): TagListViewModelFactory {
-        val repository = getTagRepository(context)
-        return TagListViewModelFactory(repository)
-    }
-
-    fun provideProjectListViewModelFactory(context: Context): ProjectListViewModelFactory {
-        val repository = getProjectRepository(context)
-        return ProjectListViewModelFactory(repository)
-    }
-
-    fun provideTaskListViewModelFactory(context: Context, projectId: Long?,
-                                        tagId: Long?): TaskListViewModelFactory {
-        val taskRepository = getTaskRepository(context)
-        val taskTagAssignmentRepository = getTaskTagAssignmentRepository(context)
-        return TaskListViewModelFactory(taskRepository, taskTagAssignmentRepository, projectId,
-                                        tagId)
     }
 
     private fun getProjectRepository(context: Context): ProjectRepository {

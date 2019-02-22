@@ -8,16 +8,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
-import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.viewmodels.ProjectListViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 
 class ProjectListFragment : Fragment() {
 

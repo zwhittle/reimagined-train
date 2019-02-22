@@ -1,17 +1,13 @@
 package com.awesome.zach.jotunheimrsandbox.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.R
-import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
-import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModel
 
 class SimpleTaskAdapter : RecyclerView.Adapter<SimpleTaskAdapter.SimpleTaskViewHolder>() {
 

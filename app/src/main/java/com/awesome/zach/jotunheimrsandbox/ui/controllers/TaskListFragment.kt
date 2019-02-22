@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,9 +17,6 @@ import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
-import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModel
-import com.awesome.zach.jotunheimrsandbox.viewmodels.TaskListViewModelFactory
-import java.lang.ClassCastException
 
 class TaskListFragment : Fragment() {
 
