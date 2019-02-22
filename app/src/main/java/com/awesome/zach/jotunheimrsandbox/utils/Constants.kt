@@ -6,6 +6,7 @@ import java.util.*
 class Constants {
     companion object {
         const val DB_NAME = "jotunheimr_database"
-        val dateFormatter = SimpleDateFormat("yyy-MM-dd", Locale.ENGLISH)
+        const val ARGUMENT_PROJECT = "arg-project"
+
     }
 }

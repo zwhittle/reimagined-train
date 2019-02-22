@@ -2,6 +2,7 @@ package com.awesome.zach.jotunheimrsandbox.data.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import java.time.LocalDate
 

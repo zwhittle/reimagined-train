@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.data.repositories.TaskRepository
 
-class TaskListViewModel internal constructor(taskRepository: TaskRepository) : ViewModel() {
+class TaskListViewModel internal constructor(private val taskRepository: TaskRepository) :
+    ViewModel() {
 
     private val tasksList = MediatorLiveData<List<Task>>()
 
@@ -19,4 +20,5 @@ class TaskListViewModel internal constructor(taskRepository: TaskRepository) : V
     }
 
     fun getTasks() = tasksList
+
 }

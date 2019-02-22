@@ -40,7 +40,7 @@ class TaskListFragment : Fragment() {
                                           factory)
             .get(TaskListViewModel::class.java)
 
-        val adapter = SimpleTaskAdapter()
+        val adapter = SimpleTaskAdapter(viewModel)
         binding.rvTaskList.adapter = adapter
         binding.rvTaskList.layoutManager = LinearLayoutManager(context)
         subscribeUi(adapter)

@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.graphics.Color"/>
-        <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils"/>
+
+        <import type="android.graphics.Color" />
+
+        <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils" />
+
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -16,26 +19,48 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/listItemTopLayout"
+        android:id="@+id/listItemTaskTopLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:onClick="@{clickListener}"
-        android:padding="5dp">
+        android:orientation="vertical"
+        android:padding="@dimen/margin_small">
 
-        <TextView
-            android:id="@+id/tvListItemId"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/listItemTaskRow1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:text="@{String.valueOf(task.taskId)}"
-            tools:text="45" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvListItemLabel"
-            android:layout_width="wrap_content"
-            android:text="@{task.name}"
+            <TextView
+                android:id="@+id/tvListItemTaskLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{task.name}"
+                tools:text="Home" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/listItemTaskRow2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Home" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvListItemTaskId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:text="@{String.valueOf(task.taskId)}"
+                tools:text="45" />
+
+            <TextView
+                android:id="@+id/tvListItemTaskProject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(task.projectId)}"
+                tools:text="Jotunheimr" />
+        </LinearLayout>
     </LinearLayout>
 </layout>
