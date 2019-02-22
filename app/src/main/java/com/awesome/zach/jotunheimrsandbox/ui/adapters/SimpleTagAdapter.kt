@@ -1,6 +1,7 @@
 package com.awesome.zach.jotunheimrsandbox.ui.adapters
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTagBinding
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTagBinding.bind
+import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 
 class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHolder>() {
@@ -35,7 +37,9 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
         val tag = mTags?.get(position)
         holder.apply {
             if (tag != null) {
-                bind(Navigation.createNavigateOnClickListener(R.id.projectListFragment), tag)
+                val args = Bundle()
+                args.putLong(Constants.ARGUMENT_TAG, tag.tagId)
+                bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment, args), tag)
                 itemView.tag = tag
             }
         }
@@ -78,8 +82,8 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
                 clickListener = listener
                 tag = item
                 val textColor = Color.parseColor(Utils.inverseHex(item.colorHex))
-                binding.tvListItemId.setTextColor(textColor)
-                binding.tvListItemLabel.setTextColor(textColor)
+                // binding.tvListItemId.setTextColor(textColor)
+                // binding.tvListItemLabel.setTextColor(textColor)
                 executePendingBindings()
             }
         }

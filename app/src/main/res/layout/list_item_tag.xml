@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.graphics.Color"/>
-        <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils"/>
+
+        <import type="android.graphics.Color" />
+
+        <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils" />
 
         <variable
             name="clickListener"
@@ -20,24 +22,43 @@
         android:id="@+id/listItemTopLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:onClick="@{clickListener}"
-        android:background="@{Color.parseColor(tag.colorHex)}"
-        android:padding="5dp">
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/margin_small"
+        android:paddingTop="@dimen/margin_normal"
+        android:paddingEnd="@dimen/margin_normal">
 
-        <TextView
-            android:id="@+id/tvListItemId"
-            android:layout_width="wrap_content"
+
+        <ImageView
+            android:id="@+id/ivListItemTagColor"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="15dp"
-            android:text="@{String.valueOf(tag.tagId)}"
-            tools:text="45" />
+            android:layout_gravity="center_vertical|start"
+            android:layout_weight="1"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/margin_large"
+            android:src="@drawable/ic_label_black_12dp"
+            android:tint="@{Color.parseColor(tag.colorHex)}"
+            android:tintMode="src_over" />
 
         <TextView
             android:id="@+id/tvListItemLabel"
-            android:layout_width="wrap_content"
-            android:text="@{tag.name}"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@{tag.name}"
             tools:text="Home" />
+
+        <TextView
+            android:id="@+id/tvListItemId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="@{String.valueOf(tag.tagId)}"
+            tools:text="45" />
+
+
     </LinearLayout>
 </layout>

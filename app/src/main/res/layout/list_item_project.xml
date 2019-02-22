@@ -29,7 +29,7 @@
         android:paddingTop="@dimen/margin_normal">
 
         <ImageView
-            android:id="@+id/ivListItemColor"
+            android:id="@+id/ivListItemProjectColor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|start"
