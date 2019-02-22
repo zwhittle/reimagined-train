@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_main"
+    app:startDestination="@id/taskListFragment">
+
+    <fragment
+        android:id="@+id/taskListFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.TaskListFragment"
+        android:label="TaskListFragment" >
+        <action
+            android:id="@+id/action_taskListFragment_to_newProjectFragment"
+            app:destination="@id/newProjectFragment" />
+        <action
+            android:id="@+id/action_taskListFragment_to_newTagFragment"
+            app:destination="@id/newTagFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newTagFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.NewTagFragment"
+        android:label="NewTagFragment" >
+        <action
+            android:id="@+id/action_newTagFragment_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newProjectFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.NewProjectFragment"
+        android:label="NewProjectFragment" >
+        <action
+            android:id="@+id/action_newProjectFragment_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
+    </fragment>
+</navigation>
