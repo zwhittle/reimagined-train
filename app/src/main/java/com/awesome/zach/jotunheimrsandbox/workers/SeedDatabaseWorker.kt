@@ -15,7 +15,6 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
     override fun doWork(): Result {
         return try {
             val db = AppDatabase.getDatabase(applicationContext)
-//            val dbSeeder = DBSeeder.getInstance(applicationContext)
             val dbSeeder = DBSeeder(db)
 
             seedColors(db, dbSeeder)

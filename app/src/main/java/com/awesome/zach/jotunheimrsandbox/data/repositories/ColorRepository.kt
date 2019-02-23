@@ -51,7 +51,13 @@ class ColorRepository private constructor(
         }
     }
 
-    fun getAllColors() = colorDao.getAllColors()
+    fun getAllColorsLive() = colorDao.getAllColorsLive()
+
+    suspend fun getAllColors() : List<Color> {
+        return withContext(IO) {
+            colorDao.getAllColors()
+        }
+    }
 
     fun getColorById(colorId: Long) = colorDao.getColorById(colorId)
 

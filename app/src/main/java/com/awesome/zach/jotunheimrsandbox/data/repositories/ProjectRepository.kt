@@ -1,6 +1,5 @@
 package com.awesome.zach.jotunheimrsandbox.data.repositories
 
-import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.data.daos.ProjectDao
 import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import kotlinx.coroutines.Dispatchers.IO
@@ -50,7 +49,11 @@ class ProjectRepository private constructor(private val projectDao: ProjectDao) 
         }
     }
 
-    fun getAllProjects() = projectDao.getAllProjects()
+    suspend fun getAllProjects() : List<Project> {
+        return withContext(IO) {
+            projectDao.getAllProjects()
+        }
+    }
 
     fun getAllProjectsLive() = projectDao.getAllProjectsLive()
 

@@ -19,17 +19,18 @@ object InjectorUtils {
 
     fun provideMainViewModelFactory(context: Context, projectId: Long? = null, taskId: Long? = null,
                                     tagId: Long? = null): MainViewModelFactory {
+
+        val colorRepository = getColorRepository(context)
         val taskRepository = getTaskRepository(context)
         val projectRepository = getProjectRepository(context)
         val tagRepository = getTagRepository(context)
         val taskTagAssignmentRepository = getTaskTagAssignmentRepository(context)
-        return MainViewModelFactory(taskRepository = taskRepository,
+        return MainViewModelFactory(colorRepository = colorRepository,
+                                    taskRepository = taskRepository,
                                     projectRepository = projectRepository,
                                     tagRepository = tagRepository,
                                     taskTagAssignmentRepository = taskTagAssignmentRepository,
-                                    projectId = projectId,
-                                    taskId = taskId,
-                                    tagId = tagId)
+                                    projectId = projectId, taskId = taskId, tagId = tagId)
     }
 
     private fun getProjectRepository(context: Context): ProjectRepository {

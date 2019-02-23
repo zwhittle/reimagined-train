@@ -1,5 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox.data.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.awesome.zach.jotunheimrsandbox.data.entities.Color
 
@@ -48,6 +49,9 @@ interface ColorDao {
     // returns the count of deleted rows
     @Query("DELETE FROM color_table")
     fun deleteAllColors() : Int
+
+    @Query("SELECT * FROM color_table ORDER BY colorId ASC")
+    fun getAllColorsLive() : LiveData<List<Color>>
 
     @Query("SELECT * FROM color_table ORDER BY colorId ASC")
     fun getAllColors() : List<Color>

@@ -15,12 +15,17 @@
             android:id="@+id/etNewProjectName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
             android:importantForAutofill="no"
+            android:foregroundTintMode="src_over"
+            android:foregroundTint="@android:color/white"
             android:inputType="textAutoCorrect" />
 
         <Spinner
             android:id="@+id/spNewProjectColor"
+            android:foregroundTint="@android:color/white"
             android:layout_width="match_parent"
+            android:foregroundTintMode="src_over"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 </layout>

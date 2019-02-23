@@ -2,21 +2,22 @@ package com.awesome.zach.jotunheimrsandbox.viewmodels
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
+import com.awesome.zach.jotunheimrsandbox.data.entities.Color
 import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
-import com.awesome.zach.jotunheimrsandbox.data.repositories.ProjectRepository
-import com.awesome.zach.jotunheimrsandbox.data.repositories.TagRepository
-import com.awesome.zach.jotunheimrsandbox.data.repositories.TaskRepository
-import com.awesome.zach.jotunheimrsandbox.data.repositories.TaskTagAssignmentRepository
-import java.lang.IllegalArgumentException
+import com.awesome.zach.jotunheimrsandbox.data.repositories.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class MainViewModel internal constructor(taskRepository: TaskRepository,
-                                         projectRepository: ProjectRepository,
+class MainViewModel internal constructor(val colorRepository: ColorRepository,
+                                         val taskRepository: TaskRepository,
+                                         val projectRepository: ProjectRepository,
                                          tagRepository: TagRepository,
                                          taskTagAssignmentRepository: TaskTagAssignmentRepository,
-                                         projectId: Long? = null,
-                                         tagId: Long? = null,
+                                         projectId: Long? = null, tagId: Long? = null,
                                          taskId: Long? = null) : ViewModel() {
     companion object {
         const val LOG_TAG = "MainViewModel"
@@ -25,11 +26,37 @@ class MainViewModel internal constructor(taskRepository: TaskRepository,
     private val tasksList = MediatorLiveData<List<Task>>()
     private val projectsList = MediatorLiveData<List<Project>>()
     private val tagsList = MediatorLiveData<List<Tag>>()
+    private val colorsList = MediatorLiveData<List<Color>>()
+    // private var colorsList = listOf<Color>()
+
+    /**
+     * This is the job for all coroutines started by this ViewModel.
+     *
+     * Cancelling this job will cancel all coroutines started by this ViewModel.
+     */
+    private val viewModelJob = Job()
+
+    /**
+     * This is the scope for all coroutines launched by [PlantDetailViewModel].
+     *
+     * Since we pass [viewModelJob], you can cancel all coroutines launched by [viewModelScope] by calling
+     * viewModelJob.cancel().  This is called in [onCleared].
+     */
+    private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     init {
         setupTasksList(taskRepository, taskTagAssignmentRepository, projectId, tagId)
         setupProjectsList(projectRepository)
         setupTagsList(tagRepository)
+        setupColorsList(colorRepository)
+    }
+
+    private fun setupColorsList(colorRepository: ColorRepository) {
+        val liveColorsList = colorRepository.getAllColorsLive()
+        colorsList.addSource(liveColorsList, colorsList::setValue)
+        // viewModelScope.launch {
+        //     colorsList = colorRepository.getAllColors()
+        // }
     }
 
     private fun setupTagsList(tagRepository: TagRepository) {
@@ -66,7 +93,8 @@ class MainViewModel internal constructor(taskRepository: TaskRepository,
             } else {
                 // both were passed, return tasks for the projectID but filter for the tags first
                 // TODO: implement this, for now throw an exception
-                throw IllegalArgumentException("values found for both tagId and projectId. only pass one of them, not both")
+                throw IllegalArgumentException(
+                    "values found for both tagId and projectId. only pass one of them, not both")
             }
         }
     }
@@ -76,4 +104,24 @@ class MainViewModel internal constructor(taskRepository: TaskRepository,
     fun getProjects() = projectsList
 
     fun getTags() = tagsList
+
+    fun getColors() = colorsList
+
+    fun addTaskToDb(name: String) {
+        viewModelScope.launch {
+            val pid = projectRepository.getAllProjects()[0].projectId
+
+            val task = Task(name = name, projectId = pid)
+            taskRepository.insertTask(task)
+        }
+    }
+
+    fun addProjectToDb(name: String, colorId: Long? = null) {
+        viewModelScope.launch {
+            val cid = colorId ?: colorRepository.getAllColors()[0].colorId
+
+            val project = Project(name = name, colorId = cid)
+            projectRepository.insertProject(project)
+        }
+    }
 }

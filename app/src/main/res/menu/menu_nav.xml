@@ -12,4 +12,12 @@
     <item
         android:id="@+id/tagListFragment"
         android:title="@string/tags" />
+
+    <item
+        android:id="@+id/createEditProjectFragment"
+        android:title="@string/new_project" />
+
+    <item
+        android:id="@+id/createEditTagFragment"
+        android:title="@string/new_tag" />
 </menu>

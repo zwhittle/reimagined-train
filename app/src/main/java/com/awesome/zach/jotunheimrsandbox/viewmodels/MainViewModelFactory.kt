@@ -2,12 +2,10 @@ package com.awesome.zach.jotunheimrsandbox.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.awesome.zach.jotunheimrsandbox.data.repositories.ProjectRepository
-import com.awesome.zach.jotunheimrsandbox.data.repositories.TagRepository
-import com.awesome.zach.jotunheimrsandbox.data.repositories.TaskRepository
-import com.awesome.zach.jotunheimrsandbox.data.repositories.TaskTagAssignmentRepository
+import com.awesome.zach.jotunheimrsandbox.data.repositories.*
 
-class MainViewModelFactory(private val taskRepository: TaskRepository,
+class MainViewModelFactory(private val colorRepository: ColorRepository,
+                           private val taskRepository: TaskRepository,
                            private val projectRepository: ProjectRepository,
                            private val tagRepository: TagRepository,
                            private val taskTagAssignmentRepository: TaskTagAssignmentRepository,
@@ -18,6 +16,7 @@ class MainViewModelFactory(private val taskRepository: TaskRepository,
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>) = MainViewModel(
+        colorRepository = colorRepository,
         taskRepository = taskRepository,
         projectRepository = projectRepository,
         tagRepository = tagRepository,
