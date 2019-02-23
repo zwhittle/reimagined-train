@@ -33,4 +33,5 @@ data class Task(
     @NonNull
     var projectId: Long,
     @ColumnInfo(name = "projectName")
-    var projectName: String? = null)
+    var projectName: String? = null,
+    var isSelected: Boolean = false)
