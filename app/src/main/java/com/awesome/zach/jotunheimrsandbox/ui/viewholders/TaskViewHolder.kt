@@ -33,6 +33,7 @@ class TaskViewHolder(
             task = item
             executePendingBindings()
         }
+        mTask = item
     }
 
     fun setChecked(b: Boolean) {

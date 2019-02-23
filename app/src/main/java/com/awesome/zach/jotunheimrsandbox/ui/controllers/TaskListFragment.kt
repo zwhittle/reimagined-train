@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskListBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.TaskAdapter
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.NewTaskAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.viewholders.TaskViewHolder
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
@@ -28,8 +28,8 @@ class TaskListFragment : Fragment(), TaskViewHolder.OnTaskSelectedListener {
     }
 
     private lateinit var binding: FragmentTaskListBinding
-    private lateinit var adapter: TaskAdapter
     private lateinit var factory: MainViewModelFactory
+    private lateinit var adapter: NewTaskAdapter
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -43,12 +43,15 @@ class TaskListFragment : Fragment(), TaskViewHolder.OnTaskSelectedListener {
         handleArguments(context)
 
         // val adapter = SimpleTaskAdapter()
-        adapter = TaskAdapter(this, true)
+        adapter = NewTaskAdapter(this, true)
+        // adapter = TaskAdapter(this, true)
 
-        subscribeUi(adapter)
+
 
         binding.rvTaskList.adapter = adapter
         binding.rvTaskList.layoutManager = LinearLayoutManager(context)
+
+        subscribeUi()
 
         return binding.root
     }
@@ -82,7 +85,8 @@ class TaskListFragment : Fragment(), TaskViewHolder.OnTaskSelectedListener {
     }
 
     // private fun subscribeUi(adapter: SimpleTaskAdapter) {
-    private fun subscribeUi(adapter: TaskAdapter) {
+    // private fun subscribeUi(adapter: TaskAdapter) {
+    private fun subscribeUi() {
         viewModel.getTasks().observe(viewLifecycleOwner, Observer { tasks ->
             if (tasks != null) adapter.setTasksList(tasks)
         })

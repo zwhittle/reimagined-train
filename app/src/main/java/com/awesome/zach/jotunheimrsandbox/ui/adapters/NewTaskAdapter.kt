@@ -10,10 +10,10 @@ import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
 import com.awesome.zach.jotunheimrsandbox.ui.viewholders.TaskViewHolder
 
-class TaskAdapter(
+class NewTaskAdapter(
     private val selectedListener: TaskViewHolder.OnTaskSelectedListener,
-    private val isMultiSelectionEnabled: Boolean
-                 ) : RecyclerView.Adapter<TaskViewHolder>(), TaskViewHolder.OnTaskSelectedListener {
+    private val isMultiSelectEnabled: Boolean
+                    ) : RecyclerView.Adapter<TaskViewHolder>(), TaskViewHolder.OnTaskSelectedListener {
 
     private var mTasks: List<Task>? = null
 
@@ -27,12 +27,14 @@ class TaskAdapter(
     override fun getItemCount() = mTasks?.size ?: 0
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = mTasks?.get(position) ?: throw Exception("task is null. bad.")
+        val task = mTasks?.get(position)
 
         holder.apply {
-            bind(task)
-            itemView.tag = task
-            setChecked(mTask.isSelected)
+            if (task != null) {
+                bind(task)
+                itemView.tag = task
+                setChecked(mTask.isSelected)
+            }
         }
     }
 
@@ -42,6 +44,7 @@ class TaskAdapter(
             notifyItemRangeInserted(0, tasks.size)
         } else {
             val result = DiffUtil.calculateDiff(TaskDiffCallback(tasks))
+            mTasks = tasks
             result.dispatchUpdatesTo(this)
         }
     }
@@ -57,7 +60,7 @@ class TaskAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (isMultiSelectionEnabled) {
+        return if (isMultiSelectEnabled) {
             TaskViewHolder.MULTI_SELECTION
         } else {
             TaskViewHolder.SINGLE_SELECTION
@@ -65,7 +68,7 @@ class TaskAdapter(
     }
 
     override fun onTaskSelected(task: Task) {
-        if (!isMultiSelectionEnabled) {
+        if (!isMultiSelectEnabled) {
             mTasks?.forEach {
                 if (it != task && it.isSelected) {
                     it.isSelected = false

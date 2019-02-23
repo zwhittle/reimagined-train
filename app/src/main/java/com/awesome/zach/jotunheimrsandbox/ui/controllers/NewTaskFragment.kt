@@ -49,7 +49,7 @@ class NewTaskFragment : Fragment() {
             return
         }
 
-        viewModel.addProjectToDb(name)
+        viewModel.addTaskToDb(name)
         activity?.supportFragmentManager?.popBackStack()
     }
 

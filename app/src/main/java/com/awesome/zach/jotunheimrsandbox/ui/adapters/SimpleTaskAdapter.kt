@@ -8,31 +8,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
-import com.awesome.zach.jotunheimrsandbox.ui.viewholders.TaskViewHolder
 
-class TaskAdapter(
-    private val selectedListener: TaskViewHolder.OnTaskSelectedListener,
-    private val isMultiSelectionEnabled: Boolean
-                 ) : RecyclerView.Adapter<TaskViewHolder>(), TaskViewHolder.OnTaskSelectedListener {
+class SimpleTaskAdapter : RecyclerView.Adapter<SimpleTaskAdapter.SimpleTaskViewHolder>() {
 
     private var mTasks: List<Task>? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SimpleTaskAdapter.SimpleTaskViewHolder {
         val binding = DataBindingUtil.inflate<ListItemTaskBinding>(
             LayoutInflater.from(parent.context), R.layout.list_item_task, parent, false
                                                                   )
-        return TaskViewHolder(binding, this)
+        return SimpleTaskViewHolder(binding)
     }
 
     override fun getItemCount() = mTasks?.size ?: 0
 
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val task = mTasks?.get(position) ?: throw Exception("task is null. bad.")
-
+    override fun onBindViewHolder(
+        holder: SimpleTaskAdapter.SimpleTaskViewHolder, position: Int
+                                 ) {
+        val task = mTasks?.get(position)
         holder.apply {
-            bind(task)
-            itemView.tag = task
-            setChecked(mTask.isSelected)
+            if (task != null) {
+                // bind(Navigation.createNavigateOnClickListener(R.id.projectListFragment), task)
+                bind(task)
+                itemView.tag = task
+            }
         }
     }
 
@@ -42,40 +41,9 @@ class TaskAdapter(
             notifyItemRangeInserted(0, tasks.size)
         } else {
             val result = DiffUtil.calculateDiff(TaskDiffCallback(tasks))
+            mTasks = tasks
             result.dispatchUpdatesTo(this)
         }
-    }
-
-    fun getSelectedTasks(): List<Task> {
-        val selectedTasks = ArrayList<Task>()
-
-        mTasks?.forEach {
-            if (it.isSelected) selectedTasks.add(it)
-        }
-
-        return selectedTasks.toList()
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (isMultiSelectionEnabled) {
-            TaskViewHolder.MULTI_SELECTION
-        } else {
-            TaskViewHolder.SINGLE_SELECTION
-        }
-    }
-
-    override fun onTaskSelected(task: Task) {
-        if (!isMultiSelectionEnabled) {
-            mTasks?.forEach {
-                if (it != task && it.isSelected) {
-                    it.isSelected = false
-                } else if (it == task && it.isSelected) {
-                    it.isSelected = true
-                }
-            }
-            notifyDataSetChanged()
-        }
-        selectedListener.onTaskSelected(task)
     }
 
     inner class TaskDiffCallback(private val tasks: List<Task>) : DiffUtil.Callback() {
@@ -95,6 +63,24 @@ class TaskAdapter(
             val oldTask = mTasks?.get(oldItemPosition)
 
             return newTask.taskId == oldTask?.taskId && newTask.name == oldTask.name && newTask.date_start == oldTask.date_start && newTask.date_end == oldTask.date_end && newTask.completed == oldTask.completed && newTask.priority == oldTask.priority && newTask.projectId == oldTask.projectId
+        }
+    }
+
+    class SimpleTaskViewHolder(private val binding: ListItemTaskBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        // fun bind(listener: View.OnClickListener, item: Task) {
+        //     binding.apply {
+        //         clickListener = listener
+        //         task = item
+        //         executePendingBindings()
+        //     }
+        // }
+
+        fun bind(item: Task) {
+            binding.apply {
+                task = item
+                executePendingBindings()
+            }
         }
     }
 }
