@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class MainViewModel internal constructor(val colorRepository: ColorRepository,
                                          val taskRepository: TaskRepository,
                                          val projectRepository: ProjectRepository,
-                                         tagRepository: TagRepository,
+                                         val tagRepository: TagRepository,
                                          taskTagAssignmentRepository: TaskTagAssignmentRepository,
                                          projectId: Long? = null, tagId: Long? = null,
                                          taskId: Long? = null) : ViewModel() {
@@ -122,6 +122,15 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
 
             val project = Project(name = name, colorId = cid)
             projectRepository.insertProject(project)
+        }
+    }
+
+    fun addTagToDb(name: String, colorId: Long? = null) {
+        viewModelScope.launch {
+            val cid = colorId ?: colorRepository.getAllColors()[0].colorId
+
+            val tag = Tag(name = name, colorId = cid)
+            tagRepository.insertTag(tag)
         }
     }
 }
