@@ -17,4 +17,7 @@
     <string name="new_project">+ Project</string>
     <string name="new_tag">+ Tag</string>
     <string name="color_preview">color preview</string>
+    <string name="complete">Complete</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

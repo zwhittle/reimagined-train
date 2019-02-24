@@ -59,6 +59,14 @@ class TaskAdapter(
         return selectedTasks.toList()
     }
 
+    fun clearSelectedTasks() {
+        mTasks?.forEach {
+            if (it.isSelected) it.isSelected = false
+        }
+
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return if (isMultiSelectEnabled) {
             TaskViewHolder.MULTI_SELECTION
