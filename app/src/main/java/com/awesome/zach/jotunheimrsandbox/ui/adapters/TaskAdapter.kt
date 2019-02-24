@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
+import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.ui.viewholders.TaskViewHolder
 
 class TaskAdapter(
-    private val selectedListener: TaskViewHolder.OnTaskSelectedListener,
+    private val selectedListener: ItemSelectedListener,
     private val isMultiSelectEnabled: Boolean
-                 ) : RecyclerView.Adapter<TaskViewHolder>(), TaskViewHolder.OnTaskSelectedListener {
+                 ) : RecyclerView.Adapter<TaskViewHolder>(), ItemSelectedListener {
 
     private var mTasks: List<Task>? = null
 
@@ -75,18 +76,20 @@ class TaskAdapter(
         }
     }
 
-    override fun onTaskSelected(task: Task) {
-        if (!isMultiSelectEnabled) {
-            mTasks?.forEach {
-                if (it != task && it.isSelected) {
-                    it.isSelected = false
-                } else if (it == task && it.isSelected) {
-                    it.isSelected = true
+    override fun onItemSelected(item: Any) {
+        if (item is Task) {
+            if (!isMultiSelectEnabled) {
+                mTasks?.forEach {
+                    if (it != item && it.isSelected) {
+                        it.isSelected = false
+                    } else if (it == item && it.isSelected) {
+                        it.isSelected = true
+                    }
                 }
+                notifyDataSetChanged()
             }
-            notifyDataSetChanged()
+            selectedListener.onItemSelected(item)
         }
-        selectedListener.onTaskSelected(task)
     }
 
     inner class TaskDiffCallback(private val tasks: List<Task>) : DiffUtil.Callback() {

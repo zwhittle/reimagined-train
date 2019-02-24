@@ -5,10 +5,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
+import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ItemSelectedListener
 
 class TaskViewHolder(
     val binding: ListItemTaskBinding,
-    private var selectedListener: OnTaskSelectedListener) : RecyclerView.ViewHolder(binding.root) {
+    private var selectedListener: ItemSelectedListener
+                    ) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
         const val SINGLE_SELECTION = 1
@@ -24,7 +26,7 @@ class TaskViewHolder(
             setChecked(true)
         }
 
-        selectedListener.onTaskSelected(mTask)
+        selectedListener.onItemSelected(mTask)
     }
 
     fun bind(item: Task) {
@@ -46,7 +48,5 @@ class TaskViewHolder(
         mTask.isSelected = b
     }
 
-    interface OnTaskSelectedListener {
-        fun onTaskSelected(task: Task)
-    }
+
 }

@@ -17,14 +17,14 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.TaskAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeCallback
 import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeListener
-import com.awesome.zach.jotunheimrsandbox.ui.viewholders.TaskViewHolder
+import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
 
-class TaskListFragment : Fragment(), TaskViewHolder.OnTaskSelectedListener, ActionModeListener {
+class TaskListFragment : Fragment(), ItemSelectedListener, ActionModeListener {
 
     companion object {
         const val LOG_TAG = "TaskListFragment"
@@ -100,20 +100,24 @@ class TaskListFragment : Fragment(), TaskViewHolder.OnTaskSelectedListener, Acti
         })
     }
 
-    override fun onTaskSelected(task: Task) {
-        val selectedTasks = adapter.getSelectedTasks()
+    override fun onItemSelected(item: Any) {
+        if (item is Task) {
+            val selectedTasks = adapter.getSelectedTasks()
 
-        if (selectedTasks.isNotEmpty()) {
-            if (!actionModeEnabled) {
-                startActionMode()
+            if (selectedTasks.isNotEmpty()) {
+                if (!actionModeEnabled) {
+                    startActionMode()
+                }
+            } else if (selectedTasks.isEmpty()) {
+                if (actionModeEnabled) {
+                    finishActionMode()
+                }
             }
-        } else if (selectedTasks.isEmpty()) {
-            if (actionModeEnabled) {
-                finishActionMode()
-            }
+
+            Utils.showSnackbar(
+                binding.root,
+                "Selected item is ${item.name}. Total selected: ${selectedTasks.size}")
         }
-
-        Utils.showSnackbar(binding.root, "Selected item is ${task.name}. Total selected: ${selectedTasks.size}")
     }
 
     override fun onActionModeDestroyed() {
