@@ -1,5 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.awesome.zach.jotunheimrsandbox.data.entities.Color
@@ -77,11 +78,11 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
             // no projectId was passed
             if (tagId == null) {
                 // both are null, return all tasks
-                val liveTasksList = taskRepository.getAllTasksLive()
+                val liveTasksList = taskRepository.getActiveTasksLive()
                 tasksList.addSource(liveTasksList, tasksList::setValue)
             } else {
                 // projectId is null, but a tagId was passed, return tasks for that tagId
-                val liveTasksList = taskTagAssignmentRepository.getTasksWithTagLive(tagId)
+                val liveTasksList = taskTagAssignmentRepository.getActiveTasksWithTagLive(tagId)
                 tasksList.addSource(liveTasksList, tasksList::setValue)
             }
         } else {
@@ -131,6 +132,20 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
 
             val tag = Tag(name = name, colorId = cid)
             tagRepository.insertTag(tag)
+        }
+    }
+
+    fun updateTasks(tasks: List<Task>) {
+        viewModelScope.launch {
+            val count = taskRepository.bulkUpdateTasks(tasks)
+            Log.d(LOG_TAG, "$count tasks updated")
+        }
+    }
+
+    fun deleteTasks(tasks: List<Task>) {
+        viewModelScope.launch {
+            val count = taskRepository.bulkDeleteTasks(tasks)
+            Log.d(LOG_TAG, "$count tasks deleted")
         }
     }
 }

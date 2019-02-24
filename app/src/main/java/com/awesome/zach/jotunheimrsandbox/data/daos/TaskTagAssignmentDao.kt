@@ -48,6 +48,10 @@ interface TaskTagAssignmentDao {
     fun getTasksWithTagLive(tagId: Long): LiveData<List<Task>>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    @Query("SELECT * FROM task_table INNER JOIN task_tag_join_table ON task_table.taskId = task_tag_join_table.taskId WHERE task_tag_join_table.tagId = :tagId AND task_table.completed == 0")
+    fun getActiveTasksWithTagLive(tagId: Long): LiveData<List<Task>>
+
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT * FROM tag_table INNER JOIN task_tag_join_table ON tag_table.tagId = task_tag_join_table.tagId WHERE task_tag_join_table.taskId = :taskId")
     fun getTagsForTask(taskId: Long): List<Tag>
 }

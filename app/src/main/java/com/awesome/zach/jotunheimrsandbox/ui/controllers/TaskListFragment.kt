@@ -3,11 +3,13 @@ package com.awesome.zach.jotunheimrsandbox.ui.controllers
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +20,7 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.TaskAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeCallback
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
+import com.awesome.zach.jotunheimrsandbox.ui.listeners.DialogFragmentListener
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
@@ -25,6 +28,7 @@ import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
 
 class TaskListFragment : Fragment(),
+    DialogFragmentListener,
     ItemSelectedListener,
     ActionModeListener {
 
@@ -76,6 +80,56 @@ class TaskListFragment : Fragment(),
         if (a != null) {
             val toolbar = a.findViewById<Toolbar>(R.id.toolbar)
             mActionModeCallback.startActionMode(toolbar, R.menu.menu_action_mode, count.toString(), "")
+        }
+    }
+
+    override fun onActionMenuItemSelected(item: MenuItem) {
+        when (item.itemId) {
+            R.id.action_mode_complete -> actionMenuComplete()
+            R.id.action_mode_edit     -> actionMenuEdit()
+            R.id.action_mode_delete   -> actionMenuDelete()
+        }
+    }
+
+    private fun actionMenuComplete() {
+        val selectedTasks = adapter.getSelectedTasks()
+        selectedTasks.forEach {
+            it.completed = true
+        }
+
+        viewModel.updateTasks(selectedTasks)
+    }
+
+    private fun actionMenuEdit() {
+        // TODO: Implement this
+    }
+
+    private fun actionMenuDelete() {
+        val selectedTasks = adapter.getSelectedTasks()
+
+        val dialog = DeleteItemsDialogFragment(selectedTasks, this)
+        fragmentManager?.let { dialog.show(it, Constants.FRAGMENT_DELETE_ITEMS_DIALOG) }
+    }
+
+    override fun onPositiveClick(dialog: DialogFragment,
+                                 items: List<Any>) {
+        deleteSelectedItems(items)
+        dialog.dismiss()
+    }
+
+    override fun onNegativeClick(dialog: DialogFragment) {
+        dialog.dismiss()
+    }
+
+    private fun deleteSelectedItems(items: List<Any>) {
+        if (items[0] is Task) {
+            val tasks = ArrayList<Task>()
+
+            items.forEach {
+                tasks.add(it as Task)
+            }
+
+            viewModel.deleteTasks(tasks)
         }
     }
 

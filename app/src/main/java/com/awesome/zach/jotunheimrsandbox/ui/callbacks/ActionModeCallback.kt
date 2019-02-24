@@ -5,19 +5,23 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.MenuRes
+import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
-import com.awesome.zach.jotunheimrsandbox.ui.listeners.OnActionItemClickListener
 
 class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.Callback {
 
-    var onActionItemClickListener: OnActionItemClickListener? = null
+    private var editButtonVisible = true
 
     private var mMode: ActionMode? = null
     @MenuRes private var mMenuResId: Int = 0
     private var mTitle: String? = null
     private var mSubtitle: String? = null
 
+
+    private lateinit var mMenu: Menu
+
     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+        mMenu = menu
         mMode = mode
         mode.menuInflater.inflate(mMenuResId, menu)
         mode.title = mTitle
@@ -26,7 +30,7 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
         return true
     }
 
-    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
         return false
     }
 
@@ -36,13 +40,34 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
     }
 
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-        onActionItemClickListener?.onActionItemClick(item)
-        mode.finish()
+        listener.onActionMenuItemSelected(item)
         return true
     }
 
     fun updateCount(count: Int) {
         mMode?.title = count.toString()
+
+        if (count > 1) {
+            if (editButtonVisible) {
+                hideEditButton()
+            }
+        } else {
+            if (!editButtonVisible) {
+                showEditButton()
+            }
+        }
+    }
+
+    private fun showEditButton() {
+        val menuItem = mMenu.findItem(R.id.action_mode_edit)
+        menuItem.isVisible = true
+        editButtonVisible = true
+    }
+
+    private fun hideEditButton() {
+        val menuItem = mMenu.findItem(R.id.action_mode_edit)
+        menuItem.isVisible = false
+        editButtonVisible = false
     }
 
     fun startActionMode(view: View,

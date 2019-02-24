@@ -2,7 +2,6 @@ package com.awesome.zach.jotunheimrsandbox.data.daos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import java.time.LocalDate
 
@@ -61,11 +60,14 @@ interface TaskDao {
     @Query("SELECT * FROM task_table ORDER BY date_end ASC")
     fun getAllTasks(): List<Task>
 
-    @Query("SELECT * FROM task_table INNER JOIN project_table ON task_table.projectId = project_table.projectId ORDER BY date_end ASC")
+    @Query("SELECT * FROM task_table LEFT JOIN project_table ON task_table.projectId = project_table.projectId ORDER BY date_end ASC")
     fun getAllTasksLive(): LiveData<List<Task>>
 
-    @Query("SELECT * FROM task_table WHERE completed == 1 ORDER BY date_end ASC")
+    @Query("SELECT * FROM task_table WHERE completed == 0 ORDER BY date_end ASC")
     fun getActiveTasks(): List<Task>
+
+    @Query("SELECT * FROM task_table LEFT JOIN project_table ON task_table.projectId = project_table.projectId WHERE completed == 0 ORDER BY date_end ASC")
+    fun getActiveTasksLive(): LiveData<List<Task>>
 
     @Query("SELECT * FROM task_table WHERE taskId == :taskId ORDER BY date_end ASC")
     fun getTaskById(taskId: Long): Task
@@ -109,7 +111,7 @@ interface TaskDao {
                                 rangeEnd: LocalDate,
                                 completed: Boolean = false): List<Task>
 
-    @Query("SELECT * FROM task_table WHERE completed == 1 AND date_end < :today ORDER BY date_end ASC")
+    @Query("SELECT * FROM task_table WHERE completed == 0 AND date_end < :today ORDER BY date_end ASC")
     fun getOverdueTasks(today: String = LocalDate.now().toString()): List<Task>
 
     @Query("SELECT * FROM task_table WHERE completed == 0 AND date_start < :today ORDER BY date_end ASC")
