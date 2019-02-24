@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
@@ -43,6 +44,14 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             destinationListener(controller, destination, arguments)
         }
+    }
+
+    fun setActionBarTitle(title: String) {
+        supportActionBar?.title = title
+    }
+
+    fun attachDrawerListener(listener: DrawerLayout.DrawerListener) {
+        layoutDrawer.addDrawerListener(listener)
     }
 
     override fun onSupportNavigateUp(): Boolean {

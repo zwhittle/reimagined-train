@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
-import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 
 class TaskViewHolder(
     val binding: ListItemTaskBinding,
@@ -39,10 +39,22 @@ class TaskViewHolder(
     }
 
     fun setChecked(b: Boolean) {
+        val checkedColor = Color.DKGRAY
+
         if (b) {
-            binding.listItemTaskTopLayout.setBackgroundColor(Color.LTGRAY)
+            binding.listItemTaskTopLayout.setBackgroundColor(checkedColor)
+            binding.listItemTaskRow1.setBackgroundColor(checkedColor)
+            binding.listItemTaskRow2.setBackgroundColor(checkedColor)
+            binding.tvListItemTaskId.setBackgroundColor(checkedColor)
+            binding.tvListItemTaskLabel.setBackgroundColor(checkedColor)
+            binding.tvListItemTaskProject.setBackgroundColor(checkedColor)
         } else {
             binding.listItemTaskTopLayout.background = null
+            binding.listItemTaskRow1.background = null
+            binding.listItemTaskRow2.background = null
+            binding.tvListItemTaskId.background = null
+            binding.tvListItemTaskLabel.background = null
+            binding.tvListItemTaskProject.background = null
         }
 
         mTask.isSelected = b

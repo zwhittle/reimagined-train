@@ -5,6 +5,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.annotation.MenuRes
+import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
+import com.awesome.zach.jotunheimrsandbox.ui.listeners.OnActionItemClickListener
 
 class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.Callback {
 
@@ -20,6 +22,7 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
         mode.menuInflater.inflate(mMenuResId, menu)
         mode.title = mTitle
         mode.subtitle = mSubtitle
+        listener.onActionModeCreated()
         return true
     }
 
@@ -36,6 +39,10 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
         onActionItemClickListener?.onActionItemClick(item)
         mode.finish()
         return true
+    }
+
+    fun updateCount(count: Int) {
+        mMode?.title = count.toString()
     }
 
     fun startActionMode(view: View,

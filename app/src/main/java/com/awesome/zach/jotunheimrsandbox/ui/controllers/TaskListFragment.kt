@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,15 +17,16 @@ import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.TaskAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeCallback
-import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeListener
-import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
+import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
-import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
 
-class TaskListFragment : Fragment(), ItemSelectedListener, ActionModeListener {
+class TaskListFragment : Fragment(),
+    ItemSelectedListener,
+    ActionModeListener {
 
     companion object {
         const val LOG_TAG = "TaskListFragment"
@@ -45,6 +47,7 @@ class TaskListFragment : Fragment(), ItemSelectedListener, ActionModeListener {
             inflater, R.layout.fragment_task_list, container, false)
         val context = binding.root.context
 
+        setActionBarTitle(getString(R.string.all_tasks))
         handleArguments(context)
 
         adapter = TaskAdapter(this, true)
@@ -60,30 +63,33 @@ class TaskListFragment : Fragment(), ItemSelectedListener, ActionModeListener {
         val args = arguments ?: Bundle()
 
         when {
-            args.containsKey(Constants.ARGUMENT_PROJECT) -> setupFactoryForProject(context, args.getLong(Constants.ARGUMENT_PROJECT))
-            args.containsKey(Constants.ARGUMENT_TAG)     -> setupFactoryForTag(context, args.getLong(Constants.ARGUMENT_TAG))
-            else                                         -> setupFactoryForAll(context)
+            args.containsKey(Constants.ARGUMENT_PROJECT_ID) -> setupFragmentForProject(context, args)
+            args.containsKey(Constants.ARGUMENT_TAG_NAME)   -> setupFragmentForTag(context, args)
+            else                                            -> setupFragmentForAll(context)
         }
 
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
     }
 
-    private fun startActionMode() {
+    private fun startActionMode(count: Int) {
         val a = activity
         if (a != null) {
             val toolbar = a.findViewById<Toolbar>(R.id.toolbar)
-            mActionModeCallback.startActionMode(toolbar, R.menu.menu_action_mode, "title", "subtitle")
-            actionModeEnabled = true
+            mActionModeCallback.startActionMode(toolbar, R.menu.menu_action_mode, count.toString(), "")
         }
     }
 
     private fun finishActionMode() {
         mActionModeCallback.finishActionMode()
-        actionModeEnabled = false
     }
 
     private fun setupFactoryForAll(context: Context) {
         factory = InjectorUtils.provideMainViewModelFactory(context = context)
+    }
+
+    private fun setupFragmentForAll(context: Context) {
+        setupFactoryForAll(context)
+        setActionBarTitle(getString(R.string.all_tasks))
     }
 
     private fun setupFactoryForTag(context: Context, tagId: Long) {
@@ -94,33 +100,80 @@ class TaskListFragment : Fragment(), ItemSelectedListener, ActionModeListener {
         factory = InjectorUtils.provideMainViewModelFactory(context = context, projectId = projectId)
     }
 
+    private fun setupFragmentForProject(context: Context, args: Bundle) {
+        setupFactoryForProject(context, args.getLong(Constants.ARGUMENT_PROJECT_ID))
+        setActionBarTitle(args.getString(Constants.ARGUMENT_PROJECT_NAME))
+    }
+
+    private fun setupFragmentForTag(context: Context, args: Bundle) {
+        setupFactoryForTag(context, args.getLong(Constants.ARGUMENT_TAG_ID))
+        setActionBarTitle(args.getString(Constants.ARGUMENT_TAG_NAME))
+    }
+
+    private fun setActionBarTitle(string: String?) {
+        if (string.isNullOrBlank()) return
+
+        val a = activity as MainActivity
+        a.setActionBarTitle(string)
+
+    }
+
     private fun subscribeUi() {
         viewModel.getTasks().observe(viewLifecycleOwner, Observer { tasks ->
             if (tasks != null) adapter.setTasksList(tasks)
         })
     }
 
+    private fun attachDrawerListener() {
+        val a = activity as MainActivity
+        a.attachDrawerListener(
+            object: DrawerLayout.DrawerListener {
+                override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                    // respond when the drawer's position changes
+                    if (actionModeEnabled) {
+                        finishActionMode()
+                    }
+                }
+
+                override fun onDrawerOpened(drawerView: View) {
+                    // respond when the drawer is opened
+                }
+
+                override fun onDrawerClosed(drawerView: View) {
+                    // respond when the drawer is closed
+                }
+
+                override fun onDrawerStateChanged(newState: Int) {
+                    // respond when the drawer motion state changes
+                }
+            })
+    }
+
     override fun onItemSelected(item: Any) {
         if (item is Task) {
-            val selectedTasks = adapter.getSelectedTasks()
+            val count = adapter.getSelectedTasks().size
 
-            if (selectedTasks.isNotEmpty()) {
+            if (count != 0) {
                 if (!actionModeEnabled) {
-                    startActionMode()
+                    startActionMode(count)
+                } else {
+                    mActionModeCallback.updateCount(count)
                 }
-            } else if (selectedTasks.isEmpty()) {
+            } else if (count == 0) {
                 if (actionModeEnabled) {
                     finishActionMode()
                 }
             }
-
-            Utils.showSnackbar(
-                binding.root,
-                "Selected item is ${item.name}. Total selected: ${selectedTasks.size}")
         }
+    }
+
+    override fun onActionModeCreated() {
+        attachDrawerListener()
+        actionModeEnabled = true
     }
 
     override fun onActionModeDestroyed() {
         adapter.clearSelectedTasks()
+        actionModeEnabled = false
     }
 }

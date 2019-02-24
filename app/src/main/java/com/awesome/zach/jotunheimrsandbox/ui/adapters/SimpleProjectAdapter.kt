@@ -37,7 +37,8 @@ class SimpleProjectAdapter : RecyclerView.Adapter<SimpleProjectAdapter.SimplePro
         holder.apply {
             if (project != null) {
                 val args = Bundle()
-                args.putLong(Constants.ARGUMENT_PROJECT, project.projectId)
+                args.putLong(Constants.ARGUMENT_PROJECT_ID, project.projectId)
+                args.putString(Constants.ARGUMENT_PROJECT_NAME, project.name)
                 bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment, args), project)
                 itemView.tag = project
             }

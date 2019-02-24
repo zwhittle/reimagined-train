@@ -10,9 +10,8 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.R
-import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTagBinding
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
-import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTagBinding.bind
+import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTagBinding
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 
@@ -38,7 +37,8 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
         holder.apply {
             if (tag != null) {
                 val args = Bundle()
-                args.putLong(Constants.ARGUMENT_TAG, tag.tagId)
+                args.putLong(Constants.ARGUMENT_TAG_ID, tag.tagId)
+                args.putString(Constants.ARGUMENT_TAG_NAME, tag.name)
                 bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment, args), tag)
                 itemView.tag = tag
             }

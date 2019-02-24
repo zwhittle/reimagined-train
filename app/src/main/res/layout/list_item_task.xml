@@ -6,7 +6,6 @@
     <data>
 
         <import type="android.graphics.Color" />
-
         <import type="com.awesome.zach.jotunheimrsandbox.utils.Utils" />
 
         <variable
@@ -24,7 +23,10 @@
         android:layout_height="wrap_content"
         android:onClick="@{clickListener}"
         android:orientation="vertical"
-        android:padding="@dimen/margin_small">
+        android:paddingEnd="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
+        android:paddingStart="@dimen/margin_normal">
 
         <LinearLayout
             android:id="@+id/listItemTaskRow1"

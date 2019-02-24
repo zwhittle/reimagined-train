@@ -1,6 +1,8 @@
 package com.awesome.zach.jotunheimrsandbox.utils
 
 import android.view.View
+import androidx.core.content.ContextCompat
+import com.awesome.zach.jotunheimrsandbox.R
 import com.google.android.material.snackbar.Snackbar
 import java.lang.Long.parseLong
 import java.lang.Long.toHexString
@@ -68,6 +70,8 @@ object Utils {
     }
 
     fun showSnackbar(root: View, message: String) {
-        Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
+        val sb = Snackbar.make(root, message, Snackbar.LENGTH_SHORT)
+        sb.view.setBackgroundColor(ContextCompat.getColor(root.context, R.color.colorPrimary))
+        sb.show()
     }
 }
