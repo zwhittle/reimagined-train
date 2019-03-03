@@ -63,10 +63,22 @@ class MainActivity : AppCompatActivity() {
 
         val graph = navController.graph
         when (destination) {
-            graph[R.id.taskListFragment]    -> fab.visibility = View.VISIBLE
-            graph[R.id.tagListFragment]     -> fab.visibility = View.GONE
-            graph[R.id.projectListFragment] -> fab.visibility = View.GONE
-            graph[R.id.newTaskFragment]     -> fab.visibility = View.GONE
+            graph[R.id.taskListFragment]    -> {
+                fab.visibility = View.VISIBLE
+                setActionBarTitle(getString(R.string.all_tasks))
+            }
+            graph[R.id.tagListFragment]     -> {
+                fab.visibility = View.GONE
+                setActionBarTitle(getString(R.string.all_tags))
+            }
+            graph[R.id.projectListFragment] -> {
+                fab.visibility = View.GONE
+                setActionBarTitle(getString(R.string.all_projects))
+            }
+            graph[R.id.newTaskFragment]     -> {
+                fab.visibility = View.GONE
+                setActionBarTitle(getString(R.string.new_task))
+            }
         }
     }
 }

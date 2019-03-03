@@ -24,6 +24,7 @@ import com.awesome.zach.jotunheimrsandbox.ui.listeners.DialogFragmentListener
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.utils.setActionBarTitle
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
 
@@ -51,7 +52,6 @@ class TaskListFragment : Fragment(),
             inflater, R.layout.fragment_task_list, container, false)
         val context = binding.root.context
 
-        setActionBarTitle(getString(R.string.all_tasks))
         handleArguments(context)
 
         adapter = TaskAdapter(this, true)
@@ -164,13 +164,13 @@ class TaskListFragment : Fragment(),
         setActionBarTitle(args.getString(Constants.ARGUMENT_TAG_NAME))
     }
 
-    private fun setActionBarTitle(string: String?) {
-        if (string.isNullOrBlank()) return
-
-        val a = activity as MainActivity
-        a.setActionBarTitle(string)
-
-    }
+    // private fun setActionBarTitle(string: String?) {
+    //     if (string.isNullOrBlank()) return
+    //
+    //     val a = activity as MainActivity
+    //     a.setActionBarTitle(string)
+    //
+    // }
 
     private fun subscribeUi() {
         viewModel.getTasks().observe(viewLifecycleOwner, Observer { tasks ->

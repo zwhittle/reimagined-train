@@ -37,7 +37,6 @@
             <TextView
                 android:id="@+id/tvListItemTaskLabel"
                 android:layout_width="wrap_content"
-                android:textColor="@android:color/holo_purple"
                 android:layout_height="wrap_content"
                 android:text="@{task.name}"
                 tools:text="Home" />
@@ -55,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:layout_weight="1"
+                android:visibility="invisible"
                 android:text="@{String.valueOf(task.taskId)}"
                 tools:text="45" />
 
@@ -62,6 +62,7 @@
                 android:id="@+id/tvListItemTaskProject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="invisible"
                 android:text="@{task.projectName}"
                 tools:text="25" />
         </LinearLayout>

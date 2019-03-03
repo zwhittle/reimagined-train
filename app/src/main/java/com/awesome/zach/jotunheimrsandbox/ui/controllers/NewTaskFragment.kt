@@ -11,6 +11,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskCreateBinding
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
+import com.awesome.zach.jotunheimrsandbox.utils.hideSoftKeyboard
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
 
@@ -25,12 +26,13 @@ class NewTaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskCreateBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+                             ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_create, container, false)
-
         val context = binding.root.context
+
         factory = InjectorUtils.provideMainViewModelFactory(context)
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
 
@@ -42,6 +44,7 @@ class NewTaskFragment : Fragment() {
         return binding.root
     }
 
+
     private fun saveTask() {
         val name = binding.etNewTaskName.text.toString()
         if (name.isBlank()) {
@@ -50,8 +53,9 @@ class NewTaskFragment : Fragment() {
         }
 
         viewModel.addTaskToDb(name)
+
+        hideSoftKeyboard()
+
         activity?.supportFragmentManager?.popBackStack()
     }
-
-
 }

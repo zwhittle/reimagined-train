@@ -22,4 +22,7 @@
     <string name="delete">Delete</string>
     <string name="all_tasks">All Tasks</string>
     <string name="cancel">Cancel</string>
+    <string name="all_tags">All Tags</string>
+    <string name="all_projects">All Projects</string>
+    <string name="new_task">New Task</string>
 </resources>

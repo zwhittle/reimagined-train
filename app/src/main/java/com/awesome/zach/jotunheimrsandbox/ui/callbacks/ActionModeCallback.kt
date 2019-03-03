@@ -41,6 +41,7 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
 
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
         listener.onActionMenuItemSelected(item)
+        finishActionMode()
         return true
     }
 
