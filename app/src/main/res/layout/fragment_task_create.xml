@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/new_task_hint"
             android:importantForAutofill="no"
+            android:backgroundTint="@android:color/white"
             android:keyboardNavigationCluster="true"
             android:focusedByDefault="true"
             android:inputType="textAutoCorrect" />

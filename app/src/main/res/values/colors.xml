@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorAccent">#008800</color>
     <color name="colorMenuTint">@android:color/white</color>
+    <color name="colorTextHint">#A2A2A2</color>
 </resources>
