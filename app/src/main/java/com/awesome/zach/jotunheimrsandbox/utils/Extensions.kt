@@ -35,13 +35,7 @@ fun Fragment.setActionBarTitle(title: String?) {
     a.setActionBarTitle(title)
 }
 
-fun Fragment.hideSoftKeyboard() {
-    val imm = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    var view = activity?.currentFocus
-    if (view == null) view = View(activity)
 
-    imm.hideSoftInputFromWindow(view.windowToken, 0)
-}
 
 fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int, tag: String) {
     supportFragmentManager.inTransaction { add(frameId, fragment, tag) }

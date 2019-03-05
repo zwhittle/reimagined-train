@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemProjectBinding
+import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 
-class SimpleProjectAdapter : RecyclerView.Adapter<SimpleProjectAdapter.SimpleProjectViewHolder>() {
+class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? = null) : RecyclerView.Adapter<SimpleProjectAdapter.SimpleProjectViewHolder>() {
 
     private var mProjects: List<Project>? = null
 
@@ -37,9 +38,18 @@ class SimpleProjectAdapter : RecyclerView.Adapter<SimpleProjectAdapter.SimplePro
         holder.apply {
             if (project != null) {
                 val args = Bundle()
-                args.putLong(Constants.ARGUMENT_PROJECT_ID, project.projectId)
-                args.putString(Constants.ARGUMENT_PROJECT_NAME, project.name)
-                bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment, args), project)
+                args.putLong(Constants.ARGUMENT_PROJECT_ID,
+                             project.projectId)
+                args.putString(Constants.ARGUMENT_PROJECT_NAME,
+                               project.name)
+                if (selectedListener == null) {
+                    bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment,
+                                                                  args),
+                         project)
+                } else {
+                    // you can't pass in an ItemSelectedListener without rewriting a bunch of code, so wrap it in an OnClickListener
+                    bind(View.OnClickListener { selectedListener.onItemSelected(project) }, project)
+                }
                 itemView.tag = project
             }
         }
@@ -48,7 +58,8 @@ class SimpleProjectAdapter : RecyclerView.Adapter<SimpleProjectAdapter.SimplePro
     fun setProjectsList(projects: List<Project>) {
         if (mProjects == null) {
             mProjects = projects
-            notifyItemRangeInserted(0, projects.size)
+            notifyItemRangeInserted(0,
+                                    projects.size)
         } else {
             val result = DiffUtil.calculateDiff(ProjectDiffCallback(projects))
             mProjects = projects
@@ -70,14 +81,13 @@ class SimpleProjectAdapter : RecyclerView.Adapter<SimpleProjectAdapter.SimplePro
             val newProject = projects[newItemPosition]
             val oldProject = mProjects?.get(oldItemPosition)
 
-            return newProject.projectId == oldProject?.projectId
-                && newProject.name == oldProject.name
-                && newProject.colorId == oldProject.colorId
+            return newProject.projectId == oldProject?.projectId && newProject.name == oldProject.name && newProject.colorId == oldProject.colorId
         }
     }
 
     class SimpleProjectViewHolder(private val binding: ListItemProjectBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(listener: View.OnClickListener, item: Project) {
+        fun bind(listener: View.OnClickListener,
+                 item: Project) {
             binding.apply {
                 clickListener = listener
                 project = item

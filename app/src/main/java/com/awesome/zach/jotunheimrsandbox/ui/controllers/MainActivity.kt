@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.ActivityMainBinding
+import com.awesome.zach.jotunheimrsandbox.utils.Utils.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,21 +29,28 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding = setContentView<ActivityMainBinding>(this,
+                                                          R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        Navigation.setViewNavController(fab, navController)
-        appBarConfiguration = AppBarConfiguration(navController.graph, binding.layoutDrawer)
+        navController = Navigation.findNavController(this,
+                                                     R.id.nav_host_fragment)
+        Navigation.setViewNavController(fab,
+                                        navController)
+        appBarConfiguration = AppBarConfiguration(navController.graph,
+                                                  binding.layoutDrawer)
 
         setSupportActionBar(binding.toolbar)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController,
+                                        appBarConfiguration)
 
         binding.navigationView.setupWithNavController(navController)
 
         fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.newTaskFragment))
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            destinationListener(controller, destination, arguments)
+            destinationListener(controller,
+                                destination,
+                                arguments)
         }
     }
 
@@ -58,27 +66,46 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun destinationListener(controller: NavController, destination: NavDestination,
+    private fun destinationListener(controller: NavController,
+                                    destination: NavDestination,
                                     arguments: Bundle?) {
 
         val graph = navController.graph
         when (destination) {
-            graph[R.id.taskListFragment]    -> {
-                fab.visibility = View.VISIBLE
+            graph[R.id.taskListFragment]          -> {
+                showFab()
                 setActionBarTitle(getString(R.string.all_tasks))
             }
-            graph[R.id.tagListFragment]     -> {
-                fab.visibility = View.GONE
+            graph[R.id.tagListFragment]           -> {
+                hideFab()
                 setActionBarTitle(getString(R.string.all_tags))
             }
-            graph[R.id.projectListFragment] -> {
-                fab.visibility = View.GONE
+            graph[R.id.projectListFragment]       -> {
+                hideFab()
                 setActionBarTitle(getString(R.string.all_projects))
             }
-            graph[R.id.newTaskFragment]     -> {
-                fab.visibility = View.GONE
+            graph[R.id.newTaskFragment]           -> {
+                hideFab()
                 setActionBarTitle(getString(R.string.new_task))
             }
+            graph[R.id.createEditProjectFragment] -> {
+                hideFab()
+                setActionBarTitle(getString(R.string.new_project))
+            }
+            graph[R.id.createEditTagFragment] -> {
+                hideFab()
+                setActionBarTitle(getString(R.string.new_tag))
+            }
         }
+
+        hideSoftKeyboard(this)
+    }
+
+    private fun showFab() {
+        fab.visibility = View.VISIBLE
+    }
+
+    private fun hideFab() {
+        fab.visibility = View.GONE
     }
 }

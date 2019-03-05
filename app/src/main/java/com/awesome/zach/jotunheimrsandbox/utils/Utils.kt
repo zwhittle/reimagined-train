@@ -1,7 +1,10 @@
 package com.awesome.zach.jotunheimrsandbox.utils
 
+import android.app.Activity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.awesome.zach.jotunheimrsandbox.R
 import com.google.android.material.snackbar.Snackbar
 import java.lang.Long.parseLong
@@ -73,5 +76,22 @@ object Utils {
         val sb = Snackbar.make(root, message, Snackbar.LENGTH_SHORT)
         sb.view.setBackgroundColor(ContextCompat.getColor(root.context, R.color.colorPrimary))
         sb.show()
+    }
+
+    fun hideSoftKeyboard(activity: Activity) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = activity.currentFocus
+        if (view == null) view = View(activity)
+
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun hideSoftKeyboard(fragment: Fragment) {
+        val activity = fragment.activity
+        val imm = activity?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = activity.currentFocus
+        if (view == null) view = View(activity)
+
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

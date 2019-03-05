@@ -14,8 +14,8 @@
     <string name="smoke_weed_everyday">smoke weed everyday</string>
     <string name="_420_blaze_it_nerds">420 blaze it, nerds!</string>
     <string name="null_or_blank">Task cannot be blank</string>
-    <string name="new_project">+ Project</string>
-    <string name="new_tag">+ Tag</string>
+    <string name="plus_project">+ Project</string>
+    <string name="plus_tag">+ Tag</string>
     <string name="color_preview">color preview</string>
     <string name="complete">Complete</string>
     <string name="edit">Edit</string>
@@ -25,4 +25,6 @@
     <string name="all_tags">All Tags</string>
     <string name="all_projects">All Projects</string>
     <string name="new_task">New Task</string>
+    <string name="new_project">New Project</string>
+    <string name="new_tag">New Tag</string>
 </resources>

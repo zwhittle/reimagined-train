@@ -97,7 +97,7 @@ interface TaskDao {
     fun getTasksForProject(projectId: Long,
                                completed: Boolean = false): List<Task>
 
-    @Query("SELECT * FROM task_table WHERE completed == :completed AND projectId == :projectId ORDER BY date_end ASC")
+    @Query("SELECT * FROM task_table LEFT JOIN project_table ON task_table.projectId = project_table.projectId WHERE completed == :completed AND task_table.projectId == :projectId ORDER BY date_end ASC")
     fun getTasksForProjectLive(projectId: Long,
                            completed: Boolean = false): LiveData<List<Task>>
 
