@@ -1,11 +1,11 @@
 package com.awesome.zach.jotunheimrsandbox.data
 
-import androidx.sqlite.db.SupportSQLiteDatabase
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import android.content.Context
+import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.awesome.zach.jotunheimrsandbox.data.converters.DateTypeConverter
@@ -45,12 +45,15 @@ abstract class AppDatabase : RoomDatabase() {
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
-                        val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>().build()
-                        WorkManager.getInstance()
-                            .enqueue(request)
+                        seedDatabase()
                     }
                 })
                 .build()
+        }
+
+        private fun seedDatabase() {
+            val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>().build()
+            WorkManager.getInstance().enqueue(request)
         }
 
         fun destroyDatabase() {

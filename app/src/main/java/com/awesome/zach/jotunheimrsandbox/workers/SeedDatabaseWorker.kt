@@ -18,10 +18,10 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
             val dbSeeder = DBSeeder(db)
 
             seedColors(db, dbSeeder)
-            seedTags(db, dbSeeder)
-            seedProjects(db, dbSeeder)
-            seedTasks(db, dbSeeder)
-            seedTaskTagAssignments(db, dbSeeder)
+            // seedTags(db, dbSeeder)
+            // seedProjects(db, dbSeeder)
+            // seedTasks(db, dbSeeder)
+            // seedTaskTagAssignments(db, dbSeeder)
             
             
             Result.success()

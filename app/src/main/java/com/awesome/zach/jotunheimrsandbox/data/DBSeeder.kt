@@ -22,7 +22,8 @@ class DBSeeder(val db: AppDatabase) {
         colors.add(Color(name = "White", hex = "#ffffff"))
         colors.add(Color(name = "Red", hex = "#ff0000"))
         colors.add(Color(name = "Green", hex = "#00ff00"))
-        colors.add(Color(name = "Yellow", hex = "#0000ff"))
+        colors.add(Color(name = "Blue", hex = "#0000ff"))
+        colors.add(Color(name = "Yellow", hex = "#ffff00"))
         colors.add(Color(name = "Nice", hex = "#696969"))
 
         colors.forEach {
