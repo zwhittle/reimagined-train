@@ -38,7 +38,7 @@ class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? =
         holder.apply {
             if (project != null) {
                 val args = Bundle()
-                args.putLong(Constants.ARGUMENT_PROJECT_ID,
+                args.putInt(Constants.ARGUMENT_PROJECT_ID,
                              project.projectId)
                 args.putString(Constants.ARGUMENT_PROJECT_NAME,
                                project.name)

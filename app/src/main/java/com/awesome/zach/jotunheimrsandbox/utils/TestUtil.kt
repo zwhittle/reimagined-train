@@ -17,7 +17,7 @@ object TestUtil {
         name = name,
         colorId = colorId)
 
-    fun createTask(name: String, startDate: LocalDate?, endDate: LocalDate?, projectId: Long) = Task(
+    fun createTask(name: String, startDate: LocalDate?, endDate: LocalDate?, projectId: Int?) = Task(
         name = name,
         date_start = startDate,
         date_end = endDate,

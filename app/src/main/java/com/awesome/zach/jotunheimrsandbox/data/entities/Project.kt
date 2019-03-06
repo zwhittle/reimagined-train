@@ -20,7 +20,7 @@ import androidx.room.*
                                   parentColumns = ["colorId"],
                                   childColumns = ["colorId"])])
 data class Project(@PrimaryKey(autoGenerate = true)
-                   var projectId: Long = 0,
+                   var projectId: Int = 0,
                    @NonNull
                    @ColumnInfo(name = "projectName")
                    var name: String,

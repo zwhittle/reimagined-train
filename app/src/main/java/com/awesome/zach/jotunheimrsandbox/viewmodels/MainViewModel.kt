@@ -110,11 +110,8 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
 
     fun addTaskToDb(name: String, project: Project? = null) {
         viewModelScope.launch {
-            var pid: Long = 0
 
-            if (project != null) {
-                pid = project.projectId
-            }
+            val pid = project?.projectId
 
             val task = Task(name = name, projectId = pid)
             taskRepository.insertTask(task)

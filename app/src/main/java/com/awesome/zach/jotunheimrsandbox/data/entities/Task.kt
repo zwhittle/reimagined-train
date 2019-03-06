@@ -30,8 +30,7 @@ data class Task(
     var completed: Boolean = false,
     @NonNull
     var priority: Int = 1,
-    @NonNull
-    var projectId: Long,
+    var projectId: Int? = null,
     @ColumnInfo(name = "projectName")
     var projectName: String? = null,
     var isSelected: Boolean = false)
