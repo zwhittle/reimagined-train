@@ -1,6 +1,9 @@
 package com.awesome.zach.jotunheimrsandbox.ui.controllers
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
@@ -15,6 +18,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.ActivityMainBinding
+import com.awesome.zach.jotunheimrsandbox.ui.login.LoginActivity
 import com.awesome.zach.jotunheimrsandbox.utils.Utils.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -52,6 +56,26 @@ class MainActivity : AppCompatActivity() {
                                 destination,
                                 arguments)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_sign_in -> {
+                launchSignIn()
+                true
+            }
+            else                -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun launchSignIn() {
+        val signInIntent = Intent(this, LoginActivity::class.java)
+        startActivity(signInIntent)
     }
 
     fun setActionBarTitle(title: String) {

@@ -4,7 +4,13 @@
     tools:context="com.awesome.zach.jotunheimrsandbox.ui.controllers.MainActivity">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sign_in"
+        android:orderInCategory="100"
+        android:title="@string/sign_in"
+        app:showAsAction="ifRoom" />
 </menu>

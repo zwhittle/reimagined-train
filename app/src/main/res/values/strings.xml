@@ -27,4 +27,19 @@
     <string name="new_task">New Task</string>
     <string name="new_project">New Project</string>
     <string name="new_tag">New Tag</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_sign_in">Sign in</string>
+    <string name="sign_in">Sign In</string>
+    <string name="image_placeholder">image placeholder</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="currently_signed_in_as">Currently signed in as:</string>
+    <string name="no_one">no one</string>
 </resources>
