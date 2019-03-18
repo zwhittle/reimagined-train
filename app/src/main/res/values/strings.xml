@@ -27,4 +27,6 @@
     <string name="new_task">New Task</string>
     <string name="new_project">New Project</string>
     <string name="new_tag">New Tag</string>
+    <string name="inbox">Inbox</string>
+    <string name="lists">Lists</string>
 </resources>

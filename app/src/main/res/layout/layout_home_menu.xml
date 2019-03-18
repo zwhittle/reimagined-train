@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/layoutHomeRoot"
+        android:layout_width="match_parent"
+        android:weightSum="4"
+        android:padding="64dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layoutHomeInbox"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivHomeInbox"
+                android:src="@drawable/ic_inbox_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvHomeInbox"
+                android:text="@string/inbox"
+                android:background="@color/colorPrimary"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutHomeProjects"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:background="@drawable/border"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivHomeProjects"
+                android:src="@drawable/ic_project_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvHomeProjects"
+                android:text="@string/projects"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutHomeTags"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivHomeTags"
+                android:src="@drawable/ic_tag_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvHomeTags"
+                android:text="@string/tags"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutHomeLists"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivHomeLists"
+                android:src="@drawable/ic_list_black_24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvHomeLists"
+                android:text="@string/lists"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
