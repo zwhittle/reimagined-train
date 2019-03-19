@@ -29,4 +29,6 @@
     <string name="new_tag">New Tag</string>
     <string name="inbox">Inbox</string>
     <string name="lists">Lists</string>
+    <string name="project">Project</string>
+    <string name="none">None</string>
 </resources>

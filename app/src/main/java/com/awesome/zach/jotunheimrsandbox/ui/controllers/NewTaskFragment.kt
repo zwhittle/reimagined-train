@@ -1,9 +1,7 @@
 package com.awesome.zach.jotunheimrsandbox.ui.controllers
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -36,6 +34,7 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
                              ): View? {
+        setHasOptionsMenu(true)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_create, container, false)
         val context = binding.root.context
@@ -54,6 +53,23 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_update_task, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId){
+            R.id.action_save_task -> actionSaveTask()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun actionSaveTask(): Boolean {
+        saveTask()
+        fragmentManager?.popBackStack()
+        return true
+    }
+
     private fun saveTask() {
         val input = binding.etNewTaskName.text.toString()
         if (input.isBlank()) {
@@ -65,7 +81,7 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
 
         hideSoftKeyboard(this)
 
-        activity?.supportFragmentManager?.popBackStack()
+        // activity?.supportFragmentManager?.popBackStack()
     }
 
     private fun showSelectProjectDialog() {
