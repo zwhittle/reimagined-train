@@ -27,4 +27,24 @@
         <item name="android:background">@color/colorAccent</item>
     </style>
 
+    <style name="MenuGreyTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuGrey</item>
+        <item name="android:tint">@color/colorMenuGrey</item>
+    </style>
+
+    <style name="MenuBlueTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuBlue</item>
+        <item name="android:tint">@color/colorMenuBlue</item>
+    </style>
+
+    <style name="MenuOrangeTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuOrange</item>
+        <item name="android:tint">@color/colorMenuOrange</item>
+    </style>
+
+    <style name="MenuRedTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuRed</item>
+        <item name="android:tint">@color/colorMenuRed</item>
+    </style>
+
 </resources>

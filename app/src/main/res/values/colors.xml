@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#27282E</color>
+    <!-- temp colors pulled from material website -->
+    <color name="primaryColor">#1A2026</color>
+    <color name="primaryLightColor">#4f5b62</color>
+    <color name="primaryDarkColor">#000a12</color>
+    <color name="primaryTextColor">#ffffff</color>
+
+    <color name="colorPrimary">@color/primaryDarkColor</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorAccent">#008800</color>
     <color name="colorMenuTint">@android:color/white</color>
     <color name="colorTextHint">#A2A2A2</color>
+    <color name="colorMenuGrey">@android:color/darker_gray</color>
+    <color name="colorMenuBlue">@android:color/holo_blue_light</color>
+    <color name="colorMenuOrange">@android:color/holo_orange_light</color>
+    <color name="colorMenuRed">@android:color/holo_red_light</color>
 </resources>
