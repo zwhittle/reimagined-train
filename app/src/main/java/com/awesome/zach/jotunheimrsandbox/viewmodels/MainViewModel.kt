@@ -77,8 +77,9 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
         if (projectId == null) {
             // no projectId was passed
             if (tagId == null) {
-                // both are null, return all tasks
-                val liveTasksList = taskRepository.getActiveTasksLive()
+                // both are null, return inbox tasks
+                // val liveTasksList = taskRepository.getActiveTasksLive()
+                val liveTasksList = taskRepository.getInboxTasksLive()
                 tasksList.addSource(liveTasksList, tasksList::setValue)
             } else {
                 // projectId is null, but a tagId was passed, return tasks for that tagId
