@@ -35,7 +35,11 @@
     <fragment
         android:id="@+id/newTaskFragment"
         android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.NewTaskFragment"
-        android:label="NewTaskFragment" />
+        android:label="NewTaskFragment" >
+        <action
+            android:id="@+id/action_newTaskFragment_to_selectItemFragment"
+            app:destination="@id/selectItemFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createEditProjectFragment"
         android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.CreateEditProjectFragment"
@@ -44,4 +48,8 @@
         android:id="@+id/createEditTagFragment"
         android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.CreateEditTagFragment"
         android:label="CreateEditTagFragment" />
+    <fragment
+        android:id="@+id/selectItemFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.SelectItemFragment"
+        android:label="SelectItemFragment" />
 </navigation>

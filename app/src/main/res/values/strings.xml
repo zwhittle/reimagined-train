@@ -31,4 +31,6 @@
     <string name="lists">Lists</string>
     <string name="project">Project</string>
     <string name="none">None</string>
+    <string name="list">List</string>
+    <string name="due">Due</string>
 </resources>

@@ -8,9 +8,16 @@ class Constants {
         const val ARGUMENT_PROJECT_NAME = "arg-project-name"
         const val ARGUMENT_TAG_ID = "arg-tag-id"
         const val ARGUMENT_TAG_NAME = "arg-tag-name"
+        const val ARGUMENT_MODEL = "arg-model"
 
         const val FRAGMENT_DELETE_ITEMS_DIALOG = "frag-delete-items-dialog"
         const val FRAGMENT_SELECT_PROJECT_DIALOG = "frag-select-project-dialog"
+        const val FRAGMENT_SELECT_ITEMS = "frag-select-items"
         const val FRAGMENT_SELECT_TAG_DIALOG = "frag-select-tag-dialog"
+
+        const val MODEL_TAG = "model-tag"
+        const val MODEL_PROJECT = "model-project"
+        const val MODEL_LIST = "model-list"
+        const val MODEL_TASK = "model-task"
     }
 }

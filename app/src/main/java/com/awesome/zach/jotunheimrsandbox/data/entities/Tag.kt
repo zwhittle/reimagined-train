@@ -27,4 +27,5 @@ data class Tag(
     @NonNull
     var colorId: Long,
     @ColumnInfo(name = "hex")
-    var colorHex: String? = null)
+    var colorHex: String? = null,
+    var isSelected: Boolean = false)

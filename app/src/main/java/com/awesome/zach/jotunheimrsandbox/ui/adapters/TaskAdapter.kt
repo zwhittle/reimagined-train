@@ -11,24 +11,27 @@ import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.ui.viewholders.TaskViewHolder
 
-class TaskAdapter(
-    private val selectedListener: ItemSelectedListener,
-    private val isMultiSelectEnabled: Boolean
-                 ) : RecyclerView.Adapter<TaskViewHolder>(),
+class TaskAdapter(private val selectedListener: ItemSelectedListener,
+                  private val isMultiSelectEnabled: Boolean) : RecyclerView.Adapter<TaskViewHolder>(),
     ItemSelectedListener {
 
     private var mTasks: List<Task>? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val binding = DataBindingUtil.inflate<ListItemTaskBinding>(
-            LayoutInflater.from(parent.context), R.layout.list_item_task, parent, false
-                                                                  )
-        return TaskViewHolder(binding, this)
+    override fun onCreateViewHolder(parent: ViewGroup,
+                                    viewType: Int): TaskViewHolder {
+        val binding =
+            DataBindingUtil.inflate<ListItemTaskBinding>(LayoutInflater.from(parent.context),
+                                                         R.layout.list_item_task,
+                                                         parent,
+                                                         false)
+        return TaskViewHolder(binding,
+                              this)
     }
 
     override fun getItemCount() = mTasks?.size ?: 0
 
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TaskViewHolder,
+                                  position: Int) {
         val task = mTasks?.get(position)
 
         holder.apply {
@@ -43,7 +46,8 @@ class TaskAdapter(
     fun setTasksList(tasks: List<Task>) {
         if (mTasks == null) {
             mTasks = tasks
-            notifyItemRangeInserted(0, tasks.size)
+            notifyItemRangeInserted(0,
+                                    tasks.size)
         } else {
             val result = DiffUtil.calculateDiff(TaskDiffCallback(tasks))
             mTasks = tasks
@@ -94,17 +98,15 @@ class TaskAdapter(
     }
 
     inner class TaskDiffCallback(private val tasks: List<Task>) : DiffUtil.Callback() {
-        override fun areItemsTheSame(
-            oldItemPosition: Int, newItemPosition: Int
-                                    ) = mTasks?.get(oldItemPosition) == tasks[newItemPosition]
+        override fun areItemsTheSame(oldItemPosition: Int,
+                                     newItemPosition: Int) = mTasks?.get(oldItemPosition) == tasks[newItemPosition]
 
         override fun getOldListSize() = mTasks?.size ?: 0
 
         override fun getNewListSize() = tasks.size
 
-        override fun areContentsTheSame(
-            oldItemPosition: Int, newItemPosition: Int
-                                       ): Boolean {
+        override fun areContentsTheSame(oldItemPosition: Int,
+                                        newItemPosition: Int): Boolean {
 
             val newTask = tasks[newItemPosition]
             val oldTask = mTasks?.get(oldItemPosition)

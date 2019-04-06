@@ -56,6 +56,7 @@
             android:layout_marginEnd="15dp"
             android:layout_weight="1"
             android:gravity="end"
+            android:visibility="gone"
             android:text="@{String.valueOf(tag.tagId)}"
             tools:text="45" />
 

@@ -8,9 +8,10 @@ import androidx.annotation.MenuRes
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
 
-class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.Callback {
+class ActionModeCallback(private val listener: ActionModeListener, private val selectionOnly: Boolean = false) : ActionMode.Callback {
 
     private var editButtonVisible = true
+    private var deleteButtonVisibile = true
 
     private var mMode: ActionMode? = null
     @MenuRes private var mMenuResId: Int = 0
@@ -31,6 +32,11 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
     }
 
     override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+        if (selectionOnly) {
+            hideEditButton()
+            hideDeleteButton()
+        }
+
         return false
     }
 
@@ -48,13 +54,15 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
     fun updateCount(count: Int) {
         mMode?.title = count.toString()
 
-        if (count > 1) {
-            if (editButtonVisible) {
-                hideEditButton()
-            }
-        } else {
-            if (!editButtonVisible) {
-                showEditButton()
+        if (!selectionOnly) {
+            if (count > 1) {
+                if (editButtonVisible) {
+                    hideEditButton()
+                }
+            } else {
+                if (!editButtonVisible) {
+                    showEditButton()
+                }
             }
         }
     }
@@ -69,6 +77,18 @@ class ActionModeCallback(private val listener: ActionModeListener) : ActionMode.
         val menuItem = mMenu.findItem(R.id.action_mode_edit)
         menuItem.isVisible = false
         editButtonVisible = false
+    }
+
+    private fun showDeleteButton() {
+        val menuItem = mMenu.findItem(R.id.action_mode_delete)
+        menuItem.isVisible = true
+        deleteButtonVisibile = true
+    }
+
+    private fun hideDeleteButton() {
+        val menuItem = mMenu.findItem(R.id.action_mode_delete)
+        menuItem.isVisible = false
+        deleteButtonVisibile = false
     }
 
     fun startActionMode(view: View,

@@ -16,6 +16,7 @@ class JHTagView(context: Context, attrs: AttributeSet): TextView(context, attrs)
         private const val DEFAULT_TAG_COLOR = Color.RED
     }
 
+    // Set up default values of the XML attribute properties, in case you do not pass one of them
     private var color = DEFAULT_TAG_COLOR
 
     // Paint object for coloring and styling
@@ -47,6 +48,6 @@ class JHTagView(context: Context, attrs: AttributeSet): TextView(context, attrs)
         paint.strokeWidth = 2f
 
         val backgroundRect = RectF(0f, 0f, width.toFloat(), height.toFloat())
-        canvas.drawRoundRect(backgroundRect, 25f, 25f, paint)
+        canvas.drawRoundRect(backgroundRect, 0f, 0f, paint)
     }
 }
