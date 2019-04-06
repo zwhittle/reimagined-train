@@ -13,8 +13,8 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTagCreateUpdateBin
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.ColorSpinnerAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
 
 class CreateEditTagFragment : Fragment(), AdapterView.OnItemSelectedListener {
 

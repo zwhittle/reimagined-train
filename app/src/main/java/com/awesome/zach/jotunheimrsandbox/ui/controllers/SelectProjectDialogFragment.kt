@@ -12,7 +12,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.LayoutProjectListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 
 class SelectProjectDialogFragment(private val viewModel: MainViewModel,
                                   private val listener: ItemSelectedListener) : DialogFragment() {

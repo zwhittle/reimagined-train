@@ -8,14 +8,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
-import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskCreateBinding
+import com.awesome.zach.jotunheimrsandbox.databinding.LayoutNewTaskBinding
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils.hideSoftKeyboard
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
 
 class NewTaskFragment : Fragment(), ItemSelectedListener {
 
@@ -26,7 +26,9 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
     private lateinit var factory: MainViewModelFactory
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var binding: FragmentTaskCreateBinding
+    // private lateinit var binding: FragmentTaskCreateBinding
+    private lateinit var binding: LayoutNewTaskBinding
+
 
     private var mProject: Project? = null
     private var mTags = ArrayList<Tag>()
@@ -36,19 +38,20 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
                              ): View? {
         setHasOptionsMenu(true)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_create, container, false)
+        // binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_create, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.layout_new_task, container, false)
         val context = binding.root.context
 
         factory = InjectorUtils.provideMainViewModelFactory(context)
         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
 
-        binding.ivNewTaskSave.setOnClickListener {
-            saveTask()
-        }
-
-        binding.ivNewTaskProject.setOnClickListener {
-            showSelectProjectDialog()
-        }
+        // binding.ivNewTaskSave.setOnClickListener {
+        //     saveTask()
+        // }
+        //
+        // binding.ivNewTaskProject.setOnClickListener {
+        //     showSelectProjectDialog()
+        // }
 
         return binding.root
     }
@@ -71,7 +74,9 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
     }
 
     private fun saveTask() {
-        val input = binding.etNewTaskName.text.toString()
+        // val input = binding.etNewTaskName.text.toString()
+        val input = binding.etTaskName.text.toString()
+
         if (input.isBlank()) {
             Utils.showSnackbar(binding.root, getString(R.string.null_or_blank))
             return

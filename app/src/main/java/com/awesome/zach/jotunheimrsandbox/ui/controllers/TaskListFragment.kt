@@ -25,8 +25,8 @@ import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.utils.setActionBarTitle
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
 
 class TaskListFragment : Fragment(),
     DialogFragmentListener,

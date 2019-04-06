@@ -1,4 +1,4 @@
-package com.awesome.zach.jotunheimrsandbox.viewmodels
+package com.awesome.zach.jotunheimrsandbox.ui.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MediatorLiveData

@@ -1,4 +1,4 @@
-package com.awesome.zach.jotunheimrsandbox.viewmodels
+package com.awesome.zach.jotunheimrsandbox.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

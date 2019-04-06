@@ -13,7 +13,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 
 class ProjectListFragment : Fragment() {
 

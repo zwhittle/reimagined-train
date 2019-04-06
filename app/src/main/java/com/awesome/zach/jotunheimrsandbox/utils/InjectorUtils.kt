@@ -3,7 +3,7 @@ package com.awesome.zach.jotunheimrsandbox.utils
 import android.content.Context
 import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.data.repositories.*
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
 
 object InjectorUtils {
 

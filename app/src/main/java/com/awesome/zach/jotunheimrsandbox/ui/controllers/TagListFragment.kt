@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTagListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleTagAdapter
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
 
 /**
  * A placeholder fragment containing a simple view.
