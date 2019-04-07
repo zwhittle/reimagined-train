@@ -1,0 +1,344 @@
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+index 703e5d4..af0bbdd 100644
+--- a/.idea/misc.xml
++++ b/.idea/misc.xml
+@@ -5,7 +5,7 @@
+       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+     </configurations>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+diff --git a/app/build.gradle b/app/build.gradle
+index 096d2d5..f933eb3 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -34,10 +34,8 @@ android {
+ }
+ 
+ dependencies {
+-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
+-    implementation 'com.google.android.material:material:1.1.0-alpha03'
+-    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
++    implementation "androidx.appcompat:appcompat:$appcompatVersion"
++    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
+     kapt "androidx.room:room-compiler:$roomVersion"
+     kapt "com.github.bumptech.glide:compiler:$glideVersion"
+     implementation "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
+@@ -55,7 +53,7 @@ dependencies {
+     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+-    implementation 'androidx.core:core:1.1.0-alpha04'
++    implementation "androidx.core:core:$coreVersion"
+     kapt "com.android.databinding:compiler:$gradle_version"
+ 
+     // Testing dependencies
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditProjectFragment.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditProjectFragment.kt
+index 5826546..cff360f 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditProjectFragment.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditProjectFragment.kt
+@@ -13,8 +13,8 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectCreateEditB
+ import com.awesome.zach.jotunheimrsandbox.ui.adapters.ColorSpinnerAdapter
+ import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+ import com.awesome.zach.jotunheimrsandbox.utils.Utils
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
+ 
+ class CreateEditProjectFragment : Fragment(), AdapterView.OnItemSelectedListener {
+ 
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditTagFragment.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditTagFragment.kt
+index bea6e0d..30b696b 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditTagFragment.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/CreateEditTagFragment.kt
+@@ -13,8 +13,8 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTagCreateUpdateBin
+ import com.awesome.zach.jotunheimrsandbox.ui.adapters.ColorSpinnerAdapter
+ import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+ import com.awesome.zach.jotunheimrsandbox.utils.Utils
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
+ 
+ class CreateEditTagFragment : Fragment(), AdapterView.OnItemSelectedListener {
+ 
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/NewTaskFragment.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/NewTaskFragment.kt
+index 00a015c..0dfed7f 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/NewTaskFragment.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/NewTaskFragment.kt
+@@ -8,14 +8,14 @@ import androidx.lifecycle.ViewModelProviders
+ import com.awesome.zach.jotunheimrsandbox.R
+ import com.awesome.zach.jotunheimrsandbox.data.entities.Project
+ import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
+-import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskCreateBinding
++import com.awesome.zach.jotunheimrsandbox.databinding.LayoutNewTaskBinding
+ import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
+ import com.awesome.zach.jotunheimrsandbox.utils.Constants
+ import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+ import com.awesome.zach.jotunheimrsandbox.utils.Utils
+ import com.awesome.zach.jotunheimrsandbox.utils.Utils.hideSoftKeyboard
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
+ 
+ class NewTaskFragment : Fragment(), ItemSelectedListener {
+ 
+@@ -26,7 +26,9 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
+     private lateinit var factory: MainViewModelFactory
+     private lateinit var viewModel: MainViewModel
+ 
+-    private lateinit var binding: FragmentTaskCreateBinding
++    // private lateinit var binding: FragmentTaskCreateBinding
++    private lateinit var binding: LayoutNewTaskBinding
++
+ 
+     private var mProject: Project? = null
+     private var mTags = ArrayList<Tag>()
+@@ -36,19 +38,20 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
+                              ): View? {
+         setHasOptionsMenu(true)
+ 
+-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_create, container, false)
++        // binding = DataBindingUtil.inflate(inflater, R.layout.fragment_task_create, container, false)
++        binding = DataBindingUtil.inflate(inflater, R.layout.layout_new_task, container, false)
+         val context = binding.root.context
+ 
+         factory = InjectorUtils.provideMainViewModelFactory(context)
+         viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+ 
+-        binding.ivNewTaskSave.setOnClickListener {
+-            saveTask()
+-        }
+-
+-        binding.ivNewTaskProject.setOnClickListener {
+-            showSelectProjectDialog()
+-        }
++        // binding.ivNewTaskSave.setOnClickListener {
++        //     saveTask()
++        // }
++        //
++        // binding.ivNewTaskProject.setOnClickListener {
++        //     showSelectProjectDialog()
++        // }
+ 
+         return binding.root
+     }
+@@ -71,7 +74,9 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
+     }
+ 
+     private fun saveTask() {
+-        val input = binding.etNewTaskName.text.toString()
++        // val input = binding.etNewTaskName.text.toString()
++        val input = binding.etTaskName.text.toString()
++
+         if (input.isBlank()) {
+             Utils.showSnackbar(binding.root, getString(R.string.null_or_blank))
+             return
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/ProjectListFragment.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/ProjectListFragment.kt
+index 18a3c2f..384650b 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/ProjectListFragment.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/ProjectListFragment.kt
+@@ -13,7 +13,7 @@ import com.awesome.zach.jotunheimrsandbox.R
+ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectListBinding
+ import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
+ import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
+ 
+ class ProjectListFragment : Fragment() {
+ 
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/SelectProjectDialogFragment.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/SelectProjectDialogFragment.kt
+index ddd0ca1..b683afb 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/SelectProjectDialogFragment.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/SelectProjectDialogFragment.kt
+@@ -12,7 +12,7 @@ import com.awesome.zach.jotunheimrsandbox.R
+ import com.awesome.zach.jotunheimrsandbox.databinding.LayoutProjectListBinding
+ import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
+ import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
+ 
+ class SelectProjectDialogFragment(private val viewModel: MainViewModel,
+                                   private val listener: ItemSelectedListener) : DialogFragment() {
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TagListFragment.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TagListFragment.kt
+index e8d84da..4d64455 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TagListFragment.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TagListFragment.kt
+@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
+ import com.awesome.zach.jotunheimrsandbox.R
+ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTagListBinding
+ import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleTagAdapter
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
+ import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+ 
+ /**
+  * A placeholder fragment containing a simple view.
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TaskListFragment.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TaskListFragment.kt
+index b604f79..bec829e 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TaskListFragment.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/controllers/TaskListFragment.kt
+@@ -25,8 +25,8 @@ import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+ import com.awesome.zach.jotunheimrsandbox.utils.Constants
+ import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+ import com.awesome.zach.jotunheimrsandbox.utils.setActionBarTitle
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModel
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
+ 
+ class TaskListFragment : Fragment(),
+     DialogFragmentListener,
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/view/JHTagView.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/view/JHTagView.kt
+new file mode 100644
+index 0000000..9471fe5
+--- /dev/null
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/view/JHTagView.kt
+@@ -0,0 +1,52 @@
++package com.awesome.zach.jotunheimrsandbox.ui.view
++
++import android.content.Context
++import android.graphics.Canvas
++import android.graphics.Color
++import android.graphics.Paint
++import android.graphics.RectF
++import android.util.AttributeSet
++import android.widget.TextView
++import com.awesome.zach.jotunheimrsandbox.R
++
++class JHTagView(context: Context, attrs: AttributeSet): TextView(context, attrs) {
++
++    companion object {
++        private const val LOG_TAG = "JHTagView"
++        private const val DEFAULT_TAG_COLOR = Color.RED
++    }
++
++    private var color = DEFAULT_TAG_COLOR
++
++    // Paint object for coloring and styling
++    private val paint = Paint()
++
++    init {
++        paint.isAntiAlias = true
++        setUpAttributes(attrs)
++    }
++
++    private fun setUpAttributes(attrs: AttributeSet) {
++        // Object a typed array of the XML attributes
++        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.JHTagView, 0, 0)
++
++        // Extract custom attributes into member variables
++        color = typedArray.getColor(R.styleable.JHTagView_color, DEFAULT_TAG_COLOR)
++
++        typedArray.recycle()
++    }
++
++    override fun onDraw(canvas: Canvas) {
++        drawBackground(canvas)
++        super.onDraw(canvas)
++    }
++
++    private fun drawBackground(canvas: Canvas) {
++        paint.color = color
++        paint.style = Paint.Style.STROKE
++        paint.strokeWidth = 2f
++
++        val backgroundRect = RectF(0f, 0f, width.toFloat(), height.toFloat())
++        canvas.drawRoundRect(backgroundRect, 25f, 25f, paint)
++    }
++}
+\ No newline at end of file
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/viewmodels/MainViewModel.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/viewmodels/MainViewModel.kt
+similarity index 99%
+rename from app/src/main/java/com/awesome/zach/jotunheimrsandbox/viewmodels/MainViewModel.kt
+rename to app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/viewmodels/MainViewModel.kt
+index 61d50f1..ef808b7 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/viewmodels/MainViewModel.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/viewmodels/MainViewModel.kt
+@@ -1,4 +1,4 @@
+-package com.awesome.zach.jotunheimrsandbox.viewmodels
++package com.awesome.zach.jotunheimrsandbox.ui.viewmodels
+ 
+ import android.util.Log
+ import androidx.lifecycle.MediatorLiveData
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/viewmodels/MainViewModelFactory.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/viewmodels/MainViewModelFactory.kt
+similarity index 95%
+rename from app/src/main/java/com/awesome/zach/jotunheimrsandbox/viewmodels/MainViewModelFactory.kt
+rename to app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/viewmodels/MainViewModelFactory.kt
+index 772b5ac..5b21093 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/viewmodels/MainViewModelFactory.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/ui/viewmodels/MainViewModelFactory.kt
+@@ -1,4 +1,4 @@
+-package com.awesome.zach.jotunheimrsandbox.viewmodels
++package com.awesome.zach.jotunheimrsandbox.ui.viewmodels
+ 
+ import androidx.lifecycle.ViewModel
+ import androidx.lifecycle.ViewModelProvider
+diff --git a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/utils/InjectorUtils.kt b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/utils/InjectorUtils.kt
+index f246cce..ddd157a 100644
+--- a/app/src/main/java/com/awesome/zach/jotunheimrsandbox/utils/InjectorUtils.kt
++++ b/app/src/main/java/com/awesome/zach/jotunheimrsandbox/utils/InjectorUtils.kt
+@@ -3,7 +3,7 @@ package com.awesome.zach.jotunheimrsandbox.utils
+ import android.content.Context
+ import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
+ import com.awesome.zach.jotunheimrsandbox.data.repositories.*
+-import com.awesome.zach.jotunheimrsandbox.viewmodels.MainViewModelFactory
++import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
+ 
+ object InjectorUtils {
+ 
+diff --git a/app/src/main/res/values/attrs.xml b/app/src/main/res/values/attrs.xml
+index a6b3dae..f736ecd 100644
+--- a/app/src/main/res/values/attrs.xml
++++ b/app/src/main/res/values/attrs.xml
+@@ -1,2 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<resources></resources>
+\ No newline at end of file
++<resources>
++    <declare-styleable name="JHTagView">
++        <attr name="color" format="color"/>
++    </declare-styleable>
++</resources>
+\ No newline at end of file
+diff --git a/build.gradle b/build.gradle
+index d2f4729..4eada2a 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -29,7 +29,9 @@ task clean(type: Delete) {
+ 
+ ext {
+     // App dependencies
+-    constraintLayoutVersion = '2.0.0-alpha3'
++    appcompatVersion = '1.1.0-alpha04'
++    constraintLayoutVersion = '2.0.0-alpha4'
++    coreVersion = '1.1.0-alpha05'
+     coreTestingVersion = '2.0.0'
+     coroutinesVersion = "1.1.1"
+     espressoVersion = '3.1.0-alpha4'
+@@ -40,12 +42,13 @@ ext {
+     ktlintVersion = '0.30.0'
+     ktxVersion = '1.0.1'
+     lifecycleVersion = '2.0.0'
+-    materialVersion = '1.0.0'
+-    navigationVersion = '1.0.0-beta02'
+-    recyclerViewVersion = '1.1.0-alpha02'
+-    roomVersion = '2.1.0-alpha04'
++    legacySupportVersion = '1.0.0'
++    materialVersion = '1.1.0-alpha05'
++    navigationVersion = '1.0.0'
++    recyclerViewVersion = '1.1.0-alpha04'
++    roomVersion = '2.1.0-alpha06'
+     runnerVersion = '1.0.1'
+-    supportLibraryVersion = '1.0.2'
++    supportLibraryVersion = '1.0.4'
+     uiAutomatorVersion = '2.2.0'
+-    workVersion = '1.0.0-rc01'
++    workVersion = '1.0.1-rc01'
+ }

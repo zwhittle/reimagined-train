@@ -151,10 +151,7 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
                 return
             }
 
-            viewModel.addTaskToDb(input, mProject)
-            tags.forEach {
-                viewModel.addTaskTagAssignmentToDb(tagId = )
-            }
+            viewModel.addTaskToDb(input, mProject, tags)
         }
 
         hideSoftKeyboard(this)

@@ -122,14 +122,13 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
             task.taskId = taskRepository.insertTask(task)
 
 
-//            tags?.forEach {
-//                val tag = tagRepository.getTagById(it.tagId)
-//                addTaskTagAssignmentToDb(taskId = task.taskId, tagId = tag.tagId)
-//            }
+            tags?.forEach {
+                addTaskTagAssignmentToDb(taskId = task.taskId, tagId = it.tagId)
+            }
         }
     }
 
-    fun addTaskTagAssignmentToDb(taskId: Long, tagId: Long) {
+    private fun addTaskTagAssignmentToDb(taskId: Long, tagId: Long) {
         viewModelScope.launch {
             taskTagAssignmentRepository.insertTaskTagAssignment(TaskTagAssignment(taskId = taskId, tagId = tagId))
         }
