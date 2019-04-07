@@ -90,8 +90,13 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
             // projectId was passed
             if (tagId == null) {
                 // tagId is null, return tasks for the projectId
-                val liveTasksList = taskRepository.getTasksForProjectLive(projectId)
-                tasksList.addSource(liveTasksList, tasksList::setValue)
+                if (projectId > 0) {
+                    val liveTasksList = taskRepository.getTasksForProjectLive(projectId)
+                    tasksList.addSource(liveTasksList, tasksList::setValue)
+                } else if (projectId == 0L) {
+                    val liveTasksList = taskRepository.getInboxTasksLive()
+                    tasksList.addSource(liveTasksList, tasksList::setValue)
+                }
             } else {
                 // both were passed, return tasks for the projectID but filter for the tags first
                 // TODO: implement this, for now throw an exception

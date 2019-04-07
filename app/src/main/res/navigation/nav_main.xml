@@ -2,23 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_main"
-    app:startDestination="@id/taskListFragment">
+    app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.TaskListFragment"
         android:label="TaskListFragment">
         <action
-            android:id="@+id/action_taskListFragment_to_projectListFragment"
-            app:destination="@id/projectListFragment" />
-        <action
             android:id="@+id/action_taskListFragment_to_newTaskFragment"
             app:destination="@id/newTaskFragment" />
-        <action
-            android:id="@+id/action_taskListFragment_to_createEditProjectFragment"
-            app:destination="@id/createEditProjectFragment" />
-        <action
-            android:id="@+id/action_taskListFragment_to_createEditTagFragment"
-            app:destination="@id/createEditTagFragment" />
     </fragment>
     <fragment
         android:id="@+id/projectListFragment"
@@ -52,4 +43,15 @@
         android:id="@+id/selectItemFragment"
         android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.SelectItemFragment"
         android:label="SelectItemFragment" />
+    <fragment android:id="@+id/homeFragment"
+              android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.HomeFragment"
+              android:label="HomeFragment">
+        <action android:id="@+id/action_homeFragment_to_taskListFragment" app:destination="@id/taskListFragment"/>
+        <action android:id="@+id/action_homeFragment_to_projectListFragment" app:destination="@id/projectListFragment"/>
+        <action android:id="@+id/action_homeFragment_to_tagListFragment" app:destination="@id/tagListFragment"/>
+        <action android:id="@+id/action_homeFragment_to_createEditTagFragment"
+                app:destination="@id/createEditTagFragment"/>
+        <action android:id="@+id/action_homeFragment_to_createEditProjectFragment"
+                app:destination="@id/createEditProjectFragment"/>
+    </fragment>
 </navigation>

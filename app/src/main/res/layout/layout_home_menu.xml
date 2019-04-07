@@ -2,117 +2,164 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/layoutHomeRoot"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:padding="64dp"
-        android:layout_height="match_parent">
+        android:orientation="vertical"
+        android:padding="64dp">
 
         <LinearLayout
             android:id="@+id/layoutHomeInbox"
-            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_normal"
             android:background="@drawable/border"
             android:backgroundTint="@color/colorMenuGrey"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/ivHomeInbox"
-                android:src="@drawable/ic_inbox_black_24dp"
-                style="@style/MenuGreyTheme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <!--<ImageView-->
+            <!--android:id="@+id/ivHomeInbox"-->
+            <!--android:src="@drawable/ic_inbox_black_24dp"-->
+            <!--style="@style/MenuGreyTheme"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
 
             <TextView
                 android:id="@+id/tvHomeInbox"
-                android:text="@string/inbox"
-                android:background="@color/colorPrimary"
                 style="@style/MenuGreyTheme"
-                android:layout_marginStart="@dimen/margin_normal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:drawablePadding="@dimen/margin_small"
+                android:background="@color/colorPrimary"
+                android:drawableStart="@drawable/ic_inbox_black_24dp"
+                android:drawableTint="@color/colorMenuGrey"
+                android:gravity="center_vertical"
+                android:text="@string/inbox" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutHomeTasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/colorMenuGrey"
+            android:orientation="horizontal">
+
+            <!--<ImageView-->
+            <!--android:id="@+id/ivHomeTasks"-->
+            <!--android:src="@drawable/ic_inbox_black_24dp"-->
+            <!--style="@style/MenuGreyTheme"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+
+            <TextView
+                android:id="@+id/tvHomeTasks"
+                style="@style/MenuGreyTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:background="@color/colorPrimary"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_inbox_black_24dp"
+                android:drawableTint="@color/colorMenuGrey"
+                android:gravity="center_vertical"
+                android:text="@string/all_tasks" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutHomeProjects"
-            android:orientation="horizontal"
+            style="@style/MenuBlueTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
             android:background="@drawable/border"
-            style="@style/MenuBlueTheme"
             android:backgroundTint="@color/colorMenuBlue"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/ivHomeProjects"
-                android:src="@drawable/ic_project_black_24dp"
-                android:layout_width="wrap_content"
-                style="@style/MenuBlueTheme"
-                android:layout_height="wrap_content" />
+            <!--<ImageView-->
+            <!--android:id="@+id/ivHomeProjects"-->
+            <!--android:src="@drawable/ic_project_black_24dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--style="@style/MenuBlueTheme"-->
+            <!--android:layout_height="wrap_content" />-->
 
             <TextView
                 android:id="@+id/tvHomeProjects"
-                android:text="@string/projects"
                 style="@style/MenuBlueTheme"
-                android:layout_marginStart="@dimen/margin_normal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:drawableStart="@drawable/ic_project_black_24dp"
+                android:drawableTint="@color/colorMenuBlue"
+                android:drawablePadding="@dimen/margin_small"
+                android:gravity="center_vertical"
+                android:text="@string/projects" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutHomeTags"
-            android:orientation="horizontal"
-            android:background="@drawable/border"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_width="match_parent"
             style="@style/MenuOrangeTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:background="@drawable/border"
             android:backgroundTint="@color/colorMenuOrange"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/ivHomeTags"
-                android:src="@drawable/ic_tag_black_24dp"
-                android:layout_width="wrap_content"
-                style="@style/MenuOrangeTheme"
-                android:layout_height="wrap_content" />
+            <!--<ImageView-->
+            <!--android:id="@+id/ivHomeTags"-->
+            <!--android:src="@drawable/ic_tag_black_24dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--style="@style/MenuOrangeTheme"-->
+            <!--android:layout_height="wrap_content" />-->
 
             <TextView
                 android:id="@+id/tvHomeTags"
-                android:text="@string/tags"
-                android:layout_marginStart="@dimen/margin_normal"
                 style="@style/MenuOrangeTheme"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableStart="@drawable/ic_tag_black_24dp"
+                android:drawableTint="@color/colorMenuOrange"
+                android:gravity="center_vertical"
+                android:text="@string/tags" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layoutHomeLists"
-            android:orientation="horizontal"
-            android:background="@drawable/border"
             style="@style/MenuRedTheme"
-            android:backgroundTint="@color/colorMenuRed"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal"
-            android:layout_height="wrap_content">
+            android:background="@drawable/border"
+            android:backgroundTint="@color/colorMenuRed"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/ivHomeLists"
-                android:src="@drawable/ic_list_black_24dp"
-                android:layout_width="wrap_content"
-                style="@style/MenuRedTheme"
-                android:layout_height="wrap_content" />
+            <!--<ImageView-->
+            <!--android:id="@+id/ivHomeLists"-->
+            <!--android:src="@drawable/ic_list_black_24dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--style="@style/MenuRedTheme"-->
+            <!--android:layout_height="wrap_content" />-->
 
             <TextView
                 android:id="@+id/tvHomeLists"
-                android:text="@string/lists"
-                android:layout_marginStart="@dimen/margin_normal"
-                android:layout_width="wrap_content"
                 style="@style/MenuRedTheme"
-                android:layout_height="wrap_content" />
+                android:layout_width="wrap_content"
+                android:drawablePadding="@dimen/margin_small"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:drawableStart="@drawable/ic_list_black_24dp"
+                android:drawableTint="@color/colorMenuRed"
+                android:gravity="center_vertical"
+                android:text="@string/lists" />
         </LinearLayout>
     </LinearLayout>
 </layout>
