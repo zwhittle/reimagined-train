@@ -3,8 +3,11 @@ package com.awesome.zach.jotunheimrsandbox.ui.controllers
 import android.os.Bundle
 import android.view.*
 import android.widget.Adapter
+import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +15,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentNewTaskBinding
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.JHTagAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
@@ -38,21 +42,35 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
     private lateinit var binding: FragmentNewTaskBinding
 
     private var mProject: Project? = null
-    private var mTags = ArrayList<Tag>()
+    private var mTags = listOf<Tag>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         setHasOptionsMenu(true)
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_task, container, false)
         val context = binding.root.context
 
         factory = InjectorUtils.provideMainViewModelFactory(context)
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         binding.tagRow.setOnClickListener {
             showSelectTagsFragment()
-            // showSnackbar(binding.root, "This ain't work yet.")
+        }
+
+        binding.tagsLabel.setOnClickListener {
+            showSelectTagsFragment()
+        }
+
+        binding.tagsValue.setOnClickListener {
+            showSelectTagsFragment()
+        }
+
+        binding.recyclerView.setOnClickListener {
+            showSelectTagsFragment()
         }
 
         binding.listValue.setOnClickListener {
@@ -68,7 +86,40 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
             showSnackbar(binding.root, "This ain't work yet.")
         }
 
+        subscribeUi()
+
         return binding.root
+    }
+
+    private fun subscribeUi() {
+        viewModel.getSelectedTags().observe(viewLifecycleOwner,
+            Observer { tags ->
+                if (tags != null) {
+                    mTags = tags
+
+                    if (tags.isNotEmpty()) {
+                        if (binding.tagsLabel.isVisible) binding.tagsLabel.visibility = View.GONE
+                        if (binding.tagsValue.isVisible) binding.tagsValue.visibility = View.GONE
+
+                        if (!binding.recyclerView.isVisible) {
+                            val tagList = ArrayList<Tag>()
+                            mTags.forEach {
+                                tagList.add(it)
+                            }
+
+                            val adapter = JHTagAdapter(tagList, View.OnClickListener { showSelectTagsFragment() })
+                            binding.recyclerView.adapter = adapter
+                            binding.recyclerView.layoutManager =
+                                LinearLayoutManager(binding.root.context, LinearLayout.HORIZONTAL, false)
+                            binding.recyclerView.visibility = View.VISIBLE
+                        }
+                    } else {
+                        if (binding.recyclerView.isVisible) binding.recyclerView.visibility = View.GONE
+                        if (!binding.tagsLabel.isVisible) binding.tagsLabel.visibility = View.VISIBLE
+                        if (!binding.tagsValue.isVisible) binding.tagsValue.visibility = View.VISIBLE
+                    }
+                }
+            })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -76,7 +127,7 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId){
+        return when (item.itemId) {
             R.id.action_save_task -> actionSaveTask()
             else -> super.onOptionsItemSelected(item)
         }
@@ -91,13 +142,20 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
     private fun saveTask() {
         // val input = binding.etNewTaskName.text.toString()
         val input = binding.etTaskName.text.toString()
+        val adapter = binding.recyclerView.adapter
+        if (adapter is JHTagAdapter) {
+            val tags = adapter.getTags()
 
-        if (input.isBlank()) {
-            Utils.showSnackbar(binding.root, getString(R.string.null_or_blank))
-            return
+            if (input.isBlank()) {
+                Utils.showSnackbar(binding.root, getString(R.string.null_or_blank))
+                return
+            }
+
+            viewModel.addTaskToDb(input, mProject)
+            tags.forEach {
+                viewModel.addTaskTagAssignmentToDb(tagId = )
+            }
         }
-
-        viewModel.addTaskToDb(input, mProject)
 
         hideSoftKeyboard(this)
 
@@ -114,14 +172,14 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
 
     private fun showSelectProjectDialog() {
         val dialogFragment = SelectProjectDialogFragment(viewModel, this)
-        fragmentManager?.let { dialogFragment.show(it, Constants.FRAGMENT_SELECT_PROJECT_DIALOG)}
+        fragmentManager?.let { dialogFragment.show(it, Constants.FRAGMENT_SELECT_PROJECT_DIALOG) }
     }
 
     override fun onItemSelected(item: Any) {
         if (item is Project) {
             projectSelected(item)
         } else if (item is Tag) {
-            tagSelected(item)
+//            tagSelected(item)
         }
     }
 
@@ -130,18 +188,11 @@ class NewTaskFragment : Fragment(), ItemSelectedListener {
         // val currentText = binding.etNewTaskName.text.toString()
         // val newText = "$currentText \${${item.name}}"
         // binding.etNewTaskName.setText(newText)
-        val f = fragmentManager?.findFragmentByTag(Constants.FRAGMENT_SELECT_PROJECT_DIALOG) as SelectProjectDialogFragment
+        val f =
+            fragmentManager?.findFragmentByTag(Constants.FRAGMENT_SELECT_PROJECT_DIALOG) as SelectProjectDialogFragment
         f.dismiss()
 
         binding.projectValue.text = item.name
     }
 
-    private fun tagSelected(item: Tag) {
-        mTags.add(item)
-        // val currentText = binding.etNewTaskName.text.toString()
-        // val newText = "$currentText #{${item.name}}"
-        // binding.etNewTaskName.setText(newText)
-        // val f = fragmentManager?.findFragmentByTag(Constants.FRAGMENT_SELECT_TAG_DIALOG) as SelectTagDialogFragment
-        // f.dismiss()
-    }
 }

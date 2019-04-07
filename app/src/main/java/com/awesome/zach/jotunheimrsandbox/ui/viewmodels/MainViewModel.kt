@@ -2,11 +2,9 @@ package com.awesome.zach.jotunheimrsandbox.ui.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.awesome.zach.jotunheimrsandbox.data.entities.Color
-import com.awesome.zach.jotunheimrsandbox.data.entities.Project
-import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
-import com.awesome.zach.jotunheimrsandbox.data.entities.Task
+import com.awesome.zach.jotunheimrsandbox.data.entities.*
 import com.awesome.zach.jotunheimrsandbox.data.repositories.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +15,7 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
                                          val taskRepository: TaskRepository,
                                          val projectRepository: ProjectRepository,
                                          val tagRepository: TagRepository,
-                                         taskTagAssignmentRepository: TaskTagAssignmentRepository,
+                                         val taskTagAssignmentRepository: TaskTagAssignmentRepository,
                                          projectId: Long? = null, tagId: Long? = null,
                                          taskId: Long? = null) : ViewModel() {
     companion object {
@@ -29,6 +27,8 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
     private val tagsList = MediatorLiveData<List<Tag>>()
     private val colorsList = MediatorLiveData<List<Color>>()
     // private var colorsList = listOf<Color>()
+
+    private val selectedTags = MutableLiveData<List<Tag>>()
 
     /**
      * This is the job for all coroutines started by this ViewModel.
@@ -78,8 +78,8 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
             // no projectId was passed
             if (tagId == null) {
                 // both are null, return inbox tasks
-                // val liveTasksList = taskRepository.getActiveTasksLive()
-                val liveTasksList = taskRepository.getInboxTasksLive()
+                 val liveTasksList = taskRepository.getActiveTasksLive()
+//                val liveTasksList = taskRepository.getInboxTasksLive()
                 tasksList.addSource(liveTasksList, tasksList::setValue)
             } else {
                 // projectId is null, but a tagId was passed, return tasks for that tagId
@@ -109,13 +109,29 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
 
     fun getColors() = colorsList
 
-    fun addTaskToDb(name: String, project: Project? = null) {
+    fun getSelectedTags(): MutableLiveData<List<Tag>> {
+        return selectedTags
+    }
+
+    fun addTaskToDb(name: String, project: Project? = null, tags: List<Tag>? = null) {
         viewModelScope.launch {
 
             val pid = project?.projectId
 
             val task = Task(name = name, projectId = pid)
-            taskRepository.insertTask(task)
+            task.taskId = taskRepository.insertTask(task)
+
+
+//            tags?.forEach {
+//                val tag = tagRepository.getTagById(it.tagId)
+//                addTaskTagAssignmentToDb(taskId = task.taskId, tagId = tag.tagId)
+//            }
+        }
+    }
+
+    fun addTaskTagAssignmentToDb(taskId: Long, tagId: Long) {
+        viewModelScope.launch {
+            taskTagAssignmentRepository.insertTaskTagAssignment(TaskTagAssignment(taskId = taskId, tagId = tagId))
         }
     }
 
@@ -150,4 +166,10 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
             Log.d(LOG_TAG, "$count tasks deleted")
         }
     }
+
+    fun updateSelectedTags(tags: List<Tag>) {
+        selectedTags.value = tags
+    }
+
+
 }

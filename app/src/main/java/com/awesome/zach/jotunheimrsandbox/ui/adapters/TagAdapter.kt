@@ -65,6 +65,14 @@ class TagAdapter(private val selectedListener: ItemSelectedListener,
         return selectedTags.toList()
     }
 
+    fun setSelectedTags(tags: List<Tag>) {
+        mTags?.forEach {
+            if (it in tags) {
+                it.isSelected = true
+            }
+        }
+    }
+
     fun clearSelectedTags() {
         mTags?.forEach {
             if (it.isSelected) it.isSelected = false

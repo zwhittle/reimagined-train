@@ -50,4 +50,9 @@ class JHTagView(context: Context, attrs: AttributeSet): TextView(context, attrs)
         val backgroundRect = RectF(0f, 0f, width.toFloat(), height.toFloat())
         canvas.drawRoundRect(backgroundRect, 0f, 0f, paint)
     }
+
+
+    fun setColor(value: Int) {
+        color = value
+    }
 }

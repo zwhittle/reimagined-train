@@ -25,7 +25,8 @@
         android:onClick="@{clickListener}"
         android:orientation="horizontal"
         android:paddingStart="@dimen/margin_small"
-        android:paddingTop="@dimen/margin_normal"
+        android:paddingTop="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_small"
         android:paddingEnd="@dimen/margin_normal">
 
 

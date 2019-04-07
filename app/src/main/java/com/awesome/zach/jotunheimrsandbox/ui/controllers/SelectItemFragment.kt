@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
@@ -35,14 +36,18 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
     private var actionModeEnabled = false
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
 
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.layout_select_item_fragment, container, false)
+            inflater, R.layout.layout_select_item_fragment, container, false
+        )
         val context = binding.root.context
 
         factory = InjectorUtils.provideMainViewModelFactory(context)
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         setupAdapter(arguments)
         binding.rvSelectionList.layoutManager = LinearLayoutManager(context)
@@ -81,6 +86,12 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
         viewModel.getTags().observe(viewLifecycleOwner, Observer { tags ->
             if (tags != null) adapter.setTagsList(tags)
         })
+        viewModel.getSelectedTags().observe(viewLifecycleOwner, Observer { tags ->
+            if (tags != null) {
+                adapter.setSelectedTags(tags)
+                startActionMode(adapter.getSelectedTags().size)
+            }
+        })
     }
 
     private fun subscribeUi(adapter: SimpleProjectAdapter) {
@@ -100,16 +111,22 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
             val adapter = binding.rvSelectionList.adapter as TagAdapter
             val count = adapter.getSelectedTags().size
 
-            if (count != 0) {
-                if (!actionModeEnabled) {
-                    startActionMode(count)
-                } else {
-                    mActionModeCallback.updateCount(count)
-                }
-            } else if (count == 0) {
-                if (actionModeEnabled) {
-                    finishActionMode()
-                }
+//            if (count != 0) {
+//                if (!actionModeEnabled) {
+//                    startActionMode(count)
+//                } else {
+//                    mActionModeCallback.updateCount(count)
+//                }
+//            } else if (count == 0) {
+//                if (actionModeEnabled) {
+//                    finishActionMode()
+//                }
+//            }
+
+            if (!actionModeEnabled) {
+                startActionMode(count)
+            } else {
+                mActionModeCallback.updateCount(count)
             }
         }
     }
@@ -131,8 +148,9 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
     private fun actionMenuComplete() {
         val adapter = binding.rvSelectionList.adapter
         if (adapter is TagAdapter) {
-            val selectedTasks = adapter.getSelectedTags()
-            // TODO: Pass selectedTasks back to NewTaskFragment
+            val selectedTags = adapter.getSelectedTags()
+            viewModel.updateSelectedTags(selectedTags)
+            findNavController().popBackStack()
         }
     }
 
