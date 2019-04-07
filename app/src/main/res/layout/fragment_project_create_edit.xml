@@ -15,7 +15,7 @@
             android:id="@+id/etNewProjectName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorMenuGrey"
             android:importantForAutofill="no"
             android:foregroundTintMode="src_over"
             android:foregroundTint="@android:color/white"

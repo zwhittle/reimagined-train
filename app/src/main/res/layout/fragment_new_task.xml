@@ -16,6 +16,7 @@
             android:importantForAutofill="no"
             android:inputType="textAutoCorrect"
             android:theme="@style/EditTextOrangeTheme"
+            android:textColor="@color/colorMenuGrey"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/_420_blaze_it_nerds" />

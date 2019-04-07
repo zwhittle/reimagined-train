@@ -47,24 +47,28 @@
     </style>
 
     <style name="EditTextGreyTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuGrey</item>
         <item name="colorControlNormal">@color/colorMenuGrey</item>
         <item name="colorControlActivated">@color/colorMenuGrey</item>
         <item name="colorControlHighlight">@color/colorMenuGrey</item>
     </style>
 
     <style name="EditTextBlueTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuGrey</item>
         <item name="colorControlNormal">@color/colorMenuBlue</item>
         <item name="colorControlActivated">@color/colorMenuBlue</item>
         <item name="colorControlHighlight">@color/colorMenuBlue</item>
     </style>
 
     <style name="EditTextOrangeTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuGrey</item>
         <item name="colorControlNormal">@color/colorMenuOrange</item>
         <item name="colorControlActivated">@color/colorMenuOrange</item>
         <item name="colorControlHighlight">@color/colorMenuOrange</item>
     </style>
 
     <style name="EditTextRedTheme" parent="AppTheme">
+        <item name="android:textColor">@color/colorMenuGrey</item>
         <item name="colorControlNormal">@color/colorMenuRed</item>
         <item name="colorControlActivated">@color/colorMenuRed</item>
         <item name="colorControlHighlight">@color/colorMenuRed</item>
