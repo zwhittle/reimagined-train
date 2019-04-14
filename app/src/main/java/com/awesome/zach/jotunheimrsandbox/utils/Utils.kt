@@ -19,6 +19,12 @@ object Utils {
     private lateinit var firstDayOfWeek: DayOfWeek
     private lateinit var lastDayOfWeek: DayOfWeek
 
+    fun setAppBarTitle(title: String, fragment: Fragment) {
+        fragment.activity?.run {
+            actionBar?.title = title
+        }
+    }
+
     fun firstDayOfThisWeek(locale: Locale = Locale.US): LocalDate {
         firstDayOfWeek = WeekFields.of(locale).firstDayOfWeek
         return LocalDate.now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek))

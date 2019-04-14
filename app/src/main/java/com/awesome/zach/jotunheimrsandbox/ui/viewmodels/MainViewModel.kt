@@ -27,17 +27,6 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
         const val LOG_TAG = "MainViewModel"
     }
 
-    //    private val tasksList = MediatorLiveData<List<Task>>()
-    //    private val projectsList = MediatorLiveData<List<Project>>()
-    //    private val tagsList = MediatorLiveData<List<Tag>>()
-    //    private val colorsList = MediatorLiveData<List<Color>>()
-    //    private val listsList = MediatorLiveData<List<JHList>>()
-    //    private val tasksList = MutableLiveData<List<Task>>()
-    //    private val projectsList = MutableLiveData<List<Project>>()
-    //    private val tagsList = MutableLiveData<List<Tag>>()
-    //    private val colorsList = MutableLiveData<List<Color>>()
-    //    private val listsList = MutableLiveData<List<JHList>>()
-
     private lateinit var tasksList: LiveData<List<Task>>
     private lateinit var projectsList: LiveData<List<Project>>
     private lateinit var tagsList: LiveData<List<Tag>>
@@ -77,36 +66,21 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
     private fun setupColorsList(colorRepository: ColorRepository) {
         val liveColorsList = colorRepository.getAllColorsLive()
         colorsList = liveColorsList
-
-        //        colorsList.addSource(liveColorsList,
-        //                             colorsList::setValue)
-        // viewModelScope.launch {
-        //     colorsList = colorRepository.getAllColors()
-        // }
     }
 
     private fun setupListsList(listRepository: ListRepository) {
         val liveListsList = listRepository.getAllListsLive()
         listsList = liveListsList
-
-        //        listsList.addSource(liveListsList,
-        //                            listsList::setValue)
     }
 
     private fun setupTagsList(tagRepository: TagRepository) {
         val liveTagsList = tagRepository.getAllTagsLive()
         tagsList = liveTagsList
-
-        //        tagsList.addSource(liveTagsList,
-        //                           tagsList::setValue)
     }
 
     private fun setupProjectsList(projectRepository: ProjectRepository) {
         val liveProjectsList = projectRepository.getAllProjectsLive()
         projectsList = liveProjectsList
-
-        //        projectsList.addSource(liveProjectsList,
-        //                               projectsList::setValue)
     }
 
     private fun setupTasksList(taskRepository: TaskRepository,
@@ -124,46 +98,32 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
                 if (projectId!! > 0) {
                     val liveTasksList = taskRepository.getTasksForProjectLive(projectId)
                     tasksList = liveTasksList
-                    //                    tasksList.addSource(liveTasksList,
-                    //                                        tasksList::setValue)
                 } else if (projectId == 0L) {
                     val liveTasksList = taskRepository.getInboxTasksLive()
                     tasksList = liveTasksList
-                    //                    tasksList.addSource(liveTasksList,
-                    //                                        tasksList::setValue)
                 }
             }
             tagIdPassed     -> {
                 if (tagId!! > 0) {
                     val liveTasksList = taskTagAssignmentRepository.getTasksWithTagLive(tagId)
                     tasksList = liveTasksList
-                    //                    tasksList.addSource(liveTasksList,
-                    //                        tasksList::setValue)
                 } else if (tagId == 0L) {
                     val liveTasksList = taskRepository.getInboxTasksLive()
                     tasksList = liveTasksList
-                    //                    tasksList.addSource(liveTasksList,
-                    //                        tasksList::setValue)
                 }
             }
             listIdPassed    -> {
                 if (listId!! > 0) {
                     val liveTasksList = taskRepository.getTasksOnListLive(listId)
                     tasksList = liveTasksList
-                    //                    tasksList.addSource(liveTasksList,
-                    //                        tasksList::setValue)
                 } else if (listId == 0L) {
                     val liveTasksList = taskRepository.getInboxTasksLive()
                     tasksList = liveTasksList
-                    //                    tasksList.addSource(liveTasksList,
-                    //                        tasksList::setValue)
                 }
             }
             else            -> {
                 val liveTasksList = taskRepository.getActiveTasksLive()
                 tasksList = liveTasksList
-                //                tasksList.addSource(liveTasksList,
-                //                                    tasksList::setValue)
             }
         }
     }

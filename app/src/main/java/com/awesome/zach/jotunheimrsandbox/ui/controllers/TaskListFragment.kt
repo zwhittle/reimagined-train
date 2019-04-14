@@ -67,15 +67,6 @@ class TaskListFragment : Fragment(),
         return binding.root
     }
 
-//    private fun handleArguments(context: Context) {
-//
-//        when {
-//            args.containsKey(Constants.ARGUMENT_PROJECT_ID) -> setupFragmentForProject(context, args)
-//            args.containsKey(Constants.ARGUMENT_TAG_NAME)   -> setupFragmentForTag(context, args)
-//            else                                            -> setupFragmentForAll(context)
-//        }
-//
-//    }
 
     private fun subscribeUi(args: Bundle) {
         viewModel.getTasks(args).observe(viewLifecycleOwner, Observer { tasks ->
@@ -84,8 +75,9 @@ class TaskListFragment : Fragment(),
     }
 
     private fun setAppTitle(args: Bundle) {
-        if (activity is MainActivity) {
-            activity?.let { setActionBarTitle(args.getString(Constants.ARGUMENT_APP_TITLE)) }
+        if (args.containsKey(Constants.ARGUMENT_APP_TITLE)) {
+            val title = args.getString(Constants.ARGUMENT_APP_TITLE)
+            setActionBarTitle(title!!)
         }
     }
 
@@ -150,16 +142,6 @@ class TaskListFragment : Fragment(),
     private fun finishActionMode() {
         mActionModeCallback.finishActionMode()
     }
-
-    // private fun setActionBarTitle(string: String?) {
-    //     if (string.isNullOrBlank()) return
-    //
-    //     val a = activity as MainActivity
-    //     a.setActionBarTitle(string)
-    //
-    // }
-
-
 
     private fun attachDrawerListener() {
         val a = activity as MainActivity

@@ -24,11 +24,6 @@ class HomeFragment : Fragment() {
         val binding = DataBindingUtil.inflate<LayoutHomeMenuBinding>(inflater, R.layout.layout_home_menu, container, false)
         val context = binding.root.context
 
-//        val factory = InjectorUtils.provideMainViewModelFactory(context)
-//        viewModel = activity?.run {
-//            ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-//        } ?: throw Exception("Invalid Activity")
-
         navController = findNavController()
 
         binding.tvHomeInbox.setOnClickListener {

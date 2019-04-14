@@ -1,11 +1,9 @@
 package com.awesome.zach.jotunheimrsandbox.utils
 
-import android.app.Activity
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -28,9 +26,7 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Fragmen
     beginTransaction().func().commit()
 }
 
-fun Fragment.setActionBarTitle(title: String?) {
-    if (title.isNullOrBlank()) return
-
+fun Fragment.setActionBarTitle(title: String) {
     val a = activity as MainActivity
     a.setActionBarTitle(title)
 }
