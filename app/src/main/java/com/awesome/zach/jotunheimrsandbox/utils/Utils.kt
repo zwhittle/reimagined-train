@@ -15,15 +15,16 @@ import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.*
 
+/**
+ * This Utils class is intended to be used across projects and evolve overtime into a library or module along with
+ * Constants and Extensions.
+ * Do not reference any project specific classes or APIs in this file
+ */
+
 object Utils {
+
     private lateinit var firstDayOfWeek: DayOfWeek
     private lateinit var lastDayOfWeek: DayOfWeek
-
-    fun setAppBarTitle(title: String, fragment: Fragment) {
-        fragment.activity?.run {
-            actionBar?.title = title
-        }
-    }
 
     fun firstDayOfThisWeek(locale: Locale = Locale.US): LocalDate {
         firstDayOfWeek = WeekFields.of(locale).firstDayOfWeek
