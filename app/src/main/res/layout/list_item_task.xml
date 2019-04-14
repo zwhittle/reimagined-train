@@ -38,7 +38,7 @@
                 android:id="@+id/tvListItemTaskLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{task.name}"
+                android:text="@{task.taskName}"
                 tools:text="Home" />
         </LinearLayout>
 

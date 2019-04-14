@@ -15,22 +15,26 @@ import java.time.LocalDate
  */
 
 @Entity(tableName = "task_table",
-        indices = [Index("taskId"), Index("projectId")],
+        indices = [Index("taskId"), Index("projectId"), Index("listId")],
         foreignKeys = [ForeignKey(entity = Project::class,
                                   parentColumns = ["projectId"],
-                                  childColumns = ["projectId"])])
+                                  childColumns = ["projectId"]), ForeignKey(entity = JHList::class,
+                                                                            parentColumns = ["listId"],
+                                                                            childColumns = ["listId"])])
 data class Task(
     @PrimaryKey(autoGenerate = true)
     var taskId: Long = 0,
     @NonNull
-    var name: String,
+    var taskName: String,
     var date_start: LocalDate? = null,
     var date_end: LocalDate? = null,
     @NonNull
     var completed: Boolean = false,
     @NonNull
     var priority: Int = 1,
-    var projectId: Int? = null,
+    var projectId: Long? = null,
     @ColumnInfo(name = "projectName")
     var projectName: String? = null,
+    var listId: Long? = null,
+    var listName: String? = null,
     var isSelected: Boolean = false)

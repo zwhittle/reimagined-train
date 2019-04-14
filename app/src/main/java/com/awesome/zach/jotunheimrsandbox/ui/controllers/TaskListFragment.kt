@@ -1,6 +1,5 @@
 package com.awesome.zach.jotunheimrsandbox.ui.controllers
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -22,11 +21,11 @@ import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeCallback
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.DialogFragmentListener
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.utils.setActionBarTitle
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
 
 class TaskListFragment : Fragment(),
     DialogFragmentListener,
@@ -52,27 +51,42 @@ class TaskListFragment : Fragment(),
             inflater, R.layout.fragment_task_list, container, false)
         val context = binding.root.context
 
-        handleArguments(context)
+        factory = InjectorUtils.provideMainViewModelFactory(context)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         adapter = TaskAdapter(this, true)
         binding.rvTaskList.adapter = adapter
         binding.rvTaskList.layoutManager = LinearLayoutManager(context)
 
-        subscribeUi()
+        val args = arguments ?: Bundle()
+        subscribeUi(args)
+        setAppTitle(args)
 
         return binding.root
     }
 
-    private fun handleArguments(context: Context) {
-        val args = arguments ?: Bundle()
+//    private fun handleArguments(context: Context) {
+//
+//        when {
+//            args.containsKey(Constants.ARGUMENT_PROJECT_ID) -> setupFragmentForProject(context, args)
+//            args.containsKey(Constants.ARGUMENT_TAG_NAME)   -> setupFragmentForTag(context, args)
+//            else                                            -> setupFragmentForAll(context)
+//        }
+//
+//    }
 
-        when {
-            args.containsKey(Constants.ARGUMENT_PROJECT_ID) -> setupFragmentForProject(context, args)
-            args.containsKey(Constants.ARGUMENT_TAG_NAME)   -> setupFragmentForTag(context, args)
-            else                                            -> setupFragmentForAll(context)
+    private fun subscribeUi(args: Bundle) {
+        viewModel.getTasks(args).observe(viewLifecycleOwner, Observer { tasks ->
+            if (tasks != null) adapter.setTasksList(tasks)
+        })
+    }
+
+    private fun setAppTitle(args: Bundle) {
+        if (activity is MainActivity) {
+            activity?.let { setActionBarTitle(args.getString(Constants.ARGUMENT_APP_TITLE)) }
         }
-
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
     }
 
     private fun startActionMode(count: Int) {
@@ -137,33 +151,6 @@ class TaskListFragment : Fragment(),
         mActionModeCallback.finishActionMode()
     }
 
-    private fun setupFactoryForAll(context: Context) {
-        factory = InjectorUtils.provideMainViewModelFactory(context = context)
-    }
-
-    private fun setupFragmentForAll(context: Context) {
-        setupFactoryForAll(context)
-        setActionBarTitle(getString(R.string.all_tasks))
-    }
-
-    private fun setupFactoryForTag(context: Context, tagId: Long) {
-        factory = InjectorUtils.provideMainViewModelFactory(context = context, tagId = tagId)
-    }
-
-    private fun setupFactoryForProject(context: Context, projectId: Long) {
-        factory = InjectorUtils.provideMainViewModelFactory(context = context, projectId = projectId)
-    }
-
-    private fun setupFragmentForProject(context: Context, args: Bundle) {
-        setupFactoryForProject(context, args.getLong(Constants.ARGUMENT_PROJECT_ID))
-        setActionBarTitle(args.getString(Constants.ARGUMENT_PROJECT_NAME))
-    }
-
-    private fun setupFragmentForTag(context: Context, args: Bundle) {
-        setupFactoryForTag(context, args.getLong(Constants.ARGUMENT_TAG_ID))
-        setActionBarTitle(args.getString(Constants.ARGUMENT_TAG_NAME))
-    }
-
     // private fun setActionBarTitle(string: String?) {
     //     if (string.isNullOrBlank()) return
     //
@@ -172,11 +159,7 @@ class TaskListFragment : Fragment(),
     //
     // }
 
-    private fun subscribeUi() {
-        viewModel.getTasks().observe(viewLifecycleOwner, Observer { tasks ->
-            if (tasks != null) adapter.setTasksList(tasks)
-        })
-    }
+
 
     private fun attachDrawerListener() {
         val a = activity as MainActivity

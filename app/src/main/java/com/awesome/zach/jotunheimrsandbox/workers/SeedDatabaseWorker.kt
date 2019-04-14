@@ -18,6 +18,7 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
             val dbSeeder = DBSeeder(db)
 
             seedColors(db, dbSeeder)
+            seedLists(db, dbSeeder)
             // seedTags(db, dbSeeder)
             // seedProjects(db, dbSeeder)
             // seedTasks(db, dbSeeder)
@@ -46,6 +47,23 @@ class SeedDatabaseWorker(context: Context, workerParams: WorkerParameters) : Wor
         } else {
             throw Exception("insertedCount does not match seedCount")
         }        
+    }
+
+    @Throws(Exception::class)
+    private fun seedLists(db: AppDatabase, seeder: DBSeeder) : Int {
+        val listsToSeed = seeder.populateListsList()
+        val insertedIds = db.listDao().bulkInsertLists(listsToSeed)
+        seeder.lists = ArrayList(db.listDao().getAllLists())
+
+        val seedCount = listsToSeed.size
+        val insertedCount = insertedIds.size
+
+        if (insertedCount == seedCount) {
+            Log.d(LOG_TAG, "Successfully seeded $insertedCount lists!")
+            return insertedCount
+        } else {
+            throw Exception("insertedCount does not match seedCount")
+        }
     }
     
     @Throws(Exception::class)

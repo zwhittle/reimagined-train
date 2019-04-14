@@ -8,9 +8,11 @@ class MainViewModelFactory(private val colorRepository: ColorRepository,
                            private val taskRepository: TaskRepository,
                            private val projectRepository: ProjectRepository,
                            private val tagRepository: TagRepository,
+                           private val listRepository: ListRepository,
                            private val taskTagAssignmentRepository: TaskTagAssignmentRepository,
                            private val projectId: Long? = null,
                            private val taskId: Long? = null,
+                           private val listId: Long? = null,
                            private val tagId: Long? = null) :
     ViewModelProvider.NewInstanceFactory() {
 
@@ -20,8 +22,10 @@ class MainViewModelFactory(private val colorRepository: ColorRepository,
         taskRepository = taskRepository,
         projectRepository = projectRepository,
         tagRepository = tagRepository,
+        listRepository = listRepository,
         taskTagAssignmentRepository = taskTagAssignmentRepository,
         projectId = projectId,
         taskId = taskId,
+        listId = listId,
         tagId = tagId) as T
 }

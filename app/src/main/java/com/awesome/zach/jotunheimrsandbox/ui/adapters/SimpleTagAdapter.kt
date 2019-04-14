@@ -38,7 +38,7 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
             if (tag != null) {
                 val args = Bundle()
                 args.putLong(Constants.ARGUMENT_TAG_ID, tag.tagId)
-                args.putString(Constants.ARGUMENT_TAG_NAME, tag.name)
+                args.putString(Constants.ARGUMENT_APP_TITLE, tag.name)
                 bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment, args), tag)
                 itemView.tag = tag
             }

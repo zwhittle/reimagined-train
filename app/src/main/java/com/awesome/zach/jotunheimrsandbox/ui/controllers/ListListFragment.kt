@@ -10,32 +10,27 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
-import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectListBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
+import com.awesome.zach.jotunheimrsandbox.databinding.FragmentListListBinding
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleListAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 
-class ProjectListFragment : Fragment() {
+class ListListFragment : Fragment() {
 
     companion object {
-        const val LOG_TAG = "ProjectListFragment"
+        const val LOG_TAG = "ListListFragment"
     }
 
-    // private lateinit var viewModel: ProjectListViewModel
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-        val binding = DataBindingUtil.inflate<FragmentProjectListBinding>(inflater,
-                                                                          R.layout.fragment_project_list,
-                                                                          container,
-                                                                          false)
+        val binding = DataBindingUtil.inflate<FragmentListListBinding>(inflater,
+                                                                       R.layout.fragment_list_list,
+                                                                       container,
+                                                                       false)
         val context = binding.root.context
-
-        // val factory = InjectorUtils.provideProjectListViewModelFactory(context)
-        // viewModel = ViewModelProviders.of(this, factory).get(ProjectListViewModel::class.java)
 
         val factory = InjectorUtils.provideMainViewModelFactory(context)
         viewModel = activity?.run {
@@ -44,20 +39,19 @@ class ProjectListFragment : Fragment() {
                 .get(MainViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        val adapter = SimpleProjectAdapter()
-        binding.rvProjectList.adapter = adapter
-        binding.rvProjectList.layoutManager = LinearLayoutManager(context)
+        val adapter = SimpleListAdapter()
+        binding.rvListList.adapter = adapter
+        binding.rvListList.layoutManager = LinearLayoutManager(context)
         subscribeUi(adapter)
 
         return binding.root
     }
 
-    private fun subscribeUi(adapter: SimpleProjectAdapter) {
-
-        viewModel.getProjects()
+    private fun subscribeUi(adapter: SimpleListAdapter) {
+        viewModel.getLists()
             .observe(viewLifecycleOwner,
-                     Observer { projects ->
-                         if (projects != null) adapter.setProjectsList(projects)
+                     Observer { lists ->
+                         if (lists != null) adapter.setListsList(lists)
                      })
     }
 }

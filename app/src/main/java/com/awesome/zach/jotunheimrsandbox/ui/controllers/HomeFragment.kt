@@ -57,7 +57,7 @@ class HomeFragment : Fragment() {
     private fun showInbox() {
         val args = Bundle()
         args.putLong(Constants.ARGUMENT_PROJECT_ID, 0L)
-        args.putString(Constants.ARGUMENT_PROJECT_NAME, "Inbox")
+        args.putString(Constants.ARGUMENT_APP_TITLE, "Inbox")
         navController.navigate(R.id.taskListFragment, args)
     }
 
@@ -74,6 +74,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun showLists() {
-
+        navController.navigate(R.id.listListFragment)
     }
 }

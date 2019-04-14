@@ -25,10 +25,6 @@ import java.time.LocalDate
 @Dao
 interface TaskDao {
 
-    /**
-     * TODO: How should I handle grabbing complete vs incomplete tasks?
-     */
-
     // returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTask(task: Task): Long
@@ -72,7 +68,13 @@ interface TaskDao {
     @Query("SELECT * FROM task_table WHERE taskId == :taskId ORDER BY date_end ASC")
     fun getTaskById(taskId: Long): Task
 
-    @Query("SELECT * FROM task_table WHERE completed == :completed AND name == :name ORDER BY date_end ASC")
+    @Query("SELECT * FROM task_table LEFT JOIN list_table ON task_table.listId = list_table.listId WHERE completed == :completed AND task_table.listId == :listId ORDER BY date_end ASC")
+    fun getTasksOnListLive(listId: Long, completed: Boolean = false): LiveData<List<Task>>
+
+    @Query("SELECT * FROM task_table LEFT JOIN list_table ON task_table.listId = list_table.listId WHERE completed == :completed AND task_table.listId == :listId ORDER BY date_end ASC")
+    fun getTasksOnList(listId: Long, completed: Boolean = false): List<Task>
+
+    @Query("SELECT * FROM task_table WHERE completed == :completed AND taskName == :name ORDER BY date_end ASC")
     fun getTasksWithName(name: String,
                          completed: Boolean = false): List<Task>
 
@@ -80,7 +82,7 @@ interface TaskDao {
     fun getTasksWithStartDate(startDate: LocalDate,
                               completed: Boolean = false): List<Task>
 
-    @Query("SELECT * FROM task_table WHERE completed == :completed AND date_start == :today ORDER BY name ASC")
+    @Query("SELECT * FROM task_table WHERE completed == :completed AND date_start == :today ORDER BY taskName ASC")
     fun getTasksStartingToday(today: String = LocalDate.now().toString(),
                               completed: Boolean = false): List<Task>
 
@@ -89,7 +91,7 @@ interface TaskDao {
                             completed: Boolean = false): List<Task>
 
     // convenience method for passing in Today as a param into the above
-    @Query("SELECT * FROM task_table WHERE completed == :completed AND date_end == :today ORDER BY name ASC")
+    @Query("SELECT * FROM task_table WHERE completed == :completed AND date_end == :today ORDER BY taskName ASC")
     fun getTasksDueToday(today: String = LocalDate.now().toString(),
                          completed: Boolean = false): List<Task>
 

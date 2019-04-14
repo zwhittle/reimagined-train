@@ -53,5 +53,12 @@
                 app:destination="@id/createEditTagFragment"/>
         <action android:id="@+id/action_homeFragment_to_createEditProjectFragment"
                 app:destination="@id/createEditProjectFragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_listListFragment"
+            app:destination="@id/listListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listListFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.ListListFragment"
+        android:label="ListListFragment" />
 </navigation>

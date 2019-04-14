@@ -12,25 +12,32 @@ object InjectorUtils {
             AppDatabase.getDatabase(context.applicationContext).colorDao())
     }
 
+    private fun getListRepository(context: Context) : ListRepository {
+        return ListRepository.getInstance(
+            AppDatabase.getDatabase(context.applicationContext).listDao())
+    }
+
     private fun getTagRepository(context: Context): TagRepository {
         return TagRepository.getInstance(
             AppDatabase.getDatabase(context.applicationContext).tagDao())
     }
 
-    fun provideMainViewModelFactory(context: Context, projectId: Long? = null, taskId: Long? = null,
+    fun provideMainViewModelFactory(context: Context, projectId: Long? = null, listId: Long? = null, taskId: Long? = null,
                                     tagId: Long? = null): MainViewModelFactory {
 
         val colorRepository = getColorRepository(context)
+        val listRepository = getListRepository(context)
         val taskRepository = getTaskRepository(context)
         val projectRepository = getProjectRepository(context)
         val tagRepository = getTagRepository(context)
         val taskTagAssignmentRepository = getTaskTagAssignmentRepository(context)
         return MainViewModelFactory(colorRepository = colorRepository,
+                                    listRepository = listRepository,
                                     taskRepository = taskRepository,
                                     projectRepository = projectRepository,
                                     tagRepository = tagRepository,
                                     taskTagAssignmentRepository = taskTagAssignmentRepository,
-                                    projectId = projectId, taskId = taskId, tagId = tagId)
+                                    projectId = projectId, taskId = taskId, listId = listId, tagId = tagId)
     }
 
     private fun getProjectRepository(context: Context): ProjectRepository {

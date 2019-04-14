@@ -84,6 +84,10 @@ class MainActivity : AppCompatActivity() {
                 hideFab()
                 setActionBarTitle(getString(R.string.all_projects))
             }
+            graph[R.id.listListFragment]          -> {
+                hideFab()
+                setActionBarTitle("All Lists")
+            }
             graph[R.id.newTaskFragment]           -> {
                 hideFab()
                 setActionBarTitle(getString(R.string.new_task))
@@ -92,9 +96,13 @@ class MainActivity : AppCompatActivity() {
                 hideFab()
                 setActionBarTitle(getString(R.string.new_project))
             }
-            graph[R.id.createEditTagFragment] -> {
+            graph[R.id.createEditTagFragment]     -> {
                 hideFab()
                 setActionBarTitle(getString(R.string.new_tag))
+            }
+            graph[R.id.homeFragment]              -> {
+                showFab()
+                setActionBarTitle(getString(R.string.app_name))
             }
         }
 

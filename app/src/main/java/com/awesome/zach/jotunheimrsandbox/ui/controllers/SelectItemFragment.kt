@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.databinding.LayoutSelectItemFragmentBinding
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleListAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleTaskAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.TagAdapter
@@ -76,6 +77,11 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
                         binding.rvSelectionList.adapter = adapter
                         subscribeUi(adapter)
                     }
+                    Constants.MODEL_LIST -> {
+                        val adapter = SimpleListAdapter()
+                        binding.rvSelectionList.adapter = adapter
+                        subscribeUi(adapter)
+                    }
                     else -> throw ClassCastException("$model passed but not handled")
                 }
             }
@@ -106,6 +112,12 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
         })
     }
 
+    private fun subscribeUi(adapter: SimpleListAdapter) {
+        viewModel.getLists().observe(viewLifecycleOwner, Observer { lists ->
+            if (lists != null) adapter.setListsList(lists)
+        })
+    }
+
     override fun onItemSelected(item: Any) {
         if (item is Tag) {
             val adapter = binding.rvSelectionList.adapter as TagAdapter
@@ -128,6 +140,9 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
             } else {
                 mActionModeCallback.updateCount(count)
             }
+        // } else if (item is JHList) {
+        //     viewModel.updateSelectedList(item)
+        //     popBackStack()
         }
     }
 
@@ -150,7 +165,7 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
         if (adapter is TagAdapter) {
             val selectedTags = adapter.getSelectedTags()
             viewModel.updateSelectedTags(selectedTags)
-            findNavController().popBackStack()
+            popBackStack()
         }
     }
 
@@ -168,5 +183,9 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
             adapter.clearSelectedTags()
         }
         actionModeEnabled = false
+    }
+
+    private fun popBackStack() {
+        findNavController().popBackStack()
     }
 }

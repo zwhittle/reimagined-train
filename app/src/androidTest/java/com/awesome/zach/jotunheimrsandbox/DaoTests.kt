@@ -1,5 +1,6 @@
 package com.awesome.zach.jotunheimrsandbox
 
+import android.util.Log
 import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
@@ -7,7 +8,6 @@ import com.awesome.zach.jotunheimrsandbox.data.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.data.DBSeeder
 import com.awesome.zach.jotunheimrsandbox.data.daos.*
 import com.awesome.zach.jotunheimrsandbox.data.entities.*
-import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Before
@@ -17,6 +17,7 @@ import java.time.LocalDate
 
 class DaoTests {
     private lateinit var colorDao: ColorDao
+    private lateinit var listDao: ListDao
     private lateinit var tagDao: TagDao
     private lateinit var projectDao: ProjectDao
     private lateinit var taskDao: TaskDao
@@ -37,6 +38,7 @@ class DaoTests {
 //        db = AppDatabase.getDatabase(context)
 
         colorDao = db.colorDao()
+        listDao = db.listDao()
         tagDao = db.tagDao()
         projectDao = db.projectDao()
         taskDao = db.taskDao()
@@ -157,6 +159,114 @@ class DaoTests {
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = colorsToInsert.size
+        compareValues[KEY_RETURNED] = returnedIds.size
+        return compareValues
+    }
+
+    /**
+     * ListDao tests and helpers
+     */
+
+    // Writes one list to the DB
+    @Test
+    @Throws(Exception::class)
+    fun writeListDaoTest() {
+        val compareValues = writeList()
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
+    }
+
+    // inserts a list of lists into the DB and compares the count of before to the count after
+    @Test
+    @Throws(Exception::class)
+    fun bulkWriteListsDaoTest() {
+        val compareValues = bulkWriteLists()
+        assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun updateListDaoTest() {
+        val list = writeList()[KEY_RETURNED]
+        if (list != null) {
+            list.listName = "Waiting On"
+            val updatedCount = listDao.updateList(list)
+            assertThat(updatedCount, equalTo(1))
+        } else {
+            throw Exception("list is null")
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun bulkUpdateListDaoTest() {
+        bulkWriteLists()
+        val lists = listDao.getAllLists()
+        lists.forEach { list ->
+            list.listName = "Waiting On"
+        }
+
+        val updatedCount = listDao.bulkUpdateLists(lists)
+        assertThat(updatedCount, equalTo(lists.size))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun deleteListDaoTest() {
+        val list = writeList()[KEY_RETURNED]
+        if (list != null) {
+            val deletedCount = listDao.deleteList(list)
+            assertThat(deletedCount, equalTo(1))
+        } else {
+            throw Exception("list is null")
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun bulkDeleteListsDaoTest() {
+        bulkWriteLists()
+        val lists = listDao.getAllLists()
+        val deletedCount = listDao.bulkDeleteLists(lists)
+
+        assertThat(lists.size, equalTo(deletedCount))
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun deleteAllListsDaoTest() {
+        bulkWriteLists()
+        val lists = listDao.getAllLists()
+        val deletedCount = listDao.deleteAllLists()
+
+        val countsMatch = deletedCount == lists.size
+        val noMoreLists = listDao.getAllLists().isEmpty()
+
+        assertThat(noMoreLists, equalTo(true))
+    }
+
+    // helper function that can be called to add a list to the db without calling the full test
+    private fun writeList(): Map<String, JHList> {
+        dbSeeder.populateListsList()
+        val listToInsert: JHList = dbSeeder.lists[0]
+        val returnedId = listDao.insertList(listToInsert)
+        val returnedList = listDao.getListByID(returnedId)
+        listToInsert.listId = returnedId
+
+        val compareValues = mutableMapOf<String, JHList>()
+        compareValues[KEY_INSERTED] = listToInsert
+        compareValues[KEY_RETURNED] = returnedList
+        return compareValues
+    }
+
+    // helper function that can be called to add a list of lists to the db without calling the full test
+    private fun bulkWriteLists(): Map<String, Int> {
+        dbSeeder.populateListsList()
+        val listsToInsert = dbSeeder.lists
+        val returnedIds = listDao.bulkInsertLists(listsToInsert)
+        dbSeeder.lists = ArrayList(listDao.getAllLists())
+
+        val compareValues = mutableMapOf<String, Int>()
+        compareValues[KEY_INSERTED] = listsToInsert.size
         compareValues[KEY_RETURNED] = returnedIds.size
         return compareValues
     }
@@ -391,6 +501,32 @@ class DaoTests {
      */
     @Test
     @Throws(Exception::class)
+    fun writeAndRetrieveTasksForList() {
+        val compareValuesList = writeList()
+        val list = compareValuesList[KEY_RETURNED]
+
+        if (list != null) {
+            val task = Task(taskName = "Sign Lease", listId = list.listId, listName = list.listName)
+            task.taskId = taskDao.insertTask(task)
+
+            val tasksOnList = taskDao.getTasksOnList(list.listId)
+
+            tasksOnList.forEach {
+                System.out.println(it.taskName)
+                Log.d("DaoTests", it.taskName)
+            }
+
+
+            when {
+                tasksOnList.size == 1 -> assertThat(tasksOnList[0], equalTo(task))
+                tasksOnList.isEmpty() -> throw Exception("No tasks returned")
+                else -> throw Exception("More tasks than expected.")
+            }
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun writeTaskWithoutDatesDaoTest() {
         val compareValues = writeTask(false)
         assertThat(compareValues[KEY_INSERTED], equalTo(compareValues[KEY_RETURNED]))
@@ -424,7 +560,7 @@ class DaoTests {
         val task = writeTask(false)[KEY_RETURNED]
 
         if (task != null) {
-            task.name = "Nice"
+            task.taskName = "Nice"
             task.date_start = LocalDate.now()
             task.date_end = LocalDate.now()
             task.projectId = projectDao.getProjectsByName("Project 1")[0].projectId
@@ -441,7 +577,7 @@ class DaoTests {
         bulkWriteTasks(false)
         val tasks = taskDao.getAllTasks()
         tasks.forEach { task ->
-            task.name = "Nice"
+            task.taskName = "Nice"
             task.date_start = LocalDate.now()
             task.date_end = LocalDate.now()
             task.projectId = projectDao.getProjectsByName("Project 1")[0].projectId
@@ -486,15 +622,15 @@ class DaoTests {
         assertThat(noMoreTasks, equalTo(true))
     }
 
-    @Test
-    @Throws(Exception::class)
-    fun getTasksInRangeDaoTest() {
-        bulkWriteTasks(true)
-        val first = Utils.firstDayOfThisWeek()
-        val last = Utils.lastDayOfThisWeek()
-        val tasks = taskDao.getTasksDueInRange(first, last)
-        assertThat(tasks.size, equalTo(4))
-    }
+//    @Test
+//    @Throws(Exception::class)
+//    fun getTasksInRangeDaoTest() {
+//        bulkWriteTasks(true)
+//        val first = Utils.firstDayOfThisWeek()
+//        val last = Utils.lastDayOfThisWeek()
+//        val tasks = taskDao.getTasksDueInRange(first, last)
+//        assertThat(tasks.size, equalTo(4))
+//    }
 
     // helper function that can be called to add a task to the db without calling the full test
     private fun writeTask(withDates: Boolean): Map<String, Task> {

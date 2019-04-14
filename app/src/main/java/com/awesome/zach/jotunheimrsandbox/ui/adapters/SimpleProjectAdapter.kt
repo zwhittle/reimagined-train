@@ -38,9 +38,9 @@ class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? =
         holder.apply {
             if (project != null) {
                 val args = Bundle()
-                args.putInt(Constants.ARGUMENT_PROJECT_ID,
-                             project.projectId)
-                args.putString(Constants.ARGUMENT_PROJECT_NAME,
+                args.putLong(Constants.ARGUMENT_PROJECT_ID,
+                            project.projectId)
+                args.putString(Constants.ARGUMENT_APP_TITLE,
                                project.name)
                 if (selectedListener == null) {
                     bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment,
@@ -48,7 +48,8 @@ class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? =
                          project)
                 } else {
                     // you can't pass in an ItemSelectedListener without rewriting a bunch of code, so wrap it in an OnClickListener
-                    bind(View.OnClickListener { selectedListener.onItemSelected(project) }, project)
+                    bind(View.OnClickListener { selectedListener.onItemSelected(project) },
+                         project)
                 }
                 itemView.tag = project
             }

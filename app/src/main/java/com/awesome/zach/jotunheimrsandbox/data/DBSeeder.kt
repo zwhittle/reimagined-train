@@ -7,6 +7,7 @@ import java.time.LocalDate
 class DBSeeder(val db: AppDatabase) {
 
     var colors = ArrayList<Color>()
+    var lists = ArrayList<JHList>()
     var tags = ArrayList<Tag>()
     var projects = ArrayList<Project>()
     var tasks = ArrayList<Task>()
@@ -31,6 +32,19 @@ class DBSeeder(val db: AppDatabase) {
         }
 
         return colors
+    }
+
+    fun populateListsList() : ArrayList<JHList> {
+        lists.clear()
+        lists.add(JHList(listName = "Next Available Actions"))
+        lists.add(JHList(listName = "Incubating"))
+        lists.add(JHList(listName = "Another Time"))
+
+        lists.forEach {
+            System.out.println("Added $it to lists list")
+        }
+
+        return lists
     }
 
     fun populateTagsList() : ArrayList<Tag> {
@@ -73,7 +87,7 @@ class DBSeeder(val db: AppDatabase) {
             projectsFromDao.forEachIndexed { index, project ->
                 val endDate = epochDate.plusDays(index.toLong())
                 val startDate = epochDate.minusDays(7)
-                val task = Task(name = "Task $index", date_start = startDate, date_end = endDate, projectId = project.projectId)
+                val task = Task(taskName = "Task $index", date_start = startDate, date_end = endDate, projectId = project.projectId)
                 tasks.add(task)
                 Log.d(LOG_TAG, "Added $task to tasks list")
                 System.out.println("Added $task to tasks list")
@@ -81,7 +95,7 @@ class DBSeeder(val db: AppDatabase) {
 
         } else {
             projectsFromDao.forEachIndexed { index, project ->
-                val task = Task(name = "Task $index", projectId = project.projectId)
+                val task = Task(taskName = "Task $index", projectId = project.projectId)
                 tasks.add(task)
                 Log.d(LOG_TAG, "Added $task to tasks list")
                 System.out.println("Added $task to tasks list")

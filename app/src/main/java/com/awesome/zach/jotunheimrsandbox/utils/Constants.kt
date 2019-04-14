@@ -4,6 +4,9 @@ class Constants {
     companion object {
         const val DB_NAME = "jotunheimr_database"
 
+        const val ARGUMENT_APP_TITLE = "arg-app-title"
+        const val ARGUMENT_LIST_ID = "arg-list-id"
+        const val ARGUMENT_LIST_NAME = "arg-list-name"
         const val ARGUMENT_PROJECT_ID = "arg-project-id"
         const val ARGUMENT_PROJECT_NAME = "arg-project-name"
         const val ARGUMENT_TAG_ID = "arg-tag-id"
@@ -12,6 +15,7 @@ class Constants {
 
         const val FRAGMENT_DELETE_ITEMS_DIALOG = "frag-delete-items-dialog"
         const val FRAGMENT_SELECT_PROJECT_DIALOG = "frag-select-project-dialog"
+        const val FRAGMENT_SELECT_LIST_DIALOG = "frag-select-list-dialog"
         const val FRAGMENT_SELECT_ITEMS = "frag-select-items"
         const val FRAGMENT_SELECT_TAG_DIALOG = "frag-select-tag-dialog"
 

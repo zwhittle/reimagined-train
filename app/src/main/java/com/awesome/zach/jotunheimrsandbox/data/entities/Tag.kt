@@ -9,7 +9,7 @@ import androidx.room.*
  * Tags can be assigned to Tasks for now, maybe Projects later
  *
  * Columns: tagId(PK), name, colorId(FK)
- * Null allowed: tagId(PK)
+ * Null allowed: tagId(PK), isSelected
  * ForeignKeys: colorId (Color: colorId)
  *
  */
