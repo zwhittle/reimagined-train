@@ -10,7 +10,7 @@ import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemJhtagviewBinding
 
-class JHTagAdapter(private val tags: ArrayList<Tag>, private val clickListener: View.OnClickListener) :
+class JHTagAdapter(private val tags: ArrayList<Tag>, private val clickListener: View.OnClickListener?) :
     RecyclerView.Adapter<JHTagAdapter.JHTagViewHolder>() {
 
     companion object {
@@ -32,18 +32,14 @@ class JHTagAdapter(private val tags: ArrayList<Tag>, private val clickListener: 
         holder.bindTag(tags[position], clickListener)
     }
 
-
     class JHTagViewHolder(private val binding: ListItemJhtagviewBinding) : RecyclerView.ViewHolder(binding.root) {
-        private var view: View = itemView
-        private var tag: String? = null
 
-        fun bindTag(tag: Tag, listener: View.OnClickListener) {
+        fun bindTag(tag: Tag, listener: View.OnClickListener?) {
             itemView.background = null
 
             binding.apply {
                 clickListener = listener
                 tagText = tag.name
-//                tagColor = Color.valueOf(Color.parseColor(tag.colorHex))
                 val color = Color.parseColor(tag.colorHex)
                 jhtagview.setColor(color)
                 jhtagview.setBackgroundColor(color)

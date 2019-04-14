@@ -56,7 +56,7 @@ class TaskListFragment : Fragment(),
             ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        adapter = TaskAdapter(this, true)
+        adapter = TaskAdapter(selectedListener = this, isMultiSelectEnabled = true, viewModel = viewModel)
         binding.rvTaskList.adapter = adapter
         binding.rvTaskList.layoutManager = LinearLayoutManager(context)
 

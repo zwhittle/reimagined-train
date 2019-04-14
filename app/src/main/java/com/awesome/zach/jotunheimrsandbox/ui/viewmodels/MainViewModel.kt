@@ -44,7 +44,7 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
     private val viewModelJob = Job()
 
     /**
-     * This is the scope for all coroutines launched by [PlantDetailViewModel].
+     * This is the scope for all coroutines launched by [MainViewModel].
      *
      * Since we pass [viewModelJob], you can cancel all coroutines launched by [viewModelScope] by calling
      * viewModelJob.cancel().  This is called in [onCleared].
@@ -154,7 +154,7 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
 
     private fun getAllTasks(): LiveData<List<Task>> {
         setupTasksList(taskRepository = taskRepository,
-            taskTagAssignmentRepository = taskTagAssignmentRepository)
+                       taskTagAssignmentRepository = taskTagAssignmentRepository)
 
         return tasksList
     }
@@ -178,6 +178,21 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
                        taskTagAssignmentRepository = taskTagAssignmentRepository,
                        tagId = tagId)
         return tasksList
+    }
+
+    fun getTagsForTask(taskId: Long): ArrayList<Tag> {
+
+        var tags = listOf<Tag>()
+
+
+        // tags = taskTagAssignmentRepository.getTagsForTask(taskId)
+
+        val returnTags = ArrayList<Tag>()
+        tags.forEach {
+            returnTags.add(it)
+        }
+
+        return returnTags
     }
 
     fun getProjects() = projectsList
@@ -221,7 +236,8 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
                             listId = lid)
             task.taskId = taskRepository.insertTask(task)
 
-            Log.d(LOG_TAG, "$task added to DB")
+            Log.d(LOG_TAG,
+                  "$task added to DB")
 
             tags?.forEach {
                 addTaskTagAssignmentToDb(taskId = task.taskId,

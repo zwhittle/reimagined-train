@@ -37,4 +37,8 @@ data class Task(
     var projectName: String? = null,
     var listId: Long? = null,
     var listName: String? = null,
-    var isSelected: Boolean = false)
+    var isSelected: Boolean = false) {
+
+    @Ignore
+    var tags = ArrayList<Tag>()
+}

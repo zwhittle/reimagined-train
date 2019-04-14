@@ -2,10 +2,14 @@ package com.awesome.zach.jotunheimrsandbox.ui.viewholders
 
 import android.graphics.Color
 import android.view.View
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.JHTagAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 
 class TaskViewHolder(
     val binding: ListItemTaskBinding,
@@ -29,12 +33,28 @@ class TaskViewHolder(
         selectedListener.onItemSelected(mTask)
     }
 
-    fun bind(item: Task) {
+    fun bind(item: Task, viewModel: MainViewModel? = null) {
+
+        if (viewModel != null) {
+            val tags = viewModel.getTagsForTask(item.taskId)
+            val adapter = JHTagAdapter(tags = tags,
+                                       clickListener = null)
+            val linearLayoutManager = LinearLayoutManager(binding.root.context,
+                                                          LinearLayout.HORIZONTAL,
+                                                          false)
+
+            binding.apply {
+                rvListItemTaskTags.adapter = adapter
+                rvListItemTaskTags.layoutManager = linearLayoutManager
+            }
+        }
+
         binding.apply {
             clickListener = itemClickListener
             task = item
             executePendingBindings()
         }
+
         mTask = item
     }
 
@@ -45,20 +65,24 @@ class TaskViewHolder(
             binding.listItemTaskTopLayout.setBackgroundColor(checkedColor)
             binding.listItemTaskRow1.setBackgroundColor(checkedColor)
             binding.listItemTaskRow2.setBackgroundColor(checkedColor)
-            binding.tvListItemTaskId.setBackgroundColor(checkedColor)
-            binding.tvListItemTaskLabel.setBackgroundColor(checkedColor)
+            binding.rvListItemTaskTags.setBackgroundColor(checkedColor)
+            binding.listItemTaskTagsArea.setBackgroundColor(checkedColor)
+            binding.tvListItemTaskList.setBackgroundColor(checkedColor)
+            binding.tvListItemTaskName.setBackgroundColor(checkedColor)
             binding.tvListItemTaskProject.setBackgroundColor(checkedColor)
+            binding.tvListItemTaskDue.setBackgroundColor(checkedColor)
         } else {
             binding.listItemTaskTopLayout.background = null
             binding.listItemTaskRow1.background = null
             binding.listItemTaskRow2.background = null
-            binding.tvListItemTaskId.background = null
-            binding.tvListItemTaskLabel.background = null
+            binding.rvListItemTaskTags.setBackgroundColor(0)
+            binding.listItemTaskTagsArea.background = null
+            binding.tvListItemTaskList.background = null
+            binding.tvListItemTaskName.background = null
             binding.tvListItemTaskProject.background = null
+            binding.tvListItemTaskDue.background = null
         }
 
         mTask.isSelected = b
     }
-
-
 }

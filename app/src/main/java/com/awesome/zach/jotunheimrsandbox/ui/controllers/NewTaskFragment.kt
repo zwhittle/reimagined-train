@@ -37,9 +37,6 @@ class NewTaskFragment : Fragment(),
     private lateinit var viewModel: MainViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: Adapter
-
-    // private lateinit var binding: FragmentTaskCreateBinding
-    // private lateinit var binding: LayoutNewTaskBinding
     private lateinit var binding: FragmentNewTaskBinding
 
     private var mProject: Project? = null
