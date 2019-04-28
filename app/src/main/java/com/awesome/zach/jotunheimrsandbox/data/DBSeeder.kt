@@ -1,17 +1,18 @@
 package com.awesome.zach.jotunheimrsandbox.data
 
 import android.util.Log
+import com.awesome.zach.jotunheimrsandbox.BaseDatabase
 import com.awesome.zach.jotunheimrsandbox.data.entities.*
 import java.time.LocalDate
 
-class DBSeeder(val db: AppDatabase) {
+class DBSeeder(val db: BaseDatabase) {
 
     var colors = ArrayList<Color>()
     var lists = ArrayList<JHList>()
     var tags = ArrayList<Tag>()
     var projects = ArrayList<Project>()
     var tasks = ArrayList<Task>()
-    var taskTagAssignments = ArrayList<TaskTagAssignment>()
+    var taskTagAssignments = ArrayList<TaskTag>()
 
     companion object {
         const val LOG_TAG = "DBSeeder"
@@ -36,9 +37,9 @@ class DBSeeder(val db: AppDatabase) {
 
     fun populateListsList() : ArrayList<JHList> {
         lists.clear()
-        lists.add(JHList(listName = "Next Available Actions"))
-        lists.add(JHList(listName = "Incubating"))
-        lists.add(JHList(listName = "Another Time"))
+        lists.add(JHList(name = "Next Available Actions"))
+        lists.add(JHList(name = "Incubating"))
+        lists.add(JHList(name = "Another Time"))
 
         lists.forEach {
             System.out.println("Added $it to lists list")
@@ -48,13 +49,13 @@ class DBSeeder(val db: AppDatabase) {
     }
 
     fun populateTagsList() : ArrayList<Tag> {
-        val colorsFromDao = db.colorDao().getAllColors()
+        val colorsFromDao = db.colorDao().listNow()
         tags.clear()
-        tags.add(Tag(name = "Home", colorId = colorsFromDao[0].colorId))
-        tags.add(Tag(name = "Office", colorId = colorsFromDao[1].colorId))
-        tags.add(Tag(name = "Low Energy", colorId = colorsFromDao[2].colorId))
-        tags.add(Tag(name = "Med Energy", colorId = colorsFromDao[3].colorId))
-        tags.add(Tag(name = "High Energy", colorId = colorsFromDao[4].colorId))
+        tags.add(Tag(name = "Home", colorId = colorsFromDao[0].id))
+        tags.add(Tag(name = "Office", colorId = colorsFromDao[1].id))
+        tags.add(Tag(name = "Low Energy", colorId = colorsFromDao[2].id))
+        tags.add(Tag(name = "Med Energy", colorId = colorsFromDao[3].id))
+        tags.add(Tag(name = "High Energy", colorId = colorsFromDao[4].id))
 
         tags.forEach {
             System.out.println("Added $it to tags list")
@@ -64,11 +65,11 @@ class DBSeeder(val db: AppDatabase) {
     }
 
     fun populateProjectsList() : ArrayList<Project> {
-        val colorsFromDao = db.colorDao().getAllColors()
+        val colorsFromDao = db.colorDao().listNow()
         projects.clear()
 
         colorsFromDao.forEachIndexed { index, color ->
-            val project = Project(name = "Project $index", colorId = color.colorId)
+            val project = Project(name = "Project $index", colorId = color.id)
             projects.add(project)
             Log.d(LOG_TAG, "Added $project to projects list")
             System.out.println("Added $project to projects list")
@@ -87,7 +88,7 @@ class DBSeeder(val db: AppDatabase) {
             projectsFromDao.forEachIndexed { index, project ->
                 val endDate = epochDate.plusDays(index.toLong())
                 val startDate = epochDate.minusDays(7)
-                val task = Task(taskName = "Task $index", date_start = startDate, date_end = endDate, projectId = project.projectId)
+                val task = Task(name = "Task $index", date_start = startDate, date_end = endDate, projectId = project.id)
                 tasks.add(task)
                 Log.d(LOG_TAG, "Added $task to tasks list")
                 System.out.println("Added $task to tasks list")
@@ -95,7 +96,7 @@ class DBSeeder(val db: AppDatabase) {
 
         } else {
             projectsFromDao.forEachIndexed { index, project ->
-                val task = Task(taskName = "Task $index", projectId = project.projectId)
+                val task = Task(name = "Task $index", projectId = project.id)
                 tasks.add(task)
                 Log.d(LOG_TAG, "Added $task to tasks list")
                 System.out.println("Added $task to tasks list")
@@ -105,7 +106,7 @@ class DBSeeder(val db: AppDatabase) {
         return tasks
     }
 
-    fun populateTaskTagAssignmentsList() : ArrayList<TaskTagAssignment> {
+    fun populateTaskTagAssignmentsList() : ArrayList<TaskTag> {
         val tasksFromDao = db.taskDao().getAllTasks()
         val tagsFromDao = db.tagDao().getAllTags()
 
@@ -113,11 +114,11 @@ class DBSeeder(val db: AppDatabase) {
 
         tasksFromDao.forEach { task ->
             // home vs office
-//            val taskTagJoin1 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[(0..1).random()].tagId)
-            val taskTagJoin1 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[0].tagId)
+//            val taskTagJoin1 = TaskTagAssignment(id = task.id, id = tagsFromDao[(0..1).random()].id)
+            val taskTagJoin1 = TaskTag(taskId = task.id, tagId = tagsFromDao[0].id)
             // energy level
-//            val taskTagJoin1 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[(2..4).random()].tagId)
-            val taskTagJoin2 = TaskTagAssignment(taskId = task.taskId, tagId = tagsFromDao[2].tagId)
+//            val taskTagJoin1 = TaskTagAssignment(id = task.id, id = tagsFromDao[(2..4).random()].id)
+            val taskTagJoin2 = TaskTag(taskId = task.id, tagId = tagsFromDao[2].id)
 
             taskTagAssignments.add(taskTagJoin1)
             taskTagAssignments.add(taskTagJoin2)

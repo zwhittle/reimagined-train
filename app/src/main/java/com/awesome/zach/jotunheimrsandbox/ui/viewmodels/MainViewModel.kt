@@ -185,7 +185,7 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
         var tags = listOf<Tag>()
 
 
-        // tags = taskTagAssignmentRepository.getTagsForTask(taskId)
+        // tags = taskTagAssignmentRepository.getTagsForTask(id)
 
         val returnTags = ArrayList<Tag>()
         tags.forEach {
@@ -228,20 +228,20 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
                     tags: List<Tag>? = null) {
         viewModelScope.launch {
 
-            val pid = project?.projectId
-            val lid = list?.listId
+            val pid = project?.id
+            val lid = list?.id
 
-            val task = Task(taskName = name,
+            val task = Task(name = name,
                             projectId = pid,
                             listId = lid)
-            task.taskId = taskRepository.insertTask(task)
+            task.id = taskRepository.insertTask(task)
 
             Log.d(LOG_TAG,
                   "$task added to DB")
 
             tags?.forEach {
-                addTaskTagAssignmentToDb(taskId = task.taskId,
-                                         tagId = it.tagId)
+                addTaskTagAssignmentToDb(taskId = task.id,
+                                         tagId = it.id)
             }
         }
     }
@@ -249,8 +249,8 @@ class MainViewModel internal constructor(val colorRepository: ColorRepository,
     private fun addTaskTagAssignmentToDb(taskId: Long,
                                          tagId: Long) {
         viewModelScope.launch {
-            taskTagAssignmentRepository.insertTaskTagAssignment(TaskTagAssignment(taskId = taskId,
-                                                                                  tagId = tagId))
+            taskTagAssignmentRepository.insertTaskTagAssignment(TaskTag(taskId = taskId,
+                                                                        tagId = tagId))
         }
     }
 

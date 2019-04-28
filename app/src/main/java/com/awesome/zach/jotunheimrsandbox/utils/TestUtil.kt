@@ -18,12 +18,12 @@ object TestUtil {
         colorId = colorId)
 
     fun createTask(name: String, startDate: LocalDate?, endDate: LocalDate?, projectId: Long?) = Task(
-        taskName = name,
+        name = name,
         date_start = startDate,
         date_end = endDate,
         projectId = projectId)
 
-    fun createTaskTagJoin(taskId: Long, tagId: Long) = TaskTagAssignment(
+    fun createTaskTagJoin(taskId: Long, tagId: Long) = TaskTag(
         taskId = taskId,
         tagId = tagId)
 }

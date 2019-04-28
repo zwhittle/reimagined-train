@@ -113,7 +113,7 @@ class TaskAdapter(private val selectedListener: ItemSelectedListener,
             val newTask = tasks[newItemPosition]
             val oldTask = mTasks?.get(oldItemPosition)
 
-            return newTask.taskId == oldTask?.taskId && newTask.taskName == oldTask.taskName && newTask.date_start == oldTask.date_start && newTask.date_end == oldTask.date_end && newTask.completed == oldTask.completed && newTask.priority == oldTask.priority && newTask.projectId == oldTask.projectId
+            return newTask.id == oldTask?.id && newTask.name == oldTask.name && newTask.date_start == oldTask.date_start && newTask.date_end == oldTask.date_end && newTask.completed == oldTask.completed && newTask.priority == oldTask.priority && newTask.projectId == oldTask.projectId
         }
     }
 }

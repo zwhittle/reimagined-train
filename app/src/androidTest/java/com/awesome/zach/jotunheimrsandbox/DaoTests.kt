@@ -91,7 +91,7 @@ class DaoTests {
     @Throws(Exception::class)
     fun bulkUpdateColorDaoTest() {
         bulkWriteColors()
-        val colors = colorDao.getAllColors()
+        val colors = colorDao.listNow()
         colors.forEach { color ->
             color.name = "Lol Pink Or Whatever"
             color.hex = "#696969"
@@ -117,7 +117,7 @@ class DaoTests {
     @Throws(Exception::class)
     fun bulkDeleteColorsDaoTest() {
         bulkWriteColors()
-        val colors = colorDao.getAllColors()
+        val colors = colorDao.listNow()
         val deletedCount = colorDao.bulkDeleteColors(colors)
 
         assertThat(colors.size, equalTo(deletedCount))
@@ -127,11 +127,11 @@ class DaoTests {
     @Throws(Exception::class)
     fun deleteAllColorsDaoTest() {
         bulkWriteColors()
-        val colors = colorDao.getAllColors()
+        val colors = colorDao.listNow()
         val deletedCount = colorDao.deleteAllColors()
 
         val countsMatch = deletedCount == colors.size
-        val noMoreColors = colorDao.getAllColors().isEmpty()
+        val noMoreColors = colorDao.listNow().isEmpty()
 
         assertThat(noMoreColors, equalTo(true))
     }
@@ -141,8 +141,8 @@ class DaoTests {
         dbSeeder.populateColorsList()
         val colorToInsert: Color = dbSeeder.colors[0]
         val returnedId = colorDao.insertColor(colorToInsert)
-        val returnedColor = colorDao.getColorById(returnedId)
-        colorToInsert.colorId = returnedId
+        val returnedColor = colorDao.colorByIdNow(returnedId)
+        colorToInsert.id = returnedId
 
         val compareValues = mutableMapOf<String, Color>()
         compareValues[KEY_INSERTED] = colorToInsert
@@ -155,7 +155,7 @@ class DaoTests {
         dbSeeder.populateColorsList()
         val colorsToInsert = dbSeeder.colors
         val returnedIds = colorDao.bulkInsertColors(colorsToInsert)
-        dbSeeder.colors = ArrayList(colorDao.getAllColors())
+        dbSeeder.colors = ArrayList(colorDao.listNow())
 
         val compareValues = mutableMapOf<String, Int>()
         compareValues[KEY_INSERTED] = colorsToInsert.size
@@ -188,7 +188,7 @@ class DaoTests {
     fun updateListDaoTest() {
         val list = writeList()[KEY_RETURNED]
         if (list != null) {
-            list.listName = "Waiting On"
+            list.name = "Waiting On"
             val updatedCount = listDao.updateList(list)
             assertThat(updatedCount, equalTo(1))
         } else {
@@ -202,7 +202,7 @@ class DaoTests {
         bulkWriteLists()
         val lists = listDao.getAllLists()
         lists.forEach { list ->
-            list.listName = "Waiting On"
+            list.name = "Waiting On"
         }
 
         val updatedCount = listDao.bulkUpdateLists(lists)
@@ -250,7 +250,7 @@ class DaoTests {
         val listToInsert: JHList = dbSeeder.lists[0]
         val returnedId = listDao.insertList(listToInsert)
         val returnedList = listDao.getListByID(returnedId)
-        listToInsert.listId = returnedId
+        listToInsert.id = returnedId
 
         val compareValues = mutableMapOf<String, JHList>()
         compareValues[KEY_INSERTED] = listToInsert
@@ -296,7 +296,7 @@ class DaoTests {
 
         if (tag != null) {
             tag.name = "Nice"
-            tag.colorId = colorDao.getColorByHex("#696969").colorId
+            tag.colorId = colorDao.colorByHexNow("#696969").id
             val updatedCount = tagDao.updateTag(tag)
             assertThat(updatedCount, equalTo(1))
         } else {
@@ -311,7 +311,7 @@ class DaoTests {
         val tags = tagDao.getAllTags()
         tags.forEach { tag ->
             tag.name = "Nice"
-            tag.colorId = colorDao.getColorByHex("#696969").colorId
+            tag.colorId = colorDao.colorByHexNow("#696969").id
         }
 
         val updatedCount = tagDao.bulkUpdateTags(tags)
@@ -361,7 +361,7 @@ class DaoTests {
         val tagToInsert = dbSeeder.tags[0]
         val returnedId = tagDao.insertTag(tagToInsert)
         val returnedTag = tagDao.getTagById(returnedId)
-        tagToInsert.tagId = returnedId
+        tagToInsert.id = returnedId
 
         val compareValues = mutableMapOf<String, Tag>()
         compareValues[KEY_INSERTED] = tagToInsert
@@ -408,7 +408,7 @@ class DaoTests {
 
         if (project != null) {
             project.name = "Nice"
-            project.colorId = colorDao.getColorByHex("#696969").colorId
+            project.colorId = colorDao.colorByHexNow("#696969").id
             val updatedCount = projectDao.updateProject(project)
             assertThat(updatedCount, equalTo(1))
         } else {
@@ -423,7 +423,7 @@ class DaoTests {
         val projects = projectDao.getAllProjects()
         projects.forEach { project ->
             project.name = "Nice"
-            project.colorId = colorDao.getColorByHex("#696969").colorId
+            project.colorId = colorDao.colorByHexNow("#696969").id
         }
 
         val updatedCount = projectDao.bulkUpdateProjects(projects)
@@ -473,7 +473,7 @@ class DaoTests {
         val projectToInsert = dbSeeder.projects[0]
         val returnedId = projectDao.insertProject(projectToInsert)
         val returnedProject = projectDao.getProjectById(returnedId)
-        projectToInsert.projectId = returnedId
+        projectToInsert.id = returnedId
 
         val compareValues = mutableMapOf<String, Project>()
         compareValues[KEY_INSERTED] = projectToInsert
@@ -506,14 +506,14 @@ class DaoTests {
         val list = compareValuesList[KEY_RETURNED]
 
         if (list != null) {
-            val task = Task(taskName = "Sign Lease", listId = list.listId, listName = list.listName)
-            task.taskId = taskDao.insertTask(task)
+            val task = Task(name = "Sign Lease", listId = list.id, listName = list.name)
+            task.id = taskDao.insertTask(task)
 
-            val tasksOnList = taskDao.getTasksOnList(list.listId)
+            val tasksOnList = taskDao.getTasksOnList(list.id)
 
             tasksOnList.forEach {
-                System.out.println(it.taskName)
-                Log.d("DaoTests", it.taskName)
+                System.out.println(it.name)
+                Log.d("DaoTests", it.name)
             }
 
 
@@ -560,10 +560,10 @@ class DaoTests {
         val task = writeTask(false)[KEY_RETURNED]
 
         if (task != null) {
-            task.taskName = "Nice"
+            task.name = "Nice"
             task.date_start = LocalDate.now()
             task.date_end = LocalDate.now()
-            task.projectId = projectDao.getProjectsByName("Project 1")[0].projectId
+            task.projectId = projectDao.getProjectsByName("Project 1")[0].id
             val updatedCount = taskDao.updateTask(task)
             assertThat(updatedCount, equalTo(1))
         } else {
@@ -577,10 +577,10 @@ class DaoTests {
         bulkWriteTasks(false)
         val tasks = taskDao.getAllTasks()
         tasks.forEach { task ->
-            task.taskName = "Nice"
+            task.name = "Nice"
             task.date_start = LocalDate.now()
             task.date_end = LocalDate.now()
-            task.projectId = projectDao.getProjectsByName("Project 1")[0].projectId
+            task.projectId = projectDao.getProjectsByName("Project 1")[0].id
         }
 
         val updatedCount = taskDao.bulkUpdateTasks(tasks)
@@ -640,7 +640,7 @@ class DaoTests {
         val taskToInsert = dbSeeder.tasks[0]
         val returnedId = taskDao.insertTask(taskToInsert)
         val returnedTask = taskDao.getTaskById(returnedId)
-        taskToInsert.taskId = returnedId
+        taskToInsert.id = returnedId
 
         val compareValues = mutableMapOf<String, Task>()
         compareValues[KEY_INSERTED] = taskToInsert
@@ -688,8 +688,8 @@ class DaoTests {
         val taskTagAssignment = writeTaskTagAssignment()[KEY_RETURNED]
 
         if (taskTagAssignment != null) {
-            taskTagAssignment.taskId = taskDao.getAllTasks()[1].taskId
-            taskTagAssignment.tagId = tagDao.getAllTags()[3].tagId
+            taskTagAssignment.taskId = taskDao.getAllTasks()[1].id
+            taskTagAssignment.tagId = tagDao.getAllTags()[3].id
             val updatedCount = taskTagAssignmentDao.updateTaskTagAssignment(taskTagAssignment)
             assertThat(updatedCount, equalTo(1))
         } else {
@@ -704,8 +704,8 @@ class DaoTests {
 
         val taskTagAssignments = taskTagAssignmentDao.getAllTaskTagAssignments()
         taskTagAssignments.forEach { taskTagAssignment ->
-            taskTagAssignment.taskId = taskDao.getAllTasks()[1].taskId
-            taskTagAssignment.tagId = tagDao.getAllTags()[3].tagId
+            taskTagAssignment.taskId = taskDao.getAllTasks()[1].id
+            taskTagAssignment.tagId = tagDao.getAllTags()[3].id
         }
 
         val updatedCount = taskTagAssignmentDao.bulkUpdateTaskTagAssignments(taskTagAssignments)
@@ -748,7 +748,7 @@ class DaoTests {
     }
 
     // helper function that can be called to add a taskTagAssignment to the db without calling the full test
-    private fun writeTaskTagAssignment(): Map<String, TaskTagAssignment> {
+    private fun writeTaskTagAssignment(): Map<String, TaskTag> {
         bulkWriteTasks(false)
         bulkWriteTags()
         dbSeeder.populateTaskTagAssignmentsList()
@@ -756,9 +756,9 @@ class DaoTests {
         val taskTagAssignmentToInsert = dbSeeder.taskTagAssignments[0]
         val returnedId = taskTagAssignmentDao.insertTaskTagAssignment(taskTagAssignmentToInsert)
         val returnedTaskTagAssignment = taskTagAssignmentDao.getTaskTagAssignmentById(returnedId)
-        taskTagAssignmentToInsert.taskTagAssignmentId = returnedId
+        taskTagAssignmentToInsert.taskTagId = returnedId
 
-        val compareValues = mutableMapOf<String, TaskTagAssignment>()
+        val compareValues = mutableMapOf<String, TaskTag>()
         compareValues[KEY_INSERTED] = taskTagAssignmentToInsert
         compareValues[KEY_RETURNED] = returnedTaskTagAssignment
         return compareValues

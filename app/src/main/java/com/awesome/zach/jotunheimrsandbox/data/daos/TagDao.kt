@@ -4,24 +4,41 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 
-/**
- * Tag @Dao
- *
- * Uses @Insert, @Update, and @Delete convenience functions
- *
- * Single Result Queries:
- * getTagById()
- *
- * Multi Result Queries:
- * getAllTags()
- * getTagsWithColor()
- * getTagsWithName()
- *
- */
 
 @Dao
 interface TagDao {
 
+    @Query("SELECT count(id) FROM tag")
+    fun count(): Int
+
+    @Query("SELECT count(id) FROM tag")
+    fun has(): Boolean
+
+    @Query("SELECT * FROM tag WHERE id = :id")
+    fun tagByIdNow(id: Long): Tag?
+
+    @Query("SELECT * FROM tag WHERE id = :id")
+    fun tagById(id: Long): LiveData<Tag?>
+
+    @Query("SELECT * FROM tag ORDER BY name DESC")
+    fun list(): LiveData<List<Tag>>
+    
+    @Query("SELECT * FROM tag ORDER BY name DESC")
+    fun listNow(): List<Tag>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg tag: Tag): Array<Long>
+    
+    @Query("DELETE FROM tag WHERE id = :id")
+    fun deleteById(id: Long): Long
+    
+    @Delete
+    fun delete(tag: Tag): Long
+    
+    @Query("DELETE FROM tag")
+    fun deleteAll(): List<Long>
+    
+    /** Old methods below */
     // Returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTag(tag: Tag): Long
@@ -47,21 +64,21 @@ interface TagDao {
     fun bulkDeleteTags(tags: List<Tag>): Int
 
     // returns the count of deleted rows
-    @Query("DELETE FROM tag_table")
+    @Query("DELETE FROM tag")
     fun deleteAllTags(): Int
 
-    @Query("SELECT tag_table.tagId, tag_table.name, tag_table.colorId, tag_table.isSelected, color_table.hex FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
+    @Query("SELECT tag.id, tag.name, tag.id, color.hex FROM tag INNER JOIN color ON tag.id = color.id ORDER BY tag.id ASC")
     fun getAllTags(): List<Tag>
 
-    @Query("SELECT tag_table.tagId, tag_table.name, tag_table.colorId, tag_table.isSelected, color_table.hex FROM tag_table INNER JOIN color_table ON tag_table.colorId = color_table.colorId ORDER BY tag_table.tagId ASC")
+    @Query("SELECT tag.id, tag.name, tag.id, color.hex FROM tag INNER JOIN color ON tag.id = color.id ORDER BY tag.id ASC")
     fun getAllTagsLive(): LiveData<List<Tag>>
 
-    @Query("SELECT * FROM tag_table WHERE tagId == :tagId")
-    fun getTagById(tagId: Long): Tag
+    @Query("SELECT * FROM tag WHERE id == :id")
+    fun getTagById(id: Long): Tag
 
-    @Query("SELECT * FROM tag_table WHERE name == :name ORDER BY tagId ASC")
+    @Query("SELECT * FROM tag WHERE name == :name ORDER BY id ASC")
     fun getTagsWithName(name: String): List<Tag>
 
-    @Query("SELECT * FROM tag_table WHERE colorId == :colorId ORDER BY tagId ASC")
-    fun getTagsWithColor(colorId: Long): List<Tag>
+    @Query("SELECT * FROM tag WHERE id == :id ORDER BY id ASC")
+    fun getTagsWithColor(id: Long): List<Tag>
 }

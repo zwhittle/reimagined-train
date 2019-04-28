@@ -10,58 +10,80 @@ import com.awesome.zach.jotunheimrsandbox.data.entities.Color
  * Uses @Insert, @Update, and @Delete convenience functions
  *
  * Single Result Queries:
- * getColorById()
- * getColorByName()
- * getColorByHex()
+ * colorByIdNow()
+ * colorByName()
+ * colorByHexNow()
  *
  * Multi Result Queries:
- * getAllColors()
+ * listNow()
  *
  */
 
 @Dao
 interface ColorDao {
 
+    @Query("SELECT count(id) FROM color")
+    fun count(): Int
+
+    @Query("SELECT count(id) FROM color")
+    fun has(): Boolean
+
+    @Query("SELECT * FROM color WHERE id == :colorId")
+    fun colorByIdNow(colorId: Long): Color?
+
+    @Query("SELECT * FROM color WHERE id == :colorId")
+    fun colorById(colorId: Long): LiveData<Color?>
+
+    @Query("SELECT * FROM color ORDER BY id ASC")
+    fun list(): LiveData<List<Color>>
+
+    @Query("SELECT * FROM color ORDER BY id ASC")
+    fun listNow(): List<Color>
+
+    @Query("SELECT * FROM color WHERE hex == :hex ORDER BY name ASC")
+    fun colorByHexNow(hex: String): Color?
+
+    @Query("SELECT * FROM color WHERE hex == :hex ORDER BY name ASC")
+    fun colorByHex(hex: String): LiveData<Color?>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg color: Color): Array<Long>
+
+    @Query("DELETE FROM color WHERE id = :id")
+    fun deleteById(id: Long): Long
+
+    @Delete
+    fun delete(color: Color): Long
+
+    @Query("DELETE FROM color")
+    fun deleteAll()
+
+    /** Old methods below */
     // returns the inserted row id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertColor(color: Color) : Long
+    fun insertColor(color: Color): Long
 
     // returns a list of inserted row ids
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkInsertColors(colors: List<Color>) : List<Long>
+    fun bulkInsertColors(colors: List<Color>): List<Long>
 
     // returns the count of updated rows
     @Update
-    fun updateColor(color: Color) : Int
+    fun updateColor(color: Color): Int
 
     // returns the count of updated rows
     @Update
-    fun bulkUpdateColors(colors: List<Color>) : Int
+    fun bulkUpdateColors(colors: List<Color>): Int
 
     // returns the count of deleted rows
     @Delete
-    fun deleteColor(color: Color) : Int
+    fun deleteColor(color: Color): Int
 
     // returns the count of deleted rows
     @Delete
-    fun bulkDeleteColors(colors: List<Color>) : Int
+    fun bulkDeleteColors(colors: List<Color>): Int
 
     // returns the count of deleted rows
-    @Query("DELETE FROM color_table")
-    fun deleteAllColors() : Int
-
-    @Query("SELECT * FROM color_table ORDER BY colorId ASC")
-    fun getAllColorsLive() : LiveData<List<Color>>
-
-    @Query("SELECT * FROM color_table ORDER BY colorId ASC")
-    fun getAllColors() : List<Color>
-
-    @Query("SELECT * FROM color_table WHERE colorId == :colorId ORDER BY colorId ASC")
-    fun getColorById(colorId: Long) : Color
-
-    @Query("SELECT * FROM color_table WHERE name == :name ORDER BY colorId ASC")
-    fun getColorByName(name: String) : Color
-
-    @Query("SELECT * FROM color_table WHERE hex == :hex ORDER BY colorId ASC")
-    fun getColorByHex(hex: String) : Color
+    @Query("DELETE FROM color")
+    fun deleteAllColors(): Int
 }

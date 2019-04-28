@@ -36,7 +36,7 @@ class TaskViewHolder(
     fun bind(item: Task, viewModel: MainViewModel? = null) {
 
         if (viewModel != null) {
-            val tags = viewModel.getTagsForTask(item.taskId)
+            val tags = viewModel.getTagsForTask(item.id)
             val adapter = JHTagAdapter(tags = tags,
                                        clickListener = null)
             val linearLayoutManager = LinearLayoutManager(binding.root.context,

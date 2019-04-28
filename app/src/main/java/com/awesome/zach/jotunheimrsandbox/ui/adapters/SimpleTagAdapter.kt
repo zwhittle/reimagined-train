@@ -37,7 +37,7 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
         holder.apply {
             if (tag != null) {
                 val args = Bundle()
-                args.putLong(Constants.ARGUMENT_TAG_ID, tag.tagId)
+                args.putLong(Constants.ARGUMENT_TAG_ID, tag.id)
                 args.putString(Constants.ARGUMENT_APP_TITLE, tag.name)
                 bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment, args), tag)
                 itemView.tag = tag
@@ -70,7 +70,7 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
             val newTag = tags[newItemPosition]
             val oldTag = mTags?.get(oldItemPosition)
 
-            return newTag.tagId == oldTag?.tagId
+            return newTag.id == oldTag?.id
                 && newTag.name == oldTag.name
                 && newTag.colorId == oldTag.colorId
         }

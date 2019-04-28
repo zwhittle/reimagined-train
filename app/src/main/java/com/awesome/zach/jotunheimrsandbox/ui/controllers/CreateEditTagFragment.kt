@@ -94,7 +94,7 @@ class CreateEditTagFragment : Fragment(), AdapterView.OnItemSelectedListener {
             return
         }
 
-        viewModel.addTagToDb(name, selectedColor.colorId)
+        viewModel.addTagToDb(name, selectedColor.id)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

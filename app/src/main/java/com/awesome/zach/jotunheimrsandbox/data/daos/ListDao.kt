@@ -4,24 +4,40 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.awesome.zach.jotunheimrsandbox.data.entities.JHList
 
-/**
- * Project @Dao
- *
- * Uses @Insert, @Update, and @Delete convenience functions
- *
- * Single Result Queries:
- * getProjectById()
- *
- * Multi Result Queries:
- * getAllProjects()
- * getProjectsByColor()
- * getProjectsByName()
- *
- */
-
 @Dao
 interface ListDao {
 
+    @Query("SELECT count(id) FROM list")
+    fun count(): Int
+
+    @Query("SELECT count(id) FROM list")
+    fun has(): Boolean
+
+    @Query("SELECT * FROM list WHERE id = :id")
+    fun listByIdNow(id: Long): JHList?
+
+    @Query("SELECT * FROM list WHERE id = :id")
+    fun listById(id: Long): LiveData<JHList?>
+
+    @Query("SELECT * FROM list ORDER BY name ASC")
+    fun list(): LiveData<List<JHList>>
+
+    @Query("SELECT * FROM list ORDER BY name ASC")
+    fun listNow(): List<JHList>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg list: JHList): Array<Long>
+
+    @Query("DELETE FROM list WHERE id = :id")
+    fun deleteById(id: Long): Long
+
+    @Delete
+    fun delete(list: JHList): Long
+
+    @Query("DELETE FROM list")
+    fun deleteAll(): List<Long>
+    
+    /** Old methods below */
     // returns the id of the inserted row
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: JHList): Long
@@ -47,18 +63,18 @@ interface ListDao {
     fun bulkDeleteLists(lists: List<JHList>): Int
 
     // returns a count of deleted rows
-    @Query("DELETE FROM list_table")
+    @Query("DELETE FROM list")
     fun deleteAllLists(): Int
 
-    @Query("SELECT * FROM list_table ORDER BY listName ASC")
+    @Query("SELECT * FROM list ORDER BY name ASC")
     fun getAllListsLive(): LiveData<List<JHList>>
 
-    @Query("SELECT * FROM list_table ORDER BY listName ASC")
+    @Query("SELECT * FROM list ORDER BY name ASC")
     fun getAllLists(): List<JHList>
 
-    @Query("SELECT * FROM list_table WHERE listId == :listId ORDER BY listName ASC")
-    fun getListByID(listId: Long): JHList
+    @Query("SELECT * FROM list WHERE id == :id ORDER BY name ASC")
+    fun getListByID(id: Long): JHList
 
-    @Query("SELECT * FROM list_table WHERE listName == :name ORDER BY listName ASC")
+    @Query("SELECT * FROM list WHERE name == :name ORDER BY name ASC")
     fun getListByName(name: String): List<JHList>
 }

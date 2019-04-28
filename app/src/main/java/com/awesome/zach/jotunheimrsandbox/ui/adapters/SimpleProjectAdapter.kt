@@ -39,7 +39,7 @@ class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? =
             if (project != null) {
                 val args = Bundle()
                 args.putLong(Constants.ARGUMENT_PROJECT_ID,
-                            project.projectId)
+                            project.id)
                 args.putString(Constants.ARGUMENT_APP_TITLE,
                                project.name)
                 if (selectedListener == null) {
@@ -82,7 +82,7 @@ class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? =
             val newProject = projects[newItemPosition]
             val oldProject = mProjects?.get(oldItemPosition)
 
-            return newProject.projectId == oldProject?.projectId && newProject.name == oldProject.name && newProject.colorId == oldProject.colorId
+            return newProject.id == oldProject?.id && newProject.name == oldProject.name && newProject.colorId == oldProject.colorId
         }
     }
 

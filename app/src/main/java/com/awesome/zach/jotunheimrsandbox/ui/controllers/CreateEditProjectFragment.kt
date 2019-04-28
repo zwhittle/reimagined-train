@@ -94,7 +94,7 @@ class CreateEditProjectFragment : Fragment(), AdapterView.OnItemSelectedListener
             return
         }
 
-        viewModel.addProjectToDb(name, selectedColor.colorId)
+        viewModel.addProjectToDb(name, selectedColor.id)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {

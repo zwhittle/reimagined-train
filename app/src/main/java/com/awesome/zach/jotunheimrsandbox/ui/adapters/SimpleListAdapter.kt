@@ -37,9 +37,9 @@ class SimpleListAdapter(private val selectedListener: ItemSelectedListener? = nu
             if (list != null) {
                 val args = Bundle()
                 args.putLong(Constants.ARGUMENT_LIST_ID,
-                             list.listId)
+                             list.id)
                 args.putString(Constants.ARGUMENT_APP_TITLE,
-                               list.listName)
+                               list.name)
 
                 if (selectedListener == null) {
                     bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment,
@@ -80,7 +80,7 @@ class SimpleListAdapter(private val selectedListener: ItemSelectedListener? = nu
             val newList = lists[newItemPosition]
             val oldList = mLists?.get(oldItemPosition)
 
-            return newList.listId == oldList?.listId && newList.listName == oldList.listName
+            return newList.id == oldList?.id && newList.name == oldList.name
         }
     }
 

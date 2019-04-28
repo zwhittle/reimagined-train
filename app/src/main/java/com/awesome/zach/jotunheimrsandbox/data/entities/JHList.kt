@@ -2,6 +2,7 @@ package com.awesome.zach.jotunheimrsandbox.data.entities
 
 import androidx.annotation.NonNull
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
 /**
@@ -9,15 +10,19 @@ import androidx.room.PrimaryKey
  * Lists are user generated, but a few will be preloaded
  * Lists can be assigned to only Tasks for now
  *
- * Columns: listId(PK), name
+ * Columns: id(PK), name
  * Null allowed: isSelected(PK)
  *
  */
 
-@Entity(tableName = "list_table")
+@Entity(tableName = "list")
 data class JHList(
-    @PrimaryKey(autoGenerate = true)
-    var listId: Long = 0,
     @NonNull
-    var listName: String,
-    var isSelected: Boolean = false)
+    var name: String) {
+
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0
+
+    @Ignore
+    var isSelected: Boolean = false
+}

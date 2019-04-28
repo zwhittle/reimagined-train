@@ -239,6 +239,6 @@ class NewTaskFragment : Fragment(),
         val f = fragmentManager?.findFragmentByTag(Constants.FRAGMENT_SELECT_LIST_DIALOG) as SelectListDialogFragment
         f.dismiss()
 
-        binding.listValue.text = item.listName
+        binding.listValue.text = item.name
     }
 }

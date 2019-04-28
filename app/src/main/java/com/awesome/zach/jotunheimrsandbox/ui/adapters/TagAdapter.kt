@@ -118,7 +118,7 @@ class TagAdapter(private val selectedListener: ItemSelectedListener,
             val newTag = tags[newItemPosition]
             val oldTag = mTags?.get(oldItemPosition)
 
-            return newTag.tagId == oldTag?.tagId
+            return newTag.id == oldTag?.id
                 && newTag.name == oldTag.name
                 && newTag.colorId == oldTag.colorId
         }
