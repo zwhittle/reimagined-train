@@ -2,14 +2,10 @@ package com.awesome.zach.jotunheimrsandbox.ui.viewholders
 
 import android.graphics.Color
 import android.view.View
-import android.widget.LinearLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.JHTagAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 
 class TaskViewHolder(
     val binding: ListItemTaskBinding,
@@ -33,21 +29,21 @@ class TaskViewHolder(
         selectedListener.onItemSelected(mTask)
     }
 
-    fun bind(item: Task, viewModel: MainViewModel? = null) {
+    fun bind(item: Task) {
 
-        if (viewModel != null) {
-            val tags = viewModel.getTagsForTask(item.id)
-            val adapter = JHTagAdapter(tags = tags,
-                                       clickListener = null)
-            val linearLayoutManager = LinearLayoutManager(binding.root.context,
-                                                          LinearLayout.HORIZONTAL,
-                                                          false)
-
-            binding.apply {
-                rvListItemTaskTags.adapter = adapter
-                rvListItemTaskTags.layoutManager = linearLayoutManager
-            }
-        }
+        // if (viewModel != null) {
+        //     val tags = viewModel.getTagsForTask(item.id)
+        //     val adapter = JHTagAdapter(tags = tags,
+        //                                clickListener = null)
+        //     val linearLayoutManager = LinearLayoutManager(binding.root.context,
+        //                                                   LinearLayout.HORIZONTAL,
+        //                                                   false)
+        //
+        //     binding.apply {
+        //         rvListItemTaskTags.adapter = adapter
+        //         rvListItemTaskTags.layoutManager = linearLayoutManager
+        //     }
+        // }
 
         binding.apply {
             clickListener = itemClickListener

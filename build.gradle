@@ -43,6 +43,7 @@ ext {
     ktlintVersion = '0.30.0'
     ktxVersion = '1.0.1'
     lifecycleVersion = '2.0.0'
+    liveEventVersion = '1.0.0'
     legacySupportVersion = '1.0.0'
     materialVersion = '1.1.0-alpha05'
     navigationVersion = '1.0.0'

@@ -1,27 +1,27 @@
 package com.awesome.zach.jotunheimrsandbox.ui.controllers
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentListListBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleListAdapter
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.ListListAdapter
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ListListViewModel
+import com.awesome.zach.jotunheimrsandbox.utils.LogUtils
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ListListFragment : Fragment() {
 
     companion object {
         const val LOG_TAG = "ListListFragment"
     }
-
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -31,27 +31,38 @@ class ListListFragment : Fragment() {
                                                                        container,
                                                                        false)
         val context = binding.root.context
+        val listListViewModel by viewModel<ListListViewModel>()
+        binding.vm = listListViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        val factory = InjectorUtils.provideMainViewModelFactory(context)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this,
-                                  factory)
-                .get(MainViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        val adapter = ListListAdapter(viewLifecycleOwner, listListViewModel)
 
-        val adapter = SimpleListAdapter()
-        binding.rvListList.adapter = adapter
-        binding.rvListList.layoutManager = LinearLayoutManager(context)
-        subscribeUi(adapter)
+        listListViewModel.lists().observe(viewLifecycleOwner, Observer { list ->
+            LogUtils.log(LOG_TAG, "D::lists: $list")
+            adapter.submitList(list)
+        })
+
+        listListViewModel.uiNameList().observe(viewLifecycleOwner, Observer { callback ->
+            val inflatedView = LayoutInflater.from(context).inflate(R.layout.dialog_text, view as ViewGroup?, false)
+            val input = inflatedView.findViewById(R.id.input) as EditText
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.enter_name_of_list))
+                .setView(inflatedView)
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    val text = input.text.toString()
+                    callback.invoke(text)
+                    dialog.dismiss()
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+                .create().show()
+        })
+
+
+        binding.rvListsList.adapter = adapter
+        binding.rvListsList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvListsList.setHasFixedSize(true)
+        binding.executePendingBindings()
 
         return binding.root
-    }
-
-    private fun subscribeUi(adapter: SimpleListAdapter) {
-        viewModel.getLists()
-            .observe(viewLifecycleOwner,
-                     Observer { lists ->
-                         if (lists != null) adapter.setListsList(lists)
-                     })
     }
 }

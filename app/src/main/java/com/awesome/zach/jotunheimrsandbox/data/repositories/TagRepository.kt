@@ -14,6 +14,7 @@ interface TagRepository {
     suspend fun delete(tag: Tag)
     suspend fun delete(id: Long)
     fun tags(): LiveData<List<Tag>>
+    fun tagsByTask(taskId: Long): LiveData<List<Tag>>
     fun tagsNowAsync(): Deferred<List<Tag>>
     fun tag(): LiveData<Tag?>
 }
@@ -56,6 +57,8 @@ class TagRepositoryImpl: TagRepository, KoinComponent {
     }
 
     override fun tags(): LiveData<List<Tag>> = tags
+
+    override fun tagsByTask(taskId: Long): LiveData<List<Tag>> = dao.tagsByTask(taskId)
 
     override fun tagsNowAsync(): Deferred<List<Tag>> {
         return GlobalScope.async {

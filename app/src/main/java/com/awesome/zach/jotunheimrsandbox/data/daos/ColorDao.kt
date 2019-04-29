@@ -50,40 +50,40 @@ interface ColorDao {
     fun insertAll(vararg color: Color): Array<Long>
 
     @Query("DELETE FROM color WHERE id = :id")
-    fun deleteById(id: Long): Long
+    fun deleteById(id: Long): Int
 
     @Delete
-    fun delete(color: Color): Long
+    fun delete(color: Color): Int
 
     @Query("DELETE FROM color")
-    fun deleteAll()
+    fun deleteAll(): Int
 
     /** Old methods below */
     // returns the inserted row id
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertColor(color: Color): Long
-
-    // returns a list of inserted row ids
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun bulkInsertColors(colors: List<Color>): List<Long>
-
-    // returns the count of updated rows
-    @Update
-    fun updateColor(color: Color): Int
-
-    // returns the count of updated rows
-    @Update
-    fun bulkUpdateColors(colors: List<Color>): Int
-
-    // returns the count of deleted rows
-    @Delete
-    fun deleteColor(color: Color): Int
-
-    // returns the count of deleted rows
-    @Delete
-    fun bulkDeleteColors(colors: List<Color>): Int
-
-    // returns the count of deleted rows
-    @Query("DELETE FROM color")
-    fun deleteAllColors(): Int
+    // @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // fun insertColor(color: Color): Long
+    //
+    // // returns a list of inserted row ids
+    // @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // fun bulkInsertColors(colors: List<Color>): List<Long>
+    //
+    // // returns the count of updated rows
+    // @Update
+    // fun updateColor(color: Color): Int
+    //
+    // // returns the count of updated rows
+    // @Update
+    // fun bulkUpdateColors(colors: List<Color>): Int
+    //
+    // // returns the count of deleted rows
+    // @Delete
+    // fun deleteColor(color: Color): Int
+    //
+    // // returns the count of deleted rows
+    // @Delete
+    // fun bulkDeleteColors(colors: List<Color>): Int
+    //
+    // // returns the count of deleted rows
+    // @Query("DELETE FROM color")
+    // fun deleteAllColors(): Int
 }

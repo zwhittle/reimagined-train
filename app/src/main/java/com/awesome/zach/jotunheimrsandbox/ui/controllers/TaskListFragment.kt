@@ -11,21 +11,19 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
-import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTaskListBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.TaskAdapter
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.TaskListAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeCallback
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.DialogFragmentListener
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TaskListViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
-import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.utils.LogUtils
 import com.awesome.zach.jotunheimrsandbox.utils.setActionBarTitle
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class TaskListFragment : Fragment(),
     DialogFragmentListener,
@@ -37,9 +35,9 @@ class TaskListFragment : Fragment(),
     }
 
     private lateinit var binding: FragmentTaskListBinding
-    private lateinit var factory: MainViewModelFactory
-    private lateinit var adapter: TaskAdapter
-    private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: TaskListAdapter
+
+    private val taskListViewModel by viewModel<TaskListViewModel>()
 
     private var mActionModeCallback = ActionModeCallback(this)
     private var actionModeEnabled = false
@@ -51,14 +49,10 @@ class TaskListFragment : Fragment(),
             inflater, R.layout.fragment_task_list, container, false)
         val context = binding.root.context
 
-        factory = InjectorUtils.provideMainViewModelFactory(context)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-
-        adapter = TaskAdapter(selectedListener = this, isMultiSelectEnabled = true, viewModel = viewModel)
+        adapter = TaskListAdapter(viewLifecycleOwner, taskListViewModel)
         binding.rvTaskList.adapter = adapter
-        binding.rvTaskList.layoutManager = LinearLayoutManager(context)
+        binding.rvTaskList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvTaskList.setHasFixedSize(true)
 
         val args = arguments ?: Bundle()
         subscribeUi(args)
@@ -69,8 +63,50 @@ class TaskListFragment : Fragment(),
 
 
     private fun subscribeUi(args: Bundle) {
-        viewModel.getTasks(args).observe(viewLifecycleOwner, Observer { tasks ->
-            if (tasks != null) adapter.setTasksList(tasks)
+        val model = args.getString(Constants.ARGUMENT_MODEL) ?: ""
+
+        when (model) {
+            Constants.MODEL_LIST -> { subscribeToList(args) }
+            Constants.MODEL_PROJECT -> { subscribeToProject(args) }
+            Constants.MODEL_TAG -> { subscribeToTag(args) }
+            else -> { subscribeToAllTasks(args) }
+        }
+    }
+
+    private fun subscribeToList(args: Bundle) {
+        if (args.containsKey(Constants.ARGUMENT_LIST_ID)) {
+            val listId = args.getLong(Constants.ARGUMENT_LIST_ID)
+            taskListViewModel.tasksByList(listId).observe(viewLifecycleOwner, Observer { list ->
+                LogUtils.log(LOG_TAG, "D::Tasks: $list")
+                adapter.submitList(list)
+            })
+        }
+    }
+
+    private fun subscribeToProject(args: Bundle) {
+        if (args.containsKey(Constants.ARGUMENT_PROJECT_ID)) {
+            val projectId = args.getLong(Constants.ARGUMENT_PROJECT_ID)
+            taskListViewModel.tasksByProject(projectId).observe(viewLifecycleOwner, Observer { list ->
+                LogUtils.log(LOG_TAG, "D::Tasks: $list")
+                adapter.submitList(list)
+            })
+        }
+    }
+
+    private fun subscribeToTag(args: Bundle) {
+        if (args.containsKey(Constants.ARGUMENT_TAG_ID)) {
+            val tagId = args.getLong(Constants.ARGUMENT_TAG_ID)
+            taskListViewModel.tasksByTag(tagId).observe(viewLifecycleOwner, Observer { list ->
+                LogUtils.log(LOG_TAG, "D::Tasks: $list")
+                adapter.submitList(list)
+            })
+        }
+    }
+
+    private fun subscribeToAllTasks(args: Bundle) {
+        taskListViewModel.tasks().observe(viewLifecycleOwner, Observer { list ->
+            LogUtils.log(LOG_TAG, "D::Tasks: $list")
+            adapter.submitList(list)
         })
     }
 
@@ -98,12 +134,12 @@ class TaskListFragment : Fragment(),
     }
 
     private fun actionMenuComplete() {
-        val selectedTasks = adapter.getSelectedTasks()
-        selectedTasks.forEach {
-            it.completed = true
-        }
-
-        viewModel.updateTasks(selectedTasks)
+        // val selectedTasks = adapter.getSelectedTasks()
+        // selectedTasks.forEach {
+        //     it.completed = true
+        // }
+        //
+        // viewModel.updateTasks(selectedTasks)
     }
 
     private fun actionMenuEdit() {
@@ -111,10 +147,10 @@ class TaskListFragment : Fragment(),
     }
 
     private fun actionMenuDelete() {
-        val selectedTasks = adapter.getSelectedTasks()
-
-        val dialog = DeleteItemsDialogFragment(selectedTasks, this)
-        fragmentManager?.let { dialog.show(it, Constants.FRAGMENT_DELETE_ITEMS_DIALOG) }
+        // val selectedTasks = adapter.getSelectedTasks()
+        //
+        // val dialog = DeleteItemsDialogFragment(selectedTasks, this)
+        // fragmentManager?.let { dialog.show(it, Constants.FRAGMENT_DELETE_ITEMS_DIALOG) }
     }
 
     override fun onPositiveClick(dialog: DialogFragment,
@@ -128,15 +164,15 @@ class TaskListFragment : Fragment(),
     }
 
     private fun deleteSelectedItems(items: List<Any>) {
-        if (items[0] is Task) {
-            val tasks = ArrayList<Task>()
-
-            items.forEach {
-                tasks.add(it as Task)
-            }
-
-            viewModel.deleteTasks(tasks)
-        }
+        // if (items[0] is Task) {
+        //     val tasks = ArrayList<Task>()
+        //
+        //     items.forEach {
+        //         tasks.add(it as Task)
+        //     }
+        //
+        //     viewModel.deleteTasks(tasks)
+        // }
     }
 
     private fun finishActionMode() {
@@ -169,21 +205,21 @@ class TaskListFragment : Fragment(),
     }
 
     override fun onItemSelected(item: Any) {
-        if (item is Task) {
-            val count = adapter.getSelectedTasks().size
-
-            if (count != 0) {
-                if (!actionModeEnabled) {
-                    startActionMode(count)
-                } else {
-                    mActionModeCallback.updateCount(count)
-                }
-            } else if (count == 0) {
-                if (actionModeEnabled) {
-                    finishActionMode()
-                }
-            }
-        }
+        // if (item is Task) {
+        //     val count = adapter.getSelectedTasks().size
+        //
+        //     if (count != 0) {
+        //         if (!actionModeEnabled) {
+        //             startActionMode(count)
+        //         } else {
+        //             mActionModeCallback.updateCount(count)
+        //         }
+        //     } else if (count == 0) {
+        //         if (actionModeEnabled) {
+        //             finishActionMode()
+        //         }
+        //     }
+        // }
     }
 
     override fun onActionModeCreated() {
@@ -192,7 +228,7 @@ class TaskListFragment : Fragment(),
     }
 
     override fun onActionModeDestroyed() {
-        adapter.clearSelectedTasks()
+        // adapter.clearSelectedTasks()
         actionModeEnabled = false
     }
 }

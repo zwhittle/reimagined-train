@@ -10,12 +10,10 @@ object TestUtil {
         hex = hex)
 
     fun createTag(name: String, colorId: Long) = Tag(
-        name = name,
-        colorId = colorId)
+        name = name)
 
     fun createProject(name: String, colorId: Long) = Project(
-        name = name,
-        colorId = colorId)
+        name = name)
 
     fun createTask(name: String, startDate: LocalDate?, endDate: LocalDate?, projectId: Long?) = Task(
         name = name,

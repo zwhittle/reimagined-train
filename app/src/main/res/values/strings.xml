@@ -33,4 +33,8 @@
     <string name="none">None</string>
     <string name="JHList">List</string>
     <string name="due">Due</string>
+    <string name="i_return_null">I return null</string>
+    <string name="enter_name_of_list">Enter name of list</string>
+    <string name="enter_name_of_project">Enter name of project</string>
+    <string name="enter_name_of_tag">Enter name of tag</string>
 </resources>

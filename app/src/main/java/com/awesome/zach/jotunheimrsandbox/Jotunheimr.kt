@@ -1,9 +1,9 @@
 package com.awesome.zach.jotunheimrsandbox
 
-import androidx.multidex.MultiDexApplication
+import android.app.Application
 import org.koin.android.ext.android.startKoin
 
-class Jotunheimr : MultiDexApplication() {
+class Jotunheimr: Application() {
 
     override fun onCreate() {
         super.onCreate()

@@ -49,13 +49,12 @@ class DBSeeder(val db: BaseDatabase) {
     }
 
     fun populateTagsList() : ArrayList<Tag> {
-        val colorsFromDao = db.colorDao().listNow()
         tags.clear()
-        tags.add(Tag(name = "Home", colorId = colorsFromDao[0].id))
-        tags.add(Tag(name = "Office", colorId = colorsFromDao[1].id))
-        tags.add(Tag(name = "Low Energy", colorId = colorsFromDao[2].id))
-        tags.add(Tag(name = "Med Energy", colorId = colorsFromDao[3].id))
-        tags.add(Tag(name = "High Energy", colorId = colorsFromDao[4].id))
+        tags.add(Tag(name = "Home"))
+        tags.add(Tag(name = "Office"))
+        tags.add(Tag(name = "Low Energy"))
+        tags.add(Tag(name = "Med Energy"))
+        tags.add(Tag(name = "High Energy"))
 
         tags.forEach {
             System.out.println("Added $it to tags list")
@@ -69,7 +68,7 @@ class DBSeeder(val db: BaseDatabase) {
         projects.clear()
 
         colorsFromDao.forEachIndexed { index, color ->
-            val project = Project(name = "Project $index", colorId = color.id)
+            val project = Project(name = "Project $index")
             projects.add(project)
             Log.d(LOG_TAG, "Added $project to projects list")
             System.out.println("Added $project to projects list")
@@ -79,7 +78,7 @@ class DBSeeder(val db: BaseDatabase) {
     }
 
     fun populateTasksList(withDates: Boolean) : ArrayList<Task> {
-        val projectsFromDao = db.projectDao().getAllProjects()
+        val projectsFromDao = db.projectDao().listNow()
         tasks.clear()
 
         if (withDates) {
@@ -107,8 +106,8 @@ class DBSeeder(val db: BaseDatabase) {
     }
 
     fun populateTaskTagAssignmentsList() : ArrayList<TaskTag> {
-        val tasksFromDao = db.taskDao().getAllTasks()
-        val tagsFromDao = db.tagDao().getAllTags()
+        val tasksFromDao = db.taskDao().listNow()
+        val tagsFromDao = db.tagDao().listNow()
 
         taskTagAssignments.clear()
 

@@ -1,30 +1,27 @@
 package com.awesome.zach.jotunheimrsandbox.data.entities
 
-import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "task_tag_table",
-        indices = [Index("taskTagId"), Index("id"), Index("id")],
+@Entity(tableName = "task_tag",
+        indices = [Index("id"), Index("taskId"), Index("tagId")],
         foreignKeys = [
             ForeignKey(
                 entity = Task::class,
                 parentColumns = ["id"],
-                childColumns = ["id"],
+                childColumns = ["taskId"],
                 onDelete = ForeignKey.CASCADE),
             ForeignKey(
                 entity = Tag::class,
                 parentColumns = ["id"],
-                childColumns = ["id"],
+                childColumns = ["tagId"],
                 onDelete = ForeignKey.CASCADE)])
 data class TaskTag(
-    @NonNull
     var taskId: Long,
-    @NonNull
     var tagId: Long) {
 
     @PrimaryKey(autoGenerate = true)
-    var taskTagId: Long = 0
+    var id: Long = 0
 }

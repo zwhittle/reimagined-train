@@ -70,6 +70,9 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
 
+    // Oneshot LiveData
+    implementation "com.github.hadilq.liveevent:liveevent:$liveEventVersion"
+
     // Testing Dependencies
     testImplementation "org.koin:koin-test:$koinVersion"
     androidTestImplementation "org.koin:koin-test:$koinVersion"

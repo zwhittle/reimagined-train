@@ -38,7 +38,6 @@
             android:paddingStart="0dp"
             android:paddingEnd="@dimen/margin_large"
             android:src="@drawable/ic_circle_small"
-            android:tint="@{Color.parseColor(project.colorHex)}"
             android:tintMode="src_over" />
 
         <TextView
@@ -57,7 +56,7 @@
             android:layout_weight="1"
             android:visibility="gone"
             android:gravity="end"
-            android:text="@{String.valueOf(project.projectId)}"
+            android:text="@{String.valueOf(project.id)}"
             tools:text="45" />
     </LinearLayout>
 </layout>

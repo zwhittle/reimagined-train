@@ -82,7 +82,7 @@ class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? =
             val newProject = projects[newItemPosition]
             val oldProject = mProjects?.get(oldItemPosition)
 
-            return newProject.id == oldProject?.id && newProject.name == oldProject.name && newProject.colorId == oldProject.colorId
+            return newProject.id == oldProject?.id && newProject.name == oldProject.name
         }
     }
 
@@ -92,7 +92,6 @@ class SimpleProjectAdapter(private val selectedListener: ItemSelectedListener? =
             binding.apply {
                 clickListener = listener
                 project = item
-                val textColor = Color.parseColor(Utils.inverseHex(item.colorHex))
                 // binding.tvListItemId.setTextColor(textColor)
                 // binding.tvListItemLabel.setTextColor(textColor)
                 executePendingBindings()

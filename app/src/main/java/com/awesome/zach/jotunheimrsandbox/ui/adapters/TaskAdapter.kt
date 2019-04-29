@@ -10,11 +10,9 @@ import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.databinding.ListItemTaskBinding
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
 import com.awesome.zach.jotunheimrsandbox.ui.viewholders.TaskViewHolder
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 
 class TaskAdapter(private val selectedListener: ItemSelectedListener,
-                  private val isMultiSelectEnabled: Boolean,
-                  private val viewModel: MainViewModel? = null) : RecyclerView.Adapter<TaskViewHolder>(),
+                  private val isMultiSelectEnabled: Boolean) : RecyclerView.Adapter<TaskViewHolder>(),
     ItemSelectedListener {
 
     private var mTasks: List<Task>? = null
@@ -38,7 +36,7 @@ class TaskAdapter(private val selectedListener: ItemSelectedListener,
 
         holder.apply {
             if (task != null) {
-                bind(task, viewModel)
+                // bind(task, viewModel)
                 itemView.tag = task
                 setChecked(mTask.isSelected)
             }

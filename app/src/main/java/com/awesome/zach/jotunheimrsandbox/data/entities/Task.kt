@@ -4,8 +4,7 @@ import androidx.room.*
 import java.time.Instant
 import java.time.LocalDate
 
-@Entity(tableName = "task",
-        indices = [Index("id"), Index("projectId"), Index("listId")],
+@Entity(indices = [Index("id"), Index("projectId"), Index("listId")],
         foreignKeys = [
             ForeignKey(
                 entity = Project::class,

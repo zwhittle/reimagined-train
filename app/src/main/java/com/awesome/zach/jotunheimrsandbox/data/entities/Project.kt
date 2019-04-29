@@ -1,12 +1,10 @@
 package com.awesome.zach.jotunheimrsandbox.data.entities
 
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.Instant
 
-@Entity(tableName = "project",
-        indices = [Index("id"), Index("id"), Index("hex")])
+@Entity
 data class Project(
     var name: String,
     var createdAt: Instant = Instant.now()) {

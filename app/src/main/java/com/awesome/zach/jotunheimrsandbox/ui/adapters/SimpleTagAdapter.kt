@@ -72,7 +72,6 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
 
             return newTag.id == oldTag?.id
                 && newTag.name == oldTag.name
-                && newTag.colorId == oldTag.colorId
         }
     }
 
@@ -81,7 +80,6 @@ class SimpleTagAdapter : RecyclerView.Adapter<SimpleTagAdapter.SimpleTagViewHold
             binding.apply {
                 clickListener = listener
                 tag = item
-                val textColor = Color.parseColor(Utils.inverseHex(item.colorHex))
                 // binding.tvListItemId.setTextColor(textColor)
                 // binding.tvListItemLabel.setTextColor(textColor)
                 executePendingBindings()

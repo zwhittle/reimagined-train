@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TaskListViewModel" />
+
+        <variable
+            name="task"
+            type="com.awesome.zach.jotunheimrsandbox.data.entities.Task" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/colorMenuGrey"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:id="@+id/listItemTaskTopLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{clickListener}"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_small"
+            android:paddingEnd="@dimen/margin_normal"
+            android:paddingBottom="@dimen/margin_small">
+
+            <LinearLayout
+                android:id="@+id/listItemTaskRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvListItemTaskName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{task.name}"
+                    tools:text="Home" />
+
+                <TextView
+                    android:id="@+id/tvListItemTaskDue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/listItemTaskRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/listItemTaskTagsArea"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/break1">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvListItemTaskTags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_normal"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="@color/colorMenuGrey"
+                        android:orientation="horizontal"
+                        android:scrollbars="horizontal"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvListItemTaskList"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@{task.listName}"
+                    tools:text="Next Available Actions"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tvListItemTaskProject"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@{task.projectName}"
+                    tools:text="2019 taxes" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

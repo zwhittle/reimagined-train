@@ -39,7 +39,6 @@
             android:paddingStart="0dp"
             android:paddingEnd="@dimen/margin_large"
             android:src="@drawable/ic_label_black_12dp"
-            android:tint="@{Color.parseColor(tag.colorHex)}"
             android:tintMode="src_over" />
 
         <TextView
@@ -58,7 +57,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:visibility="gone"
-            android:text="@{String.valueOf(tag.tagId)}"
+            android:text="@{String.valueOf(tag.id)}"
             tools:text="45" />
 
 

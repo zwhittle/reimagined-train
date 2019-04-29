@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleListAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
 
-class SelectListDialogFragment(private val viewModel: MainViewModel,
-                               private val listener: ItemSelectedListener) : DialogFragment() {
+class SelectListDialogFragment(private val listener: ItemSelectedListener) : DialogFragment() {
     companion object {
         const val LOG_TAG = "SelectListDialogFragment"
     }
@@ -39,8 +36,8 @@ class SelectListDialogFragment(private val viewModel: MainViewModel,
     }
 
     private fun subscribeUi(adapter: SimpleListAdapter) {
-        viewModel.getLists().observe(viewLifecycleOwner, Observer { lists ->
-            if (lists != null) adapter.setListsList(lists)
-        })
+        // viewModel.getLists().observe(viewLifecycleOwner, Observer { lists ->
+        //     if (lists != null) adapter.setListsList(lists)
+        // })
     }
 }

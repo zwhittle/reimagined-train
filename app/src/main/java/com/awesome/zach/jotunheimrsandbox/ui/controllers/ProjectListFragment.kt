@@ -1,28 +1,27 @@
 package com.awesome.zach.jotunheimrsandbox.ui.controllers
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectListBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.ProjectListAdapter
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ProjectListViewModel
+import com.awesome.zach.jotunheimrsandbox.utils.LogUtils
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProjectListFragment : Fragment() {
 
     companion object {
         const val LOG_TAG = "ProjectListFragment"
     }
-
-    // private lateinit var viewModel: ProjectListViewModel
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -33,31 +32,37 @@ class ProjectListFragment : Fragment() {
                                                                           container,
                                                                           false)
         val context = binding.root.context
+        val viewModel by viewModel<ProjectListViewModel>()
+        binding.vm = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        // val factory = InjectorUtils.provideProjectListViewModelFactory(context)
-        // viewModel = ViewModelProviders.of(this, factory).get(ProjectListViewModel::class.java)
+        val adapter = ProjectListAdapter(viewLifecycleOwner, viewModel)
 
-        val factory = InjectorUtils.provideMainViewModelFactory(context)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this,
-                                  factory)
-                .get(MainViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        viewModel.projects().observe(viewLifecycleOwner, Observer { list ->
+            LogUtils.log(LOG_TAG, "D::Projects: $list")
+            adapter.submitList(list)
+        })
 
-        val adapter = SimpleProjectAdapter()
-        binding.rvProjectList.adapter = adapter
-        binding.rvProjectList.layoutManager = LinearLayoutManager(context)
-        subscribeUi(adapter)
+        viewModel.uiNameProject().observe(viewLifecycleOwner, Observer { callback ->
+            val inflatedView = LayoutInflater.from(context).inflate(R.layout.dialog_text, view as ViewGroup?, false)
+            val input = inflatedView.findViewById(R.id.input) as EditText
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.enter_name_of_project))
+                .setView(inflatedView)
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    val text = input.text.toString()
+                    callback.invoke(text)
+                    dialog.dismiss()
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+                .create().show()
+        })
+
+        binding.rvProjectsList.adapter = adapter
+        binding.rvProjectsList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvProjectsList.setHasFixedSize(true)
+        binding.executePendingBindings()
 
         return binding.root
-    }
-
-    private fun subscribeUi(adapter: SimpleProjectAdapter) {
-
-        viewModel.getProjects()
-            .observe(viewLifecycleOwner,
-                     Observer { projects ->
-                         if (projects != null) adapter.setProjectsList(projects)
-                     })
     }
 }

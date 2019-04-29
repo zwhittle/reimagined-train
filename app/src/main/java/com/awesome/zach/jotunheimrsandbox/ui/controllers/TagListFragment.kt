@@ -1,31 +1,27 @@
 package com.awesome.zach.jotunheimrsandbox.ui.controllers
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTagListBinding
-import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleTagAdapter
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
+import com.awesome.zach.jotunheimrsandbox.ui.adapters.TagListAdapter
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TagListViewModel
+import com.awesome.zach.jotunheimrsandbox.utils.LogUtils
+import org.koin.android.viewmodel.ext.android.viewModel
 
-/**
- * A placeholder fragment containing a simple view.
- */
 class TagListFragment : Fragment() {
 
     companion object {
         const val LOG_TAG = "TagListFragment"
     }
-
-    // private lateinit var viewModel: TagListViewModel
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,28 +34,41 @@ class TagListFragment : Fragment() {
                                                             container,
                                                             false)
 
-        // val factory = InjectorUtils.provideTagListViewModelFactory(binding.root.context)
-        // viewModel = ViewModelProviders.of(this,
-        //                                   factory)
-        //     .get(TagListViewModel::class.java)
+        val context = binding.root.context
+        val viewModel by viewModel<TagListViewModel>()
+        binding.vm = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        val factory = InjectorUtils.provideMainViewModelFactory(context = binding.root.context)
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        val adapter = TagListAdapter(viewLifecycleOwner, viewModel)
 
-        val adapter = SimpleTagAdapter()
-        binding.rvTagList.adapter = adapter
-        binding.rvTagList.layoutManager = LinearLayoutManager(binding.root.context)
-        subscribeUi(adapter)
+        viewModel.tags().observe(viewLifecycleOwner, Observer { list ->
+            LogUtils.log(LOG_TAG, "D::Tags: $list")
+            adapter.submitList(list)
+        })
+
+        viewModel.uiNameTag().observe(viewLifecycleOwner, Observer { callback ->
+            val inflatedView = LayoutInflater.from(context).inflate(R.layout.dialog_text, view as ViewGroup?, false)
+            val input = inflatedView.findViewById(R.id.input) as EditText
+            AlertDialog.Builder(requireContext())
+                .setTitle(getString(R.string.enter_name_of_tag))
+                .setView(inflatedView)
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    val text = input.text.toString()
+                    callback.invoke(text)
+                    dialog.dismiss()
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
+                .create().show()
+
+        })
+
+
+        binding.rvTagsList.adapter = adapter
+        binding.rvTagsList.layoutManager = LinearLayoutManager(binding.root.context)
+        binding.rvTagsList.setHasFixedSize(true)
+        binding.executePendingBindings()
 
         return binding.root
     }
 
-    private fun subscribeUi(adapter: SimpleTagAdapter) {
-
-        viewModel.getTags()
-            .observe(viewLifecycleOwner,
-                     Observer { tags ->
-                         if (tags != null) adapter.setTagsList(tags)
-                     })
-    }
 }

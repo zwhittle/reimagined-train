@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.awesome.zach.jotunheimrsandbox.AppDatabase
-import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import kotlinx.coroutines.*
 import org.koin.standalone.KoinComponent
@@ -13,12 +12,14 @@ import org.koin.standalone.inject
 interface TaskRepository {
     suspend fun newAsync(name: String,
                          projectId: Long? = null,
-                         listId: Long? = null,
-                         tags: ArrayList<Tag> = ArrayList()): Deferred<Task>
+                         listId: Long? = null): Deferred<Task>
     suspend fun delete(task: Task)
     suspend fun delete(id: Long)
     fun task(): LiveData<Task?>
     fun tasks(): LiveData<List<Task>>
+    fun tasksByProject(projectId: Long?): LiveData<List<Task>>
+    fun tasksByList(listId: Long?): LiveData<List<Task>>
+    fun tasksByTag(tagId: Long?): LiveData<List<Task>>
     fun tasksNowAsync(): Deferred<List<Task>>
 }
 
@@ -42,8 +43,7 @@ class TaskRepositoryImpl: TaskRepository, KoinComponent {
 
     override suspend fun newAsync(name: String,
                                   projectId: Long?,
-                                  listId: Long?,
-                                  tags: ArrayList<Tag>): Deferred<Task> {
+                                  listId: Long?): Deferred<Task> {
         return GlobalScope.async(Dispatchers.IO) {
             val ids = dao.insertAll(Task(name = name, projectId = projectId, listId = listId))
             return@async dao.taskByIdNow(ids.first()) ?: throw RuntimeException("Task cannot be null")
@@ -63,6 +63,12 @@ class TaskRepositoryImpl: TaskRepository, KoinComponent {
     }
 
     override fun tasks(): LiveData<List<Task>> = tasks
+
+    override fun tasksByProject(projectId: Long?): LiveData<List<Task>> = dao.listByProject(projectId)
+
+    override fun tasksByList(listId: Long?): LiveData<List<Task>> = dao.listByList(listId)
+
+    override fun tasksByTag(tagId: Long?): LiveData<List<Task>> = dao.listByTag(tagId)
 
     override fun tasksNowAsync(): Deferred<List<Task>> {
         return GlobalScope.async(Dispatchers.IO) {

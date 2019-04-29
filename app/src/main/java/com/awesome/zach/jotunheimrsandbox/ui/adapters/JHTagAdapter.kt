@@ -1,6 +1,5 @@
 package com.awesome.zach.jotunheimrsandbox.ui.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,9 +39,8 @@ class JHTagAdapter(private val tags: ArrayList<Tag>, private val clickListener: 
             binding.apply {
                 clickListener = listener
                 tagText = tag.name
-                val color = Color.parseColor(tag.colorHex)
-                jhtagview.setColor(color)
-                jhtagview.setBackgroundColor(color)
+                // jhtagview.setColor(color)
+                // jhtagview.setBackgroundColor(color)
             }
         }
     }

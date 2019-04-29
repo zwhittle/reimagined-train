@@ -120,7 +120,6 @@ class TagAdapter(private val selectedListener: ItemSelectedListener,
 
             return newTag.id == oldTag?.id
                 && newTag.name == oldTag.name
-                && newTag.colorId == oldTag.colorId
         }
     }
 }

@@ -26,7 +26,7 @@
 //     abstract fun tagDao(): TagDao
 //     abstract fun projectDao(): ProjectDao
 //     abstract fun taskDao(): TaskDao
-//     abstract fun taskTagAssignmentDao(): TaskTagAssignmentDao
+//     abstract fun taskTagDao(): TaskTagAssignmentDao
 //
 //     // companion object that returns a singleton of the DB
 //     companion object {

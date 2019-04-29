@@ -5,16 +5,11 @@ import android.view.*
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Color
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentProjectCreateEditBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.ColorSpinnerAdapter
-import com.awesome.zach.jotunheimrsandbox.utils.InjectorUtils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModel
-import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.MainViewModelFactory
 
 class CreateEditProjectFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
@@ -28,8 +23,8 @@ class CreateEditProjectFragment : Fragment(), AdapterView.OnItemSelectedListener
     private lateinit var spinnerAdapter: ColorSpinnerAdapter
 
     private lateinit var binding: FragmentProjectCreateEditBinding
-    private lateinit var factory: MainViewModelFactory
-    private lateinit var viewModel: MainViewModel
+    // private lateinit var factory: MainViewModelFactory
+    // private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,8 +35,8 @@ class CreateEditProjectFragment : Fragment(), AdapterView.OnItemSelectedListener
                                     false)
 
         val context = binding.root.context
-        factory = InjectorUtils.provideMainViewModelFactory(context)
-        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+        // factory = InjectorUtils.provideMainViewModelFactory(context)
+        // viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
 
         retrieveColorsForSpinner()
         setupSpinner()
@@ -80,11 +75,11 @@ class CreateEditProjectFragment : Fragment(), AdapterView.OnItemSelectedListener
         // mColors = viewModel.getColors()
         // selectedColor = mColors[0]
 
-        viewModel.getColors().observe(viewLifecycleOwner, Observer { colors ->
-            colors.forEach {
-                spinnerAdapter.add(it)
-            }
-        })
+        // viewModel.getColors().observe(viewLifecycleOwner, Observer { colors ->
+        //     colors.forEach {
+        //         spinnerAdapter.add(it)
+        //     }
+        // })
     }
 
     private fun saveProject() {
@@ -94,7 +89,7 @@ class CreateEditProjectFragment : Fragment(), AdapterView.OnItemSelectedListener
             return
         }
 
-        viewModel.addProjectToDb(name, selectedColor.id)
+        // viewModel.addProjectToDb(name, selectedColor.id)
     }
 
     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
