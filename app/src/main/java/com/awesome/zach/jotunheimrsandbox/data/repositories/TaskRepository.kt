@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.awesome.zach.jotunheimrsandbox.AppDatabase
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
+import com.awesome.zach.jotunheimrsandbox.data.entities.TaskTag
 import kotlinx.coroutines.*
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 
 interface TaskRepository {
-    suspend fun newAsync(name: String,
-                         projectId: Long? = null,
-                         listId: Long? = null): Deferred<Task>
+    suspend fun newAsync(task: Task): Deferred<Task>
+    suspend fun newTaskTagAsync(taskId: Long, tagId: Long): Deferred<TaskTag>
     suspend fun delete(task: Task)
     suspend fun delete(id: Long)
     fun task(): LiveData<Task?>
@@ -41,12 +41,18 @@ class TaskRepositoryImpl: TaskRepository, KoinComponent {
         }
     }
 
-    override suspend fun newAsync(name: String,
-                                  projectId: Long?,
-                                  listId: Long?): Deferred<Task> {
+    override suspend fun newAsync(task: Task): Deferred<Task> {
         return GlobalScope.async(Dispatchers.IO) {
-            val ids = dao.insertAll(Task(name = name, projectId = projectId, listId = listId))
+            val ids = dao.insertAll(task)
             return@async dao.taskByIdNow(ids.first()) ?: throw RuntimeException("Task cannot be null")
+        }
+    }
+
+    override suspend fun newTaskTagAsync(taskId: Long, tagId: Long): Deferred<TaskTag> {
+        return GlobalScope.async(Dispatchers.IO) {
+            val ttDao = db.getDatabase().taskTagDao()
+            val ids = ttDao.insertAll(TaskTag(taskId, tagId))
+            return@async ttDao.taskTagByIdNow(ids.first()) ?: throw java.lang.RuntimeException("TaskTag cannot be null")
         }
     }
 

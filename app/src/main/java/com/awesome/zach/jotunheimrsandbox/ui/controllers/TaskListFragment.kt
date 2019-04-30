@@ -23,7 +23,7 @@ import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TaskListViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.LogUtils
 import com.awesome.zach.jotunheimrsandbox.utils.setActionBarTitle
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class TaskListFragment : Fragment(),
     DialogFragmentListener,
@@ -37,7 +37,7 @@ class TaskListFragment : Fragment(),
     private lateinit var binding: FragmentTaskListBinding
     private lateinit var adapter: TaskListAdapter
 
-    private val taskListViewModel by viewModel<TaskListViewModel>()
+    private val taskListViewModel by sharedViewModel<TaskListViewModel>()
 
     private var mActionModeCallback = ActionModeCallback(this)
     private var actionModeEnabled = false

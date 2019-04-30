@@ -15,7 +15,7 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentTagListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.TagListAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TagListViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.LogUtils
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class TagListFragment : Fragment() {
 
@@ -35,7 +35,7 @@ class TagListFragment : Fragment() {
                                                             false)
 
         val context = binding.root.context
-        val viewModel by viewModel<TagListViewModel>()
+        val viewModel by sharedViewModel<TagListViewModel>()
         binding.vm = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

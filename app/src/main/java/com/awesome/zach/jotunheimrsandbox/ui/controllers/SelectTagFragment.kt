@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
@@ -20,13 +21,17 @@ import com.awesome.zach.jotunheimrsandbox.ui.adapters.TagAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.callbacks.ActionModeCallback
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ActionModeListener
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TagListViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TaskListViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener {
+class SelectTagFragment : Fragment(), ItemSelectedListener, ActionModeListener {
 
-    // private lateinit var factory: MainViewModelFactory
-    // private lateinit var viewModel: MainViewModel
     private lateinit var binding: LayoutSelectItemFragmentBinding
+
+    private val tagListViewModel by sharedViewModel<TagListViewModel>()
+    private val taskListViewModel by sharedViewModel<TaskListViewModel>()
 
     private var mActionModeCallback = ActionModeCallback(this, true)
     private var actionModeEnabled = false
@@ -39,11 +44,6 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
             inflater, R.layout.layout_select_item_fragment, container, false
         )
         val context = binding.root.context
-
-        // factory = InjectorUtils.provideMainViewModelFactory(context)
-        // viewModel = activity?.run {
-        //     ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
-        // } ?: throw Exception("Invalid Activity")
 
         setupAdapter(arguments)
         binding.rvSelectionList.layoutManager = LinearLayoutManager(context)
@@ -84,31 +84,32 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
     }
 
     private fun subscribeUi(adapter: TagAdapter) {
-        // viewModel.getTags().observe(viewLifecycleOwner, Observer { tags ->
-        //     if (tags != null) adapter.setTagsList(tags)
-        // })
-        // viewModel.getSelectedTags().observe(viewLifecycleOwner, Observer { tags ->
-        //     if (tags != null) {
-        //         adapter.setSelectedTags(tags)
-        //         startActionMode(adapter.getSelectedTags().size)
-        //     }
-        // })
+         tagListViewModel.tags().observe(viewLifecycleOwner, Observer { tags ->
+             if (tags != null) adapter.setTagsList(tags)
+         })
+         taskListViewModel.getSelectedTags().observe(viewLifecycleOwner, Observer { tags ->
+             if (tags != null) {
+                 adapter.setSelectedTags(tags)
+                 val count = adapter.getSelectedTags().size
+                 startActionMode(count)
+             }
+         })
     }
 
     private fun subscribeUi(adapter: SimpleProjectAdapter) {
-        // viewModel.getProjects().observe(viewLifecycleOwner, Observer { projects ->
+        // tagListViewModel.getProjects().observe(viewLifecycleOwner, Observer { projects ->
         //     if (projects != null) adapter.setProjectsList(projects)
         // })
     }
 
     private fun subscribeUi(adapter: SimpleTaskAdapter) {
-        // viewModel.getTasks().observe(viewLifecycleOwner, Observer { tasks ->
+        // tagListViewModel.getTasks().observe(viewLifecycleOwner, Observer { tasks ->
         //     if (tasks != null) adapter.setTasksList(tasks)
         // })
     }
 
     private fun subscribeUi(adapter: SimpleListAdapter) {
-        // viewModel.getLists().observe(viewLifecycleOwner, Observer { lists ->
+        // tagListViewModel.getLists().observe(viewLifecycleOwner, Observer { lists ->
         //     if (lists != null) adapter.setListsList(lists)
         // })
     }
@@ -136,7 +137,7 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
                 mActionModeCallback.updateCount(count)
             }
         // } else if (item is JHList) {
-        //     viewModel.updateSelectedList(item)
+        //     tagListViewModel.updateSelectedList(item)
         //     popBackStack()
         }
     }
@@ -159,7 +160,7 @@ class SelectItemFragment : Fragment(), ItemSelectedListener, ActionModeListener 
         val adapter = binding.rvSelectionList.adapter
         if (adapter is TagAdapter) {
             val selectedTags = adapter.getSelectedTags()
-            // viewModel.updateSelectedTags(selectedTags)
+            taskListViewModel.updateSelectedTags(selectedTags)
             popBackStack()
         }
     }

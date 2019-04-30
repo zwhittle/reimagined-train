@@ -14,14 +14,24 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.ActivityMainBinding
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ListListViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ProjectListViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TagListViewModel
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TaskListViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.Utils.hideSoftKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val taskListViewModel by viewModel<TaskListViewModel>()
+    private val projectListViewModel by viewModel<ProjectListViewModel>()
+    private val tagListViewModel by viewModel<TagListViewModel>()
+    private val listListViewModel by viewModel<ListListViewModel>()
 
     companion object {
         const val LOG_TAG = "MainActivity"

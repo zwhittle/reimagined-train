@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleListAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ListListViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SelectListDialogFragment(private val listener: ItemSelectedListener) : DialogFragment() {
     companion object {
@@ -26,18 +29,20 @@ class SelectListDialogFragment(private val listener: ItemSelectedListener) : Dia
                                     false)
         val context = binding.root.context
 
+        val viewModel by viewModel<ListListViewModel>()
+
         val adapter = SimpleListAdapter(listener)
         binding.rvListListPopup.adapter = adapter
         binding.rvListListPopup.layoutManager = LinearLayoutManager(context)
 
-        subscribeUi(adapter)
+        subscribeUi(adapter, viewModel)
 
         return binding.root
     }
 
-    private fun subscribeUi(adapter: SimpleListAdapter) {
-        // viewModel.getLists().observe(viewLifecycleOwner, Observer { lists ->
-        //     if (lists != null) adapter.setListsList(lists)
-        // })
+    private fun subscribeUi(adapter: SimpleListAdapter, vm: ListListViewModel) {
+        vm.lists().observe(viewLifecycleOwner, Observer { lists ->
+            if (lists != null) adapter.setListsList(lists)
+        })
     }
 }

@@ -6,11 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.databinding.LayoutProjectListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.SimpleProjectAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ProjectListViewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class SelectProjectDialogFragment(private val listener: ItemSelectedListener) : DialogFragment() {
 
@@ -26,23 +29,23 @@ class SelectProjectDialogFragment(private val listener: ItemSelectedListener) : 
                                                                         container,
                                                                         false)
 
-        // val binding = inflater.inflate(R.layout.layout_project_list, container, false)
         val context = binding.root.context
+
+        val viewModel by sharedViewModel<ProjectListViewModel>()
+
 
         val adapter = SimpleProjectAdapter(listener)
         binding.rvProjectListPopup.adapter = adapter
         binding.rvProjectListPopup.layoutManager = LinearLayoutManager(context)
 
-        subscribeUi(adapter)
+        subscribeUi(adapter, viewModel)
 
         return binding.root
     }
 
-    private fun subscribeUi(adapter: SimpleProjectAdapter) {
-        // viewModel.getProjects()
-        //     .observe(viewLifecycleOwner,
-        //              Observer { projects ->
-        //                  if (projects != null) adapter.setProjectsList(projects)
-        //              })
+    private fun subscribeUi(adapter: SimpleProjectAdapter, vm: ProjectListViewModel) {
+        vm.projects().observe(viewLifecycleOwner, Observer { projects ->
+                         if (projects != null) adapter.setProjectsList(projects)
+                     })
     }
 }

@@ -33,9 +33,9 @@ data class Task(
     @Ignore
     var isSelected: Boolean = false
 
-    @Ignore
+
     var projectName: String? = null
 
-    @Ignore
+
     var listName: String? = null
 }

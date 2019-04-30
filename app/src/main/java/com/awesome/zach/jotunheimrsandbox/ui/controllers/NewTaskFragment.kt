@@ -3,8 +3,11 @@ package com.awesome.zach.jotunheimrsandbox.ui.controllers
 import android.os.Bundle
 import android.view.*
 import android.widget.Adapter
+import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.awesome.zach.jotunheimrsandbox.R
@@ -19,7 +22,7 @@ import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils.hideSoftKeyboard
 import com.awesome.zach.jotunheimrsandbox.utils.Utils.showSnackbar
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class NewTaskFragment : Fragment(),
     ItemSelectedListener {
@@ -28,13 +31,11 @@ class NewTaskFragment : Fragment(),
         const val LOG_TAG = "NewTaskFragment"
     }
 
-    // private lateinit var factory: MainViewModelFactory
-    // private lateinit var viewModel: MainViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: Adapter
     private lateinit var binding: FragmentNewTaskBinding
 
-    private val viewModel by inject<TaskListViewModel>()
+    private val viewModel by sharedViewModel<TaskListViewModel>()
 
     private var mProject: Project? = null
     private var mList: JHList? = null
@@ -86,48 +87,48 @@ class NewTaskFragment : Fragment(),
     }
 
     override fun onDestroyView() {
-        // viewModel.clearSelectedTags()
+        viewModel.clearSelectedTags()
         super.onDestroyView()
     }
 
     private fun subscribeUi() {
-        // viewModel.getSelectedTags()
-        //     .observe(viewLifecycleOwner,
-        //              Observer { tags ->
-        //                  if (tags != null) {
-        //                      mTags = tags
-        //
-        //                      if (tags.isNotEmpty()) {
-        //                          if (binding.tagsLabel.isVisible) binding.tagsLabel.visibility =
-        //                              View.GONE
-        //                          if (binding.tagsValue.isVisible) binding.tagsValue.visibility =
-        //                              View.GONE
-        //
-        //                          if (!binding.recyclerView.isVisible) {
-        //                              val tagList = ArrayList<Tag>()
-        //                              mTags.forEach {
-        //                                  tagList.add(it)
-        //                              }
-        //
-        //                              val adapter = JHTagAdapter(tagList,
-        //                                                         View.OnClickListener { showSelectTagsFragment() })
-        //                              binding.recyclerView.adapter = adapter
-        //                              binding.recyclerView.layoutManager =
-        //                                  LinearLayoutManager(binding.root.context,
-        //                                                      LinearLayout.HORIZONTAL,
-        //                                                      false)
-        //                              binding.recyclerView.visibility = View.VISIBLE
-        //                          }
-        //                      } else {
-        //                          if (binding.recyclerView.isVisible) binding.recyclerView.visibility =
-        //                              View.GONE
-        //                          if (!binding.tagsLabel.isVisible) binding.tagsLabel.visibility =
-        //                              View.VISIBLE
-        //                          if (!binding.tagsValue.isVisible) binding.tagsValue.visibility =
-        //                              View.VISIBLE
-        //                      }
-        //                  }
-        //              })
+        viewModel.getSelectedTags()
+            .observe(viewLifecycleOwner,
+                     Observer { tags ->
+                         if (tags != null) {
+                             mTags = tags
+
+                             if (tags.isNotEmpty()) {
+                                 if (binding.tagsLabel.isVisible) binding.tagsLabel.visibility =
+                                     View.GONE
+                                 if (binding.tagsValue.isVisible) binding.tagsValue.visibility =
+                                     View.GONE
+
+                                 if (!binding.recyclerView.isVisible) {
+                                     val tagList = ArrayList<Tag>()
+                                     mTags.forEach {
+                                         tagList.add(it)
+                                     }
+
+                                     val adapter = JHTagAdapter(tagList,
+                                                                View.OnClickListener { showSelectTagsFragment() })
+                                     binding.recyclerView.adapter = adapter
+                                     binding.recyclerView.layoutManager =
+                                         LinearLayoutManager(binding.root.context,
+                                                             LinearLayout.HORIZONTAL,
+                                                             false)
+                                     binding.recyclerView.visibility = View.VISIBLE
+                                 }
+                             } else {
+                                 if (binding.recyclerView.isVisible) binding.recyclerView.visibility =
+                                     View.GONE
+                                 if (!binding.tagsLabel.isVisible) binding.tagsLabel.visibility =
+                                     View.VISIBLE
+                                 if (!binding.tagsValue.isVisible) binding.tagsValue.visibility =
+                                     View.VISIBLE
+                             }
+                         }
+                     })
     }
 
     override fun onCreateOptionsMenu(menu: Menu,
@@ -167,17 +168,17 @@ class NewTaskFragment : Fragment(),
             //                       mList,
             //                       tags)
 
-            viewModel.insert(input)
+
+
+            viewModel.insert(input, mProject, mList, tags)
         } else if (adapter == null) {
             // viewModel.addTaskToDb(input,
             //     mProject,
             //     mList)
-            viewModel.insert(input)
+            viewModel.insert(input, mProject, mList)
         }
 
         hideSoftKeyboard(this)
-
-        // activity?.supportFragmentManager?.popBackStack()
     }
 
     private fun showSelectTagsFragment() {
@@ -191,21 +192,19 @@ class NewTaskFragment : Fragment(),
     }
 
     private fun showSelectProjectDialog() {
-        // val dialogFragment = SelectProjectDialogFragment(viewModel,
-        //                                                  this)
-        // fragmentManager?.let {
-        //     dialogFragment.show(it,
-        //                         Constants.FRAGMENT_SELECT_PROJECT_DIALOG)
-        // }
+        val dialogFragment = SelectProjectDialogFragment(this)
+        fragmentManager?.let {
+            dialogFragment.show(it,
+                                Constants.FRAGMENT_SELECT_PROJECT_DIALOG)
+        }
     }
 
     private fun showSelectListDialog() {
-        // val dialogFragment = SelectListDialogFragment(viewModel,
-        //                                               this)
-        // fragmentManager?.let {
-        //     dialogFragment.show(it,
-        //                         Constants.FRAGMENT_SELECT_LIST_DIALOG)
-        // }
+        val dialogFragment = SelectListDialogFragment(this)
+        fragmentManager?.let {
+            dialogFragment.show(it,
+                                Constants.FRAGMENT_SELECT_LIST_DIALOG)
+        }
     }
 
     override fun onItemSelected(item: Any) {

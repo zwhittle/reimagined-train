@@ -27,7 +27,7 @@
                 android:paddingEnd="@dimen/margin_small"
                 android:paddingTop="@dimen/margin_xxs"
                 android:paddingBottom="@dimen/margin_xxs"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@android:color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/_420_blaze_it_nerds"

@@ -15,7 +15,7 @@ import com.awesome.zach.jotunheimrsandbox.databinding.FragmentListListBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.ListListAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ListListViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.LogUtils
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class ListListFragment : Fragment() {
 
@@ -31,7 +31,7 @@ class ListListFragment : Fragment() {
                                                                        container,
                                                                        false)
         val context = binding.root.context
-        val listListViewModel by viewModel<ListListViewModel>()
+        val listListViewModel by sharedViewModel<ListListViewModel>()
         binding.vm = listListViewModel
         binding.lifecycleOwner = viewLifecycleOwner
 

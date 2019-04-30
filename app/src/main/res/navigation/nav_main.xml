@@ -41,7 +41,7 @@
         android:label="CreateEditTagFragment" />
     <fragment
         android:id="@+id/selectItemFragment"
-        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.SelectItemFragment"
+        android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.SelectTagFragment"
         android:label="SelectItemFragment" />
     <fragment android:id="@+id/homeFragment"
               android:name="com.awesome.zach.jotunheimrsandbox.ui.controllers.HomeFragment"
