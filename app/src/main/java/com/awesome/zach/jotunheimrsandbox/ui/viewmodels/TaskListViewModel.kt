@@ -3,10 +3,7 @@ package com.awesome.zach.jotunheimrsandbox.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import com.awesome.zach.jotunheimrsandbox.data.entities.Task
 import com.awesome.zach.jotunheimrsandbox.data.repositories.TaskRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 
 class TaskListViewModel(private val taskRepository: TaskRepository): ViewModel() {
 
@@ -32,6 +29,12 @@ class TaskListViewModel(private val taskRepository: TaskRepository): ViewModel()
     fun tasksByList(listId: Long) = taskRepository.tasksByList(listId)
 
     fun tasksByTag (tagId: Long) = taskRepository.tasksByTag(tagId)
+
+    fun insert(name: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val task = newAsync(name)
+        }
+    }
 
     suspend fun newAsync(name: String): Deferred<Task> {
         return taskRepository.newAsync(name)

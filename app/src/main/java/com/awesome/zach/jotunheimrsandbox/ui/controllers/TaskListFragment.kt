@@ -79,8 +79,24 @@ class TaskListFragment : Fragment(),
             taskListViewModel.tasksByList(listId).observe(viewLifecycleOwner, Observer { list ->
                 LogUtils.log(LOG_TAG, "D::Tasks: $list")
                 adapter.submitList(list)
+
+                if (!list.isEmpty()) {
+                    showTaskList()
+                } else {
+                    hideTaskList()
+                }
             })
         }
+    }
+
+    private fun showTaskList() {
+        binding.rvTaskList.visibility = View.VISIBLE
+        binding.emptyView.visibility = View.GONE
+    }
+
+    private fun hideTaskList() {
+        binding.rvTaskList.visibility = View.GONE
+        binding.emptyView.visibility = View.VISIBLE
     }
 
     private fun subscribeToProject(args: Bundle) {
@@ -89,6 +105,12 @@ class TaskListFragment : Fragment(),
             taskListViewModel.tasksByProject(projectId).observe(viewLifecycleOwner, Observer { list ->
                 LogUtils.log(LOG_TAG, "D::Tasks: $list")
                 adapter.submitList(list)
+
+                if (!list.isEmpty()) {
+                    showTaskList()
+                } else {
+                    hideTaskList()
+                }
             })
         }
     }
@@ -99,6 +121,12 @@ class TaskListFragment : Fragment(),
             taskListViewModel.tasksByTag(tagId).observe(viewLifecycleOwner, Observer { list ->
                 LogUtils.log(LOG_TAG, "D::Tasks: $list")
                 adapter.submitList(list)
+
+                if (!list.isEmpty()) {
+                    showTaskList()
+                } else {
+                    hideTaskList()
+                }
             })
         }
     }
@@ -107,6 +135,12 @@ class TaskListFragment : Fragment(),
         taskListViewModel.tasks().observe(viewLifecycleOwner, Observer { list ->
             LogUtils.log(LOG_TAG, "D::Tasks: $list")
             adapter.submitList(list)
+
+            if (!list.isEmpty()) {
+                showTaskList()
+            } else {
+                hideTaskList()
+            }
         })
     }
 

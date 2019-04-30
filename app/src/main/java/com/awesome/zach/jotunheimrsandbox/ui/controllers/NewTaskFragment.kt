@@ -14,10 +14,12 @@ import com.awesome.zach.jotunheimrsandbox.data.entities.Tag
 import com.awesome.zach.jotunheimrsandbox.databinding.FragmentNewTaskBinding
 import com.awesome.zach.jotunheimrsandbox.ui.adapters.JHTagAdapter
 import com.awesome.zach.jotunheimrsandbox.ui.listeners.ItemSelectedListener
+import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TaskListViewModel
 import com.awesome.zach.jotunheimrsandbox.utils.Constants
 import com.awesome.zach.jotunheimrsandbox.utils.Utils
 import com.awesome.zach.jotunheimrsandbox.utils.Utils.hideSoftKeyboard
 import com.awesome.zach.jotunheimrsandbox.utils.Utils.showSnackbar
+import org.koin.android.ext.android.inject
 
 class NewTaskFragment : Fragment(),
     ItemSelectedListener {
@@ -31,6 +33,8 @@ class NewTaskFragment : Fragment(),
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: Adapter
     private lateinit var binding: FragmentNewTaskBinding
+
+    private val viewModel by inject<TaskListViewModel>()
 
     private var mProject: Project? = null
     private var mList: JHList? = null
@@ -46,13 +50,6 @@ class NewTaskFragment : Fragment(),
                                           container,
                                           false)
         val context = binding.root.context
-
-        // factory = InjectorUtils.provideMainViewModelFactory(context)
-        // viewModel = activity?.run {
-        //     ViewModelProviders.of(this,
-        //                           factory)
-        //         .get(MainViewModel::class.java)
-        // } ?: throw Exception("Invalid Activity")
 
         binding.tagRow.setOnClickListener {
             showSelectTagsFragment()
@@ -169,10 +166,13 @@ class NewTaskFragment : Fragment(),
             //                       mProject,
             //                       mList,
             //                       tags)
+
+            viewModel.insert(input)
         } else if (adapter == null) {
             // viewModel.addTaskToDb(input,
             //     mProject,
             //     mList)
+            viewModel.insert(input)
         }
 
         hideSoftKeyboard(this)

@@ -23,10 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_small"
-        android:clickable="true"
-        android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/colorMenuGrey"
+        app:cardBackgroundColor="@color/cardview_background_dark"
         app:cardCornerRadius="8dp">
 
         <LinearLayout
@@ -36,6 +34,7 @@
             android:onClick="@{clickListener}"
             android:orientation="vertical"
             android:paddingStart="@dimen/margin_normal"
+            android:background="@null"
             android:paddingTop="@dimen/margin_small"
             android:paddingEnd="@dimen/margin_normal"
             android:paddingBottom="@dimen/margin_small">
@@ -44,18 +43,21 @@
                 android:id="@+id/listItemTaskRow1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tvListItemTaskName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:text="@{task.name}"
                     tools:text="Home" />
 
                 <TextView
                     android:id="@+id/tvListItemTaskDue"
                     android:layout_width="wrap_content"
+                    android:background="@null"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -63,6 +65,7 @@
                 android:id="@+id/listItemTaskRow2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -70,6 +73,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/break1">
 
@@ -82,7 +86,7 @@
                         android:backgroundTint="@color/colorMenuGrey"
                         android:orientation="horizontal"
                         android:scrollbars="horizontal"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <TextView
@@ -91,12 +95,14 @@
                     android:layout_weight="1"
                     android:text="@{task.listName}"
                     tools:text="Next Available Actions"
+                    android:background="@null"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/tvListItemTaskProject"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:background="@null"
                     android:layout_height="wrap_content"
                     android:text="@{task.projectName}"
                     tools:text="2019 taxes" />
