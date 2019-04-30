@@ -2,10 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="vm"
             type="com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ProjectListViewModel" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
 
         <variable
             name="project"
@@ -17,26 +23,29 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_xs"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/colorMenuOrange"
+        android:onClick="@{clickListener}"
+        app:cardBackgroundColor="@color/cardview_background_dark"
         app:cardCornerRadius="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@null">
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center"
+                android:padding="@dimen/margin_normal"
                 android:text="@{project.name}"
                 tools:text="Rollover 401k" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

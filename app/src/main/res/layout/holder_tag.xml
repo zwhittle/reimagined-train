@@ -9,6 +9,10 @@
             type="com.awesome.zach.jotunheimrsandbox.ui.viewmodels.TagListViewModel" />
 
         <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
             name="tag"
             type="com.awesome.zach.jotunheimrsandbox.data.entities.Tag" />
 
@@ -18,26 +22,29 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small"
+        android:layout_margin="@dimen/margin_xs"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/colorMenuBlue"
+        android:onClick="@{clickListener}"
+        app:cardBackgroundColor="@color/cardview_background_dark"
         app:cardCornerRadius="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
+            android:layout_margin="@dimen/margin_small"
+            android:background="@null"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@null"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/margin_normal"
                 android:text="@{tag.name}"
                 tools:text="Home" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

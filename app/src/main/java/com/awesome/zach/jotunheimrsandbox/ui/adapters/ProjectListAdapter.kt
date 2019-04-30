@@ -1,14 +1,18 @@
 package com.awesome.zach.jotunheimrsandbox.ui.adapters
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.awesome.zach.jotunheimrsandbox.R
 import com.awesome.zach.jotunheimrsandbox.data.entities.Project
 import com.awesome.zach.jotunheimrsandbox.databinding.HolderProjectBinding
 import com.awesome.zach.jotunheimrsandbox.ui.viewholders.ProjectListViewHolder
 import com.awesome.zach.jotunheimrsandbox.ui.viewmodels.ProjectListViewModel
+import com.awesome.zach.jotunheimrsandbox.utils.Constants
 
 class ProjectListAdapter(private val viewLifecycleOwner: LifecycleOwner, private val vm: ProjectListViewModel) : ListAdapter<Project, ProjectListViewHolder>(DIFF_CALLBACK) {
 
@@ -24,7 +28,14 @@ class ProjectListAdapter(private val viewLifecycleOwner: LifecycleOwner, private
         val project = getItem(position)
 
         if (project != null) {
-            holder.bind(project)
+            holder.apply {
+                val args = Bundle()
+                args.putString(Constants.ARGUMENT_MODEL, Constants.MODEL_PROJECT)
+                args.putLong(Constants.ARGUMENT_ITEM_ID, project.id)
+                args.putString(Constants.ARGUMENT_APP_TITLE, project.name)
+
+                bind(Navigation.createNavigateOnClickListener(R.id.taskListFragment, args), project)
+            }
         } else {
             holder.clear()
         }

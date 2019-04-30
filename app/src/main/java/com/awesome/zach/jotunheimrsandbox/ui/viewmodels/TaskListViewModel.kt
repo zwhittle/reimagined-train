@@ -24,6 +24,10 @@ class TaskListViewModel(private val taskRepository: TaskRepository): ViewModel()
 
     fun tasks() = taskRepository.tasks()
 
+    fun onAddTaskClicked() {
+
+    }
+
     fun tasksByProject(projectId: Long) = taskRepository.tasksByProject(projectId)
 
     fun tasksByList(listId: Long) = taskRepository.tasksByList(listId)

@@ -5,12 +5,10 @@ class Constants {
         const val DB_NAME = "jotunheimr_database"
 
         const val ARGUMENT_APP_TITLE = "arg-app-title"
+        const val ARGUMENT_ITEM_ID = "arg-item-id"
         const val ARGUMENT_LIST_ID = "arg-list-id"
-        const val ARGUMENT_LIST_NAME = "arg-list-name"
         const val ARGUMENT_PROJECT_ID = "arg-project-id"
-        const val ARGUMENT_PROJECT_NAME = "arg-project-name"
         const val ARGUMENT_TAG_ID = "arg-tag-id"
-        const val ARGUMENT_TAG_NAME = "arg-tag-name"
         const val ARGUMENT_MODEL = "arg-model"
 
         const val FRAGMENT_DELETE_ITEMS_DIALOG = "frag-delete-items-dialog"

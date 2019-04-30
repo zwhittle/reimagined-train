@@ -44,7 +44,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/margin_normal"
             android:background="@color/colorAccent"
-            android:onClick="@{() -> vm.onAddProjectClicked()"
+            android:onClick="@{() -> vm.onAddProjectClicked()}"
             android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
